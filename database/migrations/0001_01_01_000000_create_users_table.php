@@ -17,6 +17,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('isAdmin');
+            $table->boolean('isDosen');
+            $table->boolean('isKaProdi');
+            $table->boolean('isSekProdi');
+            $table->boolean('isDekan');
+            $table->boolean('isWakilDekan1');
+            $table->boolean('isWakilDekan2');
             $table->rememberToken();
             $table->timestamps();
         });

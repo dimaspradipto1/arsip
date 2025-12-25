@@ -21,6 +21,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isAdmin',
+        'isDosen',
+        'isKaProdi',
+        'isSekProdi',
+        'isDekan',
+        'isWakilDekan1',
+        'isWakilDekan2',
     ];
 
     /**
