@@ -26,7 +26,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        <a href="{{ route('user.create') }}" class="btn btn-dark text-white text-uppercase"><i
+                        <a href="{{ route('user.create') }}" class="btn btn-primary text-white text-uppercase"><i
                                 class="fa-solid fa-plus"></i> Tambah Pengguna</a>
                         <!-- Button to trigger modal -->
                         <a href="javascript:;" class="btn btn-success text-white text-uppercase" data-bs-toggle="modal"

@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\TahunAkademik;
+use App\Models\KategorySk;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,37 +12,37 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class TahunAkademikDataTable extends DataTable
+class KategorySkDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder<TahunAkademik> $query Results from query() method.
+     * @param QueryBuilder<KategorySk> $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('DT_Rowindex', '')
-            ->addColumn('action', function ($tahunAkademik) {
+            ->addColumn('DT_RowIndex', '')
+            ->addColumn('action', function($item){
                 return '
-                    <a href="'.route('tahunakademik.edit', $tahunAkademik->id).'" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form action="'.route('tahunakademik.destroy', $tahunAkademik->id).'" method="POST" style="display: inline">
+                    <a href="'.route('kategorysk.edit', $item->id).'" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
+                    <form action="'.route('kategorysk.destroy', $item->id).'" method="POST" style="display:inline;">
                         '.csrf_field().'
                         '.method_field('DELETE').'
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confrm(\'Yakin ingin menghapus data ini?\')"><i class="fa-solid fa-trash"></i></button>
-                    </form>';
+                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                    </form>
+                ';
             })
-            ->setRowId('DT_Rowindex')
-            ->rawColumns(['action']);
+            ->setRowId('DT_RowIndex');
     }
 
     /**
      * Get the query source of dataTable.
      *
-     * @return QueryBuilder<TahunAkademik>
+     * @return QueryBuilder<KategorySk>
      */
-    public function query(TahunAkademik $model): QueryBuilder
+    public function query(KategorySk $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -53,7 +53,7 @@ class TahunAkademikDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('tahunakademik-table')
+                    ->setTableId('kategorysk-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->orderBy(1)
@@ -74,15 +74,15 @@ class TahunAkademikDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('DT_RowIndex')
-                  ->title('NO')
-                  ->width(60)
+            Column::make('DT_RowIndex')
+                  ->title('No')
+                  ->width(20)
                   ->addClass('text-center'),
-            Column::make('tahun_akademik')
-                ->title('Tahun Akademik')
-                ->addClass('text-start'),
+            Column::make('kategory_sk')
+                  ->title('Kategori SK')
+                  ->addClass('text-start'),
             Column::computed('action')
-                    ->title('Aksi')
+                  ->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
@@ -95,6 +95,6 @@ class TahunAkademikDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'TahunAkademik_' . date('YmdHis');
+        return 'KategorySk_' . date('YmdHis');
     }
 }

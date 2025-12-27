@@ -3,8 +3,7 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html"
-            target="_blank">
+        <a class="navbar-brand m-0" href="{{ route('dashboard') }}" target="_blank">
             <img src="{{ asset('dashboard/assets/img/uis.png') }}" class="navbar-brand-img h-100" alt="main_logo">
             <span class="ms-1 font-weight-bold text-uppercase">arsip fst</span>
         </a>
@@ -65,7 +64,7 @@
                 style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
                 kegiatan
                 panitia tahunan</h6>
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('kegiatanpanitia.*') ? 'active' : '' }}">
                 <a class="nav-link  " href="../pages/tables.html">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -1221,7 +1220,7 @@
                 </h6>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link  " href="../pages/rtl.html">
+                <a class="nav-link  {{ request()->is('kategorysk*') ? 'active' : '' }}" href="{{ route('kategorysk.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="fi_14782290">
@@ -1241,7 +1240,7 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link  " href="{{ route('tahunakademik.index') }}">
+                <a class="nav-link  {{ request()->routeIs('tahunakademik.*') ? 'active' : '' }}" href="{{ route('tahunakademik.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg id="fi_10691802" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
@@ -1315,7 +1314,7 @@
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a class="nav-link  " href="{{ route('user.index') }}">
+                <a class="nav-link  {{ request()->routeIs('user.*') ? 'active' :'' }}" href="{{ route('user.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg id="fi_10692138" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"

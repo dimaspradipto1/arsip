@@ -43,12 +43,12 @@ class UserDataTable extends DataTable
             })
             ->addColumn('action', function($user){
                 return '
-                    <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-info text-white px-3 "><i class="fa-solid fa-key"></i></a>
-                    <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white px-3" ><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-dark text-white"><i class="fa-solid fa-key"></i></a>
+                    <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white"><i class="fa-solid fa-pen-to-square"></i></a>
                     <form action="'.route('user.destroy', $user->id).'" method="POST" style="display: inline">
                         '.csrf_field().'
                         '.method_field('DELETE').'
-                        <button type="submit" class="btn btn-sm btn-danger px-3" onclick="return confrm(\'Yakin ingin menghapus data ini?\')"><i class="fa-solid fa-trash"></i></button>
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confrm(\'Yakin ingin menghapus data ini?\')"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 ';
             })

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\TahunAkademikController;
 
 // Route::get('/', function () {
@@ -23,4 +24,5 @@ Route::middleware(['auth','checkrole'])->group(function(){
     Route::post('/user/{id}/update-password', [UserController::class, 'updatePassword'])->name('user.updatePassword');
     Route::post('/user/import', [UserController::class, 'import'])->name('user.import');
     Route::resource('tahunakademik', TahunAkademikController::class);
+    Route::resource('/kategorysk', KategorySkController::class);
 });
