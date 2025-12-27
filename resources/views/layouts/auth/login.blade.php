@@ -1819,7 +1819,7 @@
                                     </label>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign in</button>
+                                    <button type="submit" class="btn btn-primary w-100 my-4 mb-2">Sign in</button>
                                 </div>
                                 <p class="text-sm mt-3 mb-0">Don't have an account? <a href="javascript:;"
                                         class="text-dark font-weight-bolder">Sign up</a></p>

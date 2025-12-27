@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategorySkController;
+use App\Http\Controllers\SkKepanitiaanController;
 use App\Http\Controllers\TahunAkademikController;
 
 // Route::get('/', function () {
@@ -25,4 +26,5 @@ Route::middleware(['auth','checkrole'])->group(function(){
     Route::post('/user/import', [UserController::class, 'import'])->name('user.import');
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('/kategorysk', KategorySkController::class);
+    Route::resource('skkepanitiaan', SkKepanitiaanController::class);
 });

@@ -628,7 +628,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link  " href="../pages/virtual-reality.html">
+                <a class="nav-link {{ request()->routeIs('skkepanitiaan*') ? 'active' : '' }}" href="{{ route('skkepanitiaan.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg height="512" viewBox="0 0 64 64" width="512" xmlns="http://www.w3.org/2000/svg"

@@ -21,18 +21,6 @@ class LoginController extends Controller
         return redirect(route('login'));
     }
 
-    // public function loginproses(LoginprosesRequest $request)
-    // {
-    //     // Validasi email dan password menggunakan Auth::attempt
-    //     if (Auth::attempt($request->only('email', 'password'))) {
-    //         Alert::success('Success', 'Login berhasil')->toToast(3000);
-    //         return redirect()->route('dashboard');
-    //     }
-
-    //     Alert::error('Error', 'Login gagal. Cek kembali email atau password Anda.')->toToast(3000);
-    //     return redirect()->route('login')->withInput();
-    // }
-
     public function loginproses(Request $request)
     {
         $validator = Validator::make($request->all(), [
