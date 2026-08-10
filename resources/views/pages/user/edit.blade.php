@@ -53,6 +53,16 @@
                                             <input type="email" name="email" class="form-control"  value="{{ $user->email }}">
                                         </div>
 
+                                        <div class="col-md-6 mb-md-0 mb-4">
+                                            <label for="fakultas">Fakultas</label>
+                                            <input type="text" name="fakultas" class="form-control" value="{{ $user->fakultas }}">
+                                        </div>
+
+                                        <div class="col-md-6 mb-md-0 mb-4">
+                                            <label for="homebase">Homebase</label>
+                                            <input type="text" name="homebase" class="form-control" value="{{ $user->homebase }}">
+                                        </div>
+
                                         <!-- Roles / Status as checkboxes -->
                                         <div class="col-md-6 mb-md-0 my-4">
                                             <label class="d-block">Role Akses</label>

@@ -14,7 +14,7 @@
             <li class="nav-item">
                 <a class="nav-link active" href="{{ route('dashboard') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                        style="background: linear-gradient(45deg, #087C39, #FFF742); color: white;">
+                        style="background: #046B26; color: white;">
                         <svg clip-rule="evenodd" fill-rule="evenodd" height="512" image-rendering="optimizeQuality"
                             shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
                             viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"
@@ -60,8 +60,8 @@
                 </a>
             </li>
 
-            <h6 class="ps-4 mt-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-uppercase"
-                style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
+            <h6 class="mx-3 mt-4 text-uppercase text-xs font-weight-bolder text-uppercase"
+                style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                 kegiatan
                 panitia tahunan</h6>
             <li class="nav-item {{ request()->routeIs('kegiatanpanitia.*') ? 'active' : '' }}">
@@ -303,8 +303,8 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-uppercase"
-                    style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
+                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                    style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                     lpj kegiatan panitia semester</h6>
             </li>
 
@@ -621,8 +621,8 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-uppercase"
-                    style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
+                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                    style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                     pendidikan
                 </h6>
             </li>
@@ -951,8 +951,8 @@
             </li>
 
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-uppercase"
-                    style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
+                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                    style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                     penelitian
                 </h6>
             </li>
@@ -1145,8 +1145,8 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-uppercase"
-                    style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
+                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                    style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                     pengabdian
                 </h6>
             </li>
@@ -1214,8 +1214,8 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-uppercase"
-                    style="background: linear-gradient(45deg, #087C39, #FFF742); color: white; font-weight: bold; padding: 5px; border-radius: 5px;">
+                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                    style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                     data master
                 </h6>
             </li>
@@ -1384,7 +1384,7 @@
                             <h6 class="text-white up mb-0">{{ Auth::user()->name }}</h6>
                             <p class="text-xs font-weight-bold">{{ Auth::user()->email }}</p>
                             <a href="{{ route('logout') }}" class="btn bg-gradient-primary w-100"
-                                style="background: linear-gradient(45deg, #087C39, #FFF742); color: white;">Logout</a>
+                                style="background: #046B26; color: white;">Logout</a>
                         </div>
                     </div>
                 </div>
@@ -1412,7 +1412,7 @@
                     <h6 class="text-white up mb-0">{{ Auth::user()->name }}</h6>
                     <p class="text-xs font-weight-bold">{{ Auth::user()->email }}</p>
                     <a href="{{ route('logout') }}" class="btn bg-gradient-primary w-100"
-                        style="background: linear-gradient(45deg, #087C39, #FFF742); color: white;">Logout</a>
+                        style="background: #046B26; color: white;">Logout</a>
                 </div>
             </div>
         </div>

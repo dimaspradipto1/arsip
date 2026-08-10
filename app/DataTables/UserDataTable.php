@@ -99,6 +99,8 @@ class UserDataTable extends DataTable
                 ->addClass('text-center'),
             Column::make('name')->title('Nama'),
             Column::make('email')->title('Email'),
+            Column::make('fakultas')->title('Fakultas'),
+            Column::make('homebase')->title('Homebase'),
             Column::computed('role_status')
                 ->title('Status')
                 ->addClass('text-center'),

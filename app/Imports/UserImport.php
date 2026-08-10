@@ -23,6 +23,8 @@ class UserImport implements ToCollection, WithHeadingRow
                 'password' => Hash::make($row['password']),
                 'isAdmin' => $row['isAdmin'],
                 'isDosen' => $row['isDosen'],
+                'fakultas' => $row['fakultas'] ?? null,
+                'homebase' => $row['homebase'] ?? null,
             ]);
         }
     }

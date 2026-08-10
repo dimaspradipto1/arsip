@@ -39,6 +39,8 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:6'],
             'isAdmin' => ['nullable', 'boolean'],
             'isDosen' => ['nullable', 'boolean'],
+            'fakultas' => ['nullable', 'string', 'max:255'],
+            'homebase' => ['nullable', 'string', 'max:255'],
         ]);
 
         // Mengambil nilai dari form (nilai default 0 jika checkbox tidak dicentang)
@@ -52,6 +54,8 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
             'isAdmin' => $isAdmin,  // Menyimpan nilai isAdmin
             'isDosen' => $isDosen,  // Menyimpan nilai isDosen
+            'fakultas' => $validated['fakultas'] ?? null,
+            'homebase' => $validated['homebase'] ?? null,
         ]);
 
         // Menampilkan pesan sukses dan redirect
@@ -88,6 +92,8 @@ class UserController extends Controller
             'email' => $request->email,
             'isAdmin' => $request->isAdmin ? 1 : 0,
             'isDosen' => $request->isDosen ? 1 : 0,
+            'fakultas' => $request->fakultas,
+            'homebase' => $request->homebase,
         ]);
 
         if ($request->password) {

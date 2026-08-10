@@ -53,6 +53,16 @@
                                         </div>
 
                                         <div class="col-md-6 mb-md-0 mb-4">
+                                            <label for="fakultas">Fakultas</label>
+                                            <input type="text" name="fakultas" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-6 mb-md-0 mb-4">
+                                            <label for="homebase">Homebase</label>
+                                            <input type="text" name="homebase" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-6 mb-md-0 mb-4">
                                             <label for="password">Password</label>
                                             <input type="password" name="password" class="form-control" id="myInput"
                                                 required>

@@ -28,6 +28,8 @@ class User extends Authenticatable
         'isDekan',
         'isWakilDekan1',
         'isWakilDekan2',
+        'fakultas',
+        'homebase',
     ];
 
     /**
