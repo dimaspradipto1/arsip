@@ -24,24 +24,38 @@ class SkKepanitiaanDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addIndexColumn()
             ->addColumn('DT_RowIndex', '')
-            ->addColumn('tahunakademik_id', function($item){
+            ->addColumn('tahunakademik_id', function ($item) {
                 return $item->tahunakademik->tahun_akademik;
             })
-            ->addColumn('kategorysk_id', function($item){
+            ->addColumn('kategorysk_id', function ($item) {
                 return $item->kategorysk->kategory_sk;
             })
-            ->addColumn('action', function($item){
+            ->addColumn('dokumen', function ($item) {
+                $googleDriveLink = $item->dokumen;
+                preg_match('/\/d\/(.*?)\//', $googleDriveLink, $matches);
+
+                if (isset($matches[1])) {
+                    $fileId = $matches[1];
+                    $driveLink = 'https://drive.google.com/uc?export=view&id=' . $fileId;
+
+                    return '<a href="' . $driveLink . '" class="text-success" target="_blank">Lihat Dokumen</a>';
+                }
+
+                return 'Dokumen tidak tersedia';
+            })
+
+            ->addColumn('action', function ($item) {
                 return '
-                    <a href="'.route('skkepanitiaan.edit', $item->id).'" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen"></i></a>
-                    <form action="'.route('skkepanitiaan.destroy', $item->id).'" method="POST" class="d-inline">
-                        '.csrf_field().'
-                        '.method_field('DELETE').'
+                    <a href="' . route('skkepanitiaan.edit', $item->id) . '" class="btn btn-warning btn-sm"><i class="fa-solid fa-pen"></i></a>
+                    <form action="' . route('skkepanitiaan.destroy', $item->id) . '" method="POST" class="d-inline">
+                        ' . csrf_field() . '
+                        ' . method_field('DELETE') . '
                         <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 ';
             })
             ->setRowId('DT_RowIndex')
-            ->rawColumns(['action', 'tahunakademik_id', 'kategorysk_id']);
+            ->rawColumns(['action', 'tahunakademik_id', 'kategorysk_id', 'dokumen']);
     }
 
     /**
@@ -60,19 +74,19 @@ class SkKepanitiaanDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('skkepanitiaan-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-            Button::make('csv'),
-            Button::make('pdf'),
-            Button::make('print'),
-            Button::make('reset'),
-            Button::make('reload')
-                    ]);
+            ->setTableId('skkepanitiaan-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->buttons([
+                Button::make('excel'),
+                Button::make('csv'),
+                Button::make('pdf'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            ]);
     }
 
     /**
@@ -81,7 +95,7 @@ class SkKepanitiaanDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-             Column::make('DT_RowIndex')
+            Column::make('DT_RowIndex')
                 ->title('No')
                 ->addClass('text-center'),
             Column::make('tahunakademik_id')
