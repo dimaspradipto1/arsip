@@ -135,11 +135,18 @@ class UserController extends Controller
         return redirect()->route('user.index');
     }
 
-     public function import(Request $request)
+    public function import(Request $request)
     {
-        $file = $request->file('excel_file');
-        Excel::import(new UserImport, $file);
-        Alert::success('Success', 'Data telah berhasil diimpor')->autoclose(2000)->toToast();
+        $file = $request->file('file') ?? $request->file('excel_file');
+        if ($file) {
+            \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\UserImport, $file);
+            Alert::success('Berhasil', 'Data pengguna telah berhasil diimpor')->autoclose(3000)->toToast();
+        }
         return redirect()->route('user.index');
+    }
+
+    public function downloadTemplate()
+    {
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\UserTemplateExport, 'Template_Pengguna.xlsx');
     }
 }

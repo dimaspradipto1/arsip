@@ -22,13 +22,18 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::middleware(['auth','checkrole'])->group(function(){
     Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('user', UserController::class);
+    Route::get('/user/template', [UserController::class, 'downloadTemplate'])->name('user.template');
+    Route::post('/user/import', [UserController::class, 'import'])->name('user.import');
     Route::get('/user/{id}/update-password', [UserController::class, 'showUpdatePasswordForm'])->name('user.showUpdatePasswordForm');
     Route::post('/user/{id}/update-password', [UserController::class, 'updatePassword'])->name('user.updatePassword');
-    Route::post('/user/import', [UserController::class, 'import'])->name('user.import');
+    Route::resource('user', UserController::class);
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('/kategorysk', KategorySkController::class);
     Route::resource('skkepanitiaan', SkKepanitiaanController::class);
+    Route::get('/skpembimbingakademik/template', [SkPembimbingAkademikController::class, 'downloadTemplate'])->name('skpembimbingakademik.template');
+    Route::post('/skpembimbingakademik/import', [SkPembimbingAkademikController::class, 'import'])->name('skpembimbingakademik.import');
     Route::resource('skpembimbingakademik', SkPembimbingAkademikController::class);
+    Route::get('/skpembimbingkpm/template', [SkPembimbingKpmController::class, 'downloadTemplate'])->name('skpembimbingkpm.template');
+    Route::post('/skpembimbingkpm/import', [SkPembimbingKpmController::class, 'import'])->name('skpembimbingkpm.import');
     Route::resource('skpembimbingkpm', SkPembimbingKpmController::class);
 });

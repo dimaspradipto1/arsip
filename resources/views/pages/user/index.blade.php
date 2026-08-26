@@ -13,33 +13,8 @@
                         </a>
                         <!-- Button to trigger modal -->
                         <a href="javascript:;" class="btn btn-success text-white text-uppercase mb-0" data-bs-toggle="modal" data-bs-target="#importModal">
-                            <i class="fas fa-file-excel me-1"></i> Import
+                            <i class="fas fa-file-excel me-1"></i> Import Excel
                         </a>
-                    </div>
-
-                    <!-- Modal Import -->
-                    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content border-0 shadow" style="border-radius: 14px;">
-                                <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="importModalLabel">Import Pengguna</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="{{ route('user.import') }}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="modal-body p-4">
-                                        <div class="mb-3">
-                                            <label for="file" class="form-label font-weight-bold text-xs text-dark">Pilih File Excel (.xlsx, .xls)</label>
-                                            <input type="file" class="form-control" name="file" id="file" required>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer p-3 bg-light border-0">
-                                        <button type="button" class="btn btn-secondary btn-sm mb-0" data-bs-dismiss="modal">Tutup</button>
-                                        <button type="submit" class="btn btn-primary btn-sm mb-0">Import Data</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="card-body p-3">
@@ -54,9 +29,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Import Pengguna -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+                <div class="modal-header text-white" style="background: linear-gradient(310deg, #046B26 0%, #0db846 100%); border-bottom: none; padding: 1rem 1.25rem;">
+                    <h6 class="modal-title text-white font-weight-bold d-flex align-items-center mb-0" id="importModalLabel" style="font-size: 0.95rem;">
+                        <i class="fas fa-file-excel me-2" style="font-size: 1.15rem;"></i>
+                        Import Pengguna Excel
+                    </h6>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('user.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body p-3 p-md-4">
+                        <!-- Blue Info Box -->
+                        <div class="p-3 mb-3" style="background-color: #e1f5fe; border: 1px solid #b3e5fc; border-radius: 10px;">
+                            <p class="mb-2 text-xs" style="line-height: 1.5; color: #01579b;">
+                                Format header: <strong>name, email, password, roles, fakultas, homebase</strong>.
+                            </p>
+                            <a href="{{ route('user.template') }}" class="d-inline-flex align-items-center text-xs font-weight-bold text-decoration-none" style="color: #0288d1;">
+                                <i class="fas fa-cloud-arrow-down me-1" style="font-size: 14px;"></i> Download Template
+                            </a>
+                        </div>
+
+                        <div class="mb-2">
+                            <label for="file" class="form-label font-weight-bold text-xs text-dark mb-1">Pilih File Excel (.xlsx, .xls, .csv)</label>
+                            <input type="file" name="file" id="file" class="form-control" accept=".xlsx,.xls,.csv" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer p-3 bg-light border-0 d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-light btn-sm mb-0 px-3" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary btn-sm mb-0 px-4" style="background: #046B26; border: none;">
+                            <i class="fas fa-file-import me-1"></i> Import Pengguna
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
-    {{-- {!! str_replace('http:', 'https:', $dataTable->scripts()) !!} --}}
-    {!! $dataTable->scripts() !!}
+    @if (app()->environment('production'))
+        {!! str_replace('http:', 'https:', $dataTable->scripts()) !!}
+    @else
+        {!! $dataTable->scripts() !!}
+    @endif
 @endpush

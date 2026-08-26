@@ -116,4 +116,26 @@ class SkPembimbingAkademikController extends Controller
 
         return redirect()->route('skpembimbingakademik.index');
     }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:20480',
+        ]);
+
+        \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\SkPembimbingAkademikImport, $request->file('file'));
+
+        Alert::success('Data berhasil diimport')
+            ->autoclose(3000)
+            ->toToast()
+            ->timerProgressBar()
+            ->iconHtml('<i class="far fa-thumbs-up"></i>');
+
+        return redirect()->route('skpembimbingakademik.index');
+    }
+
+    public function downloadTemplate()
+    {
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\SkPembimbingAkademikTemplateExport, 'Template_SK_Pembimbing_Akademik.xlsx');
+    }
 }
