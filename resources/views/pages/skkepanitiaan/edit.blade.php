@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid py-2 py-md-3">
         <div class="row">
-            <div class="col-12 col-lg-9 col-xl-8">
+            <div class="col-12">
                 <div class="card mt-2 mt-md-3 shadow-sm border-radius-lg">
                     <div class="card-header pb-0 p-3 bg-transparent border-bottom">
                         <h6 class="mb-0 font-weight-bolder text-dark">Form Edit SK Kepanitiaan</h6>
@@ -51,7 +51,7 @@
 
                             <div class="mb-3">
                                 <label for="dokumen" class="form-label font-weight-bold text-xs text-dark">Dokumen SK</label>
-                                <textarea name="dokumen" id="dokumen" rows="3" class="form-control" placeholder="Masukkan link dokumen SK / rincian">{{ old('dokumen', $skkepanitiaan->dokumen) }}</textarea>
+                                <textarea name="dokumen" id="dokumen" rows="3" class="form-control" placeholder="Masukkan link Google Drive dokumen SK (contoh: https://drive.google.com/file/d/...)">{{ old('dokumen', $skkepanitiaan->dokumen) }}</textarea>
                                 @error('dokumen')
                                     <div class="text-danger text-xs mt-1">{{ $message }}</div>
                                 @enderror

@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid py-2 py-md-3">
         <div class="row">
-            <div class="col-12 col-lg-8 col-xl-6">
+            <div class="col-12">
                 <div class="card mt-2 mt-md-3 shadow-sm border-radius-lg">
                     <div class="card-header pb-0 p-3 bg-transparent border-bottom">
                         <h6 class="mb-0 font-weight-bolder text-dark">Form Ubah Password</h6>
