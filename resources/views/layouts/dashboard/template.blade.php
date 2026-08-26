@@ -21,6 +21,9 @@
   <link id="pagestyle" href="{{ asset('dashboard/assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
   {{--  datatables CSS  --}}
   <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
+  {{--  Select2 CSS  --}}
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
   <style>
     :root {
       --primary-uis: #046B26;
@@ -113,6 +116,47 @@
     .table > :not(caption) > * > * {
       padding: 0.75rem 1rem;
     }
+    /* Select2 Custom UIS Theme */
+    .select2-container--bootstrap-5 .select2-selection {
+      border-radius: 8px !important;
+      border: 1px solid #d2d6da !important;
+      padding: 0.45rem 0.75rem !important;
+      font-size: 0.875rem !important;
+      min-height: 40px !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+    .select2-container--bootstrap-5.select2-container--open .select2-selection {
+      border-color: #046B26 !important;
+      box-shadow: 0 0 0 3px rgba(4, 107, 38, 0.15) !important;
+    }
+    .select2-container--bootstrap-5 .select2-dropdown {
+      border-radius: 10px !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+      overflow: hidden !important;
+      z-index: 1060 !important;
+    }
+    .select2-container--bootstrap-5 .select2-search .select2-search__field {
+      border-radius: 6px !important;
+      border: 1px solid #d2d6da !important;
+      padding: 6px 12px !important;
+    }
+    .select2-container--bootstrap-5 .select2-search .select2-search__field:focus {
+      border-color: #046B26 !important;
+      box-shadow: 0 0 0 2px rgba(4, 107, 38, 0.15) !important;
+      outline: none !important;
+    }
+    .select2-container--bootstrap-5 .select2-results__option--highlighted.select2-results__option--selectable {
+      background-color: #046B26 !important;
+      color: #ffffff !important;
+    }
+    .select2-container--bootstrap-5 .select2-results__option--selected {
+      background-color: #E8F5E9 !important;
+      color: #046B26 !important;
+      font-weight: 600 !important;
+    }
   </style>
 </head>
 
@@ -143,6 +187,23 @@
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
+
+  {{-- Select2 JS --}}
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      if ($.fn.select2) {
+        $('.select2').select2({
+          theme: 'bootstrap-5',
+          width: '100%',
+          placeholder: function() {
+            return $(this).data('placeholder') || $(this).find('option:first').text() || '-- Pilih --';
+          },
+          allowClear: false
+        });
+      }
+    });
+  </script>
   @stack('script')
   @stack('style')
 

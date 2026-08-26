@@ -24,7 +24,7 @@
 
                                         <div class="col-md-8 mb-md-0 mb-4">
                                             <label for="tahun_akademik">Tahun Akademik</label>
-                                            <select name="tahunakademik_id" id="tahunakademik_id" class="form-control">
+                                            <select name="tahunakademik_id" id="tahunakademik_id" class="form-control select2" data-placeholder="-- Pilih Tahun Akademik --">
                                                 <option value="">-- Pilih Tahun Akademik --</option>
                                                 @foreach ($tahunakademik as $item)
                                                     <option value="{{ $item->id }}">{{ $item->tahun_akademik }}</option>
@@ -37,7 +37,7 @@
 
                                         <div class="col-md-8 mb-md-0 mb-4">
                                             <label for="kategorysk_id">Kategory SK</label>
-                                            <select name="kategorysk_id" id="kategorysk_id" class="form-control">
+                                            <select name="kategorysk_id" id="kategorysk_id" class="form-control select2" data-placeholder="-- Pilih Kategory SK --">
                                                 <option value="">-- Pilih Kategory SK --</option>
                                                 @foreach ($kategorysk as $item)
                                                     <option value="{{ $item->id }}">{{ $item->kategory_sk }}</option>

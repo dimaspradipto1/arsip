@@ -59,7 +59,7 @@
                                         <!-- Role Akses Select -->
                                         <div class="col-md-6 mb-md-0 my-4">
                                             <label for="roles">Role Akses</label>
-                                            <select name="roles" id="roles" class="form-control" required>
+                                            <select name="roles" id="roles" class="form-control select2" data-placeholder="-- Pilih Role --" required>
                                                 <option value="" disabled selected>-- Pilih Role --</option>
                                                 <option value="admin" {{ old('roles') == 'admin' ? 'selected' : '' }}>Admin</option>
                                                 <option value="tatausaha" {{ old('roles') == 'tatausaha' ? 'selected' : '' }}>Tata Usaha</option>
