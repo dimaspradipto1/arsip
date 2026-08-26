@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('dashboard/assets/img/uis.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('dashboard/assets/img/uis.png') }}">
     <title>
-        login arsip
+        E-Arsip | Universitas Ibnu Sina
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -1709,10 +1709,10 @@
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="col-lg-5 text-center mx-auto">
-                        <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-                        <p class="text-lead text-white">Sistem Arsip Fakultas Sains dan Teknologi Universitas Ibnu
-                            Sina</p>
+                    <div class="col-lg-6 text-center mx-auto">
+                        <h1 class="text-white mb-2 mt-5 font-weight-bolder">E-ARSIP</h1>
+                        <p class="text-lead text-white font-weight-bold mb-1">Universitas Ibnu Sina</p>
+                        <p class="text-white text-sm opacity-9"><i>Kampusnya Profesional Muda</i></p>
                     </div>
                 </div>
             </div>
@@ -1720,9 +1720,10 @@
         <div class="container">
             <div class="row mt-lg-n10 mt-md-n11 mt-n10">
                 <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
-                    <div class="card z-index-0">
-                        <div class="card-header text-center pt-4">
-                            <h5>Sign in with</h5>
+                    <div class="card z-index-0 shadow-lg border-0">
+                        <div class="card-header text-center pt-4 pb-0">
+                            <h5 class="font-weight-bolder text-dark mb-1">Masuk ke Sistem</h5>
+                            <p class="mb-0 text-xs text-secondary">Silakan masukkan email dan password akun Anda</p>
                         </div>
                         {{-- <div class="row px-xl-5 px-sm-4 px-3">
                             <div class="col-3 ms-auto px-1">
@@ -1821,8 +1822,6 @@
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary w-100 my-4 mb-2">Sign in</button>
                                 </div>
-                                <p class="text-sm mt-3 mb-0">Don't have an account? <a href="javascript:;"
-                                        class="text-dark font-weight-bolder">Sign up</a></p>
                             </form>
 
                         </div>
@@ -1833,7 +1832,7 @@
                             Copyright ©
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Arsip <br>Fakultas Sains dan Teknologi.
+                            </script> E-ARSIP <br>Universitas Ibnu Sina.
                         </p>
                     </div>
                 </div>
