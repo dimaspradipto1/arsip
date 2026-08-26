@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\SkKepanitiaan;
+use App\Models\SkPembimbingAkademik;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $skPanitiaCount = SkKepanitiaan::count();
+        $skPanitiaCount = SkKepanitiaan::query()->count();
+        $skPaCount = SkPembimbingAkademik::query()->count();
 
         $bidang = [
             'BIDANG PENDIDIKAN' => [
@@ -20,7 +22,7 @@ class DashboardController extends Controller
                 ['nama' => 'DOKUMEN GABUNGAN PENGUJI SIDANG (SK PENGUJI DAN BERITA ACARA PENGUJI)', 'count' => 0],
                 ['nama' => 'SK PENGUJIAN MAHASISWA', 'count' => 0],
                 ['nama' => 'SK DOSEN PEBIMBING KPM', 'count' => 0],
-                ['nama' => 'SK PEMBIMBING AKADEMIK (PA)', 'count' => 0],
+                ['nama' => 'SK PEMBIMBING AKADEMIK (PA)', 'count' => $skPaCount],
             ],
             'BIDANG PENELITIAN' => [
                 ['nama' => 'BUKU', 'count' => 0],

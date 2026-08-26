@@ -60,6 +60,22 @@
       box-shadow: 0 8px 24px rgba(149, 157, 165, 0.08);
       transition: box-shadow 0.2s ease;
     }
+    /* Modal & Backdrop Layering */
+    .modal-backdrop {
+      z-index: 1065 !important;
+    }
+    .modal {
+      z-index: 1070 !important;
+    }
+    /* Navbar & Dropdown Layering */
+    #navbarBlur, .navbar-main {
+      position: sticky !important;
+      top: 0.5rem !important;
+      z-index: 1040 !important;
+    }
+    .user-dropdown-menu {
+      z-index: 1050 !important;
+    }
     /* Mobile Sidebar & Backdrop */
     .sidenav-backdrop {
       display: none;

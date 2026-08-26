@@ -12,4 +12,9 @@ class KategorySk extends Model
     {
         return $this->hasMany(SkKepanitiaan::class);
     }
+
+    public function skpembimbingakademik()
+    {
+        return $this->hasMany(SkPembimbingAkademik::class);
+    }
 }

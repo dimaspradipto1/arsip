@@ -1,4 +1,13 @@
 <style>
+    /* Navbar & Dropdown Layering */
+    #navbarBlur, .navbar-main {
+        position: sticky !important;
+        top: 0.5rem !important;
+        z-index: 1040 !important;
+    }
+    .user-dropdown-menu {
+        z-index: 1050 !important;
+    }
     /* Prevent unwanted scrollbars on navbar */
     #navbarBlur, #navbarBlur * {
         scrollbar-width: none; /* Firefox */
