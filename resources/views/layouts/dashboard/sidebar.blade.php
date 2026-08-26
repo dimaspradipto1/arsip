@@ -74,12 +74,11 @@
                 </a>
             </li>
 
-            <h6 class="mx-3 mt-4 text-uppercase text-xs font-weight-bolder text-uppercase"
+            <h6 class="mx-3 mt-4 text-capitalize text-xs font-weight-bolder text-capitalize"
                 style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
-                kegiatan
-                panitia tahunan</h6>
+                LPJ Kegiatan Panitia Tahunan</h6>
             <li class="nav-item {{ request()->routeIs('kegiatanpanitia.*') ? 'active' : '' }}">
-                <a class="nav-link  " href="../pages/tables.html">
+                <a class="nav-link  " href="#">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg version="1.1" id="fi_732226" xmlns="http://www.w3.org/2000/svg"
@@ -317,7 +316,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                <h6 class="mx-3 text-capitalize text-xs font-weight-bolder text-capitalize"
                     style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
                     lpj kegiatan panitia semester</h6>
             </li>
@@ -635,9 +634,9 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                <h6 class="mx-3 text-capitalize text-xs font-weight-bolder text-capitalize"
                     style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
-                    pendidikan
+                    Bidang Pendidikan
                 </h6>
             </li>
 
@@ -965,9 +964,9 @@
             </li>
 
             <li class="nav-item mt-3">
-                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                <h6 class="mx-3 text-capitalize text-xs font-weight-bolder text-capitalize"
                     style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
-                    penelitian
+                   Bidang Penelitian
                 </h6>
             </li>
             <li class="nav-item">
@@ -1159,9 +1158,9 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                <h6 class="mx-3 text-capitalize text-xs font-weight-bolder text-capitalize"
                     style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
-                    pengabdian
+                    Bidang Pengabdian
                 </h6>
             </li>
             <li class="nav-item">
@@ -1228,9 +1227,9 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="mx-3 text-uppercase text-xs font-weight-bolder text-uppercase"
+                <h6 class="mx-3 text-capitalize text-xs font-weight-bolder text-capitalize"
                     style="background: #046B26; color: #fff; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 4px 10px rgba(4, 107, 38, 0.25);">
-                    data master
+                    Data Master
                 </h6>
             </li>
             <li class="nav-item mb-2">

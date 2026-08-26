@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4 shadow-sm border-radius-lg">
-                    <div class="card-header pb-0 p-3 bg-transparent border-bottom d-flex align-items-center justify-content-between">
+                    <div class="card-header p-3 py-3 bg-transparent border-bottom d-flex align-items-center justify-content-between">
                         <a href="{{ route('kategorysk.create') }}" class="btn btn-primary text-white text-uppercase mb-0">
                             <i class="fas fa-plus me-1"></i> Tambah Kategori SK
                         </a>
