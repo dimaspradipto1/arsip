@@ -26,12 +26,14 @@ class TahunAkademikDataTable extends DataTable
             ->addColumn('DT_Rowindex', '')
             ->addColumn('action', function ($tahunAkademik) {
                 return '
-                    <a href="'.route('tahunakademik.edit', $tahunAkademik->id).'" class="btn btn-sm btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form action="'.route('tahunakademik.destroy', $tahunAkademik->id).'" method="POST" style="display: inline">
-                        '.csrf_field().'
-                        '.method_field('DELETE').'
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confrm(\'Yakin ingin menghapus data ini?\')"><i class="fa-solid fa-trash"></i></button>
-                    </form>';
+                    <div class="d-flex justify-content-center align-items-center" style="gap: 4px;">
+                        <a href="'.route('tahunakademik.edit', $tahunAkademik->id).'" class="btn btn-sm btn-warning text-white mb-0 px-2 py-1" title="Edit"><i class="fas fa-pen-to-square"></i></a>
+                        <form action="'.route('tahunakademik.destroy', $tahunAkademik->id).'" method="POST" style="display: inline-block; margin: 0;">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button type="submit" class="btn btn-sm btn-danger mb-0 px-2 py-1" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>';
             })
             ->setRowId('DT_Rowindex')
             ->rawColumns(['action']);

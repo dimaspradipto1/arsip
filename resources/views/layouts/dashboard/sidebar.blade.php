@@ -143,7 +143,7 @@
 
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">esq training</span>
+                    <span class="nav-link-text ms-1">pendidikan karakter</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -279,7 +279,7 @@
 
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">semester pendek</span>
+                    <span class="nav-link-text ms-1">semester antara</span>
                 </a>
             </li>
             <li class="nav-item">

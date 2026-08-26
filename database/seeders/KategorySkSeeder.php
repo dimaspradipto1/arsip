@@ -15,10 +15,10 @@ class KategorySkSeeder extends Seeder
         $data = [
             ['kategory_sk' => 'SK Penerimaan Mahasiswa Baru (PMB)'],
             ['kategory_sk' => 'SK PANITA KONVERSI'],
-            ['kategory_sk' => 'SK Semester Pendek (SP)'],
+            ['kategory_sk' => 'SK Semester Antara'],
             ['kategory_sk' => 'SK Kartu Rencana Studi (KRS)'],
             ['kategory_sk' => 'SK Kuliah Pengabdian Masyarakat (KPM)'],
-            ['kategory_sk' => 'SK ESQ'],
+            ['kategory_sk' => 'SK Pendidikan Karakter'],
             ['kategory_sk' => 'SK Yudisium'],
             ['kategory_sk' => 'SK Wisuda'],
             ['kategory_sk' => 'SK SEMINAR PROPOSAL DAN SIDANG AKHIR'],

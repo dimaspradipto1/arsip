@@ -40,13 +40,21 @@ class UserDataTable extends DataTable
             })
             ->addColumn('action', function($user){
                 return '
-                    <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-dark text-white" title="Ubah Password"><i class="fa-solid fa-key"></i></a>
-                    <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form action="'.route('user.destroy', $user->id).'" method="POST" style="display: inline">
-                        '.csrf_field().'
-                        '.method_field('DELETE').'
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                    </form>
+                    <div class="d-flex justify-content-center align-items-center" style="gap: 4px;">
+                        <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-dark text-white mb-0 px-2 py-1" title="Ubah Password">
+                            <i class="fas fa-key"></i>
+                        </a>
+                        <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white mb-0 px-2 py-1" title="Edit">
+                            <i class="fas fa-pen-to-square"></i>
+                        </a>
+                        <form action="'.route('user.destroy', $user->id).'" method="POST" style="display: inline-block; margin: 0;">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button type="submit" class="btn btn-sm btn-danger mb-0 px-2 py-1" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
                 ';
             })
             ->setRowId('DT_RowIndex')

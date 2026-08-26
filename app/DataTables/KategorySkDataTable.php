@@ -26,15 +26,18 @@ class KategorySkDataTable extends DataTable
             ->addColumn('DT_RowIndex', '')
             ->addColumn('action', function($item){
                 return '
-                    <a href="'.route('kategorysk.edit', $item->id).'" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                    <form action="'.route('kategorysk.destroy', $item->id).'" method="POST" style="display:inline;">
-                        '.csrf_field().'
-                        '.method_field('DELETE').'
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                    </form>
+                    <div class="d-flex justify-content-center align-items-center" style="gap: 4px;">
+                        <a href="'.route('kategorysk.edit', $item->id).'" class="btn btn-warning btn-sm text-white mb-0 px-2 py-1" title="Edit"><i class="fas fa-pen-to-square"></i></a>
+                        <form action="'.route('kategorysk.destroy', $item->id).'" method="POST" style="display:inline-block; margin:0;">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button type="submit" class="btn btn-danger btn-sm mb-0 px-2 py-1" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus"><i class="fas fa-trash"></i></button>
+                        </form>
+                    </div>
                 ';
             })
-            ->setRowId('DT_RowIndex');
+            ->setRowId('DT_RowIndex')
+            ->rawColumns(['action']);
     }
 
     /**
