@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SkPembimbingAkademik::class);
     }
+
+    public function skpembimbingkpm()
+    {
+        return $this->belongsToMany(SkPembimbingKpm::class, 'sk_pembimbing_kpm_user');
+    }
 }

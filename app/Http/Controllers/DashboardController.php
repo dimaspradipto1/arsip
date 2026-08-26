@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SkKepanitiaan;
 use App\Models\SkPembimbingAkademik;
+use App\Models\SkPembimbingKpm;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -12,6 +13,7 @@ class DashboardController extends Controller
     {
         $skPanitiaCount = SkKepanitiaan::query()->count();
         $skPaCount = SkPembimbingAkademik::query()->count();
+        $skKpmCount = SkPembimbingKpm::query()->count();
 
         $bidang = [
             'BIDANG PENDIDIKAN' => [
@@ -21,7 +23,7 @@ class DashboardController extends Controller
                 ['nama' => 'SK PEMBIMBING DAN BERITA ACARA PENGUJI SEMINAR PROPOSAL', 'count' => 0],
                 ['nama' => 'DOKUMEN GABUNGAN PENGUJI SIDANG (SK PENGUJI DAN BERITA ACARA PENGUJI)', 'count' => 0],
                 ['nama' => 'SK PENGUJIAN MAHASISWA', 'count' => 0],
-                ['nama' => 'SK DOSEN PEBIMBING KPM', 'count' => 0],
+                ['nama' => 'SK DOSEN PEBIMBING KPM', 'count' => $skKpmCount],
                 ['nama' => 'SK PEMBIMBING AKADEMIK (PA)', 'count' => $skPaCount],
             ],
             'BIDANG PENELITIAN' => [

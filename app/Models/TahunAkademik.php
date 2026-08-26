@@ -17,4 +17,9 @@ class TahunAkademik extends Model
     {
         return $this->hasMany(SkPembimbingAkademik::class);
     }
+
+    public function skpembimbingkpm()
+    {
+        return $this->hasMany(SkPembimbingKpm::class);
+    }
 }

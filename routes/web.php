@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
 use App\Http\Controllers\SkPembimbingAkademikController;
+use App\Http\Controllers\SkPembimbingKpmController;
 use App\Http\Controllers\TahunAkademikController;
 
 // Route::get('/', function () {
@@ -29,4 +30,5 @@ Route::middleware(['auth','checkrole'])->group(function(){
     Route::resource('/kategorysk', KategorySkController::class);
     Route::resource('skkepanitiaan', SkKepanitiaanController::class);
     Route::resource('skpembimbingakademik', SkPembimbingAkademikController::class);
+    Route::resource('skpembimbingkpm', SkPembimbingKpmController::class);
 });
