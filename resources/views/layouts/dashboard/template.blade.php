@@ -68,53 +68,129 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(15, 23, 42, 0.45);
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.5);
       backdrop-filter: blur(2px);
-      z-index: 1045;
+      z-index: 1055;
       transition: opacity 0.3s ease;
     }
     body.g-sidenav-pinned .sidenav-backdrop {
-      display: block;
+      display: block !important;
     }
     @media (max-width: 1199.98px) {
-      .sidenav {
+      #sidenav-main.sidenav {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         bottom: 0 !important;
+        width: 270px !important;
+        max-width: 85vw !important;
         height: 100vh !important;
         max-height: 100vh !important;
         margin: 0 !important;
         border-radius: 0 16px 16px 0 !important;
-        transform: translateX(-100%);
+        background-color: #ffffff !important;
+        transform: translateX(-105%) !important;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        z-index: 1050 !important;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+        z-index: 1060 !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25) !important;
+        overflow-y: auto !important;
       }
-      body.g-sidenav-pinned .sidenav {
+      body.g-sidenav-pinned #sidenav-main.sidenav {
         transform: translateX(0) !important;
       }
       .main-content {
         margin-left: 0 !important;
       }
     }
-    /* Responsive DataTables */
+    /* Responsive DataTables Modern Styling */
+    div.dataTables_wrapper {
+      padding: 0.25rem 0;
+    }
+    div.dataTables_wrapper .dataTables_length select {
+      border-radius: 8px !important;
+      padding: 5px 10px !important;
+      border: 1px solid #d2d6da !important;
+      font-size: 0.8125rem !important;
+      display: inline-block;
+      width: auto;
+    }
     div.dataTables_wrapper div.dataTables_filter input {
       border-radius: 20px !important;
       padding: 6px 14px !important;
-      border: 1px solid #e2e8f0 !important;
+      border: 1px solid #d2d6da !important;
+      font-size: 0.8125rem !important;
+      max-width: 200px;
     }
     div.dataTables_wrapper div.dataTables_filter input:focus {
       border-color: #046B26 !important;
       outline: none !important;
       box-shadow: 0 0 0 3px rgba(4, 107, 38, 0.15) !important;
     }
+    div.dataTables_wrapper .dataTables_info {
+      font-size: 0.75rem !important;
+      color: #64748b !important;
+      padding-top: 0.75rem !important;
+    }
+    div.dataTables_wrapper .dataTables_paginate {
+      padding-top: 0.5rem !important;
+    }
     .page-item.active .page-link {
       background-color: #046B26 !important;
       border-color: #046B26 !important;
+      color: #ffffff !important;
+    }
+    .page-link {
+      font-size: 0.75rem !important;
+      padding: 5px 10px !important;
+      border-radius: 6px !important;
+      margin: 0 2px !important;
+    }
+    .table-responsive {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 8px;
+    }
+    .table-responsive::-webkit-scrollbar {
+      height: 6px;
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
     }
     .table > :not(caption) > * > * {
       padding: 0.75rem 1rem;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    table.dataTable thead th {
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.5px !important;
+      color: #475569 !important;
+      background: #f8fafc !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      white-space: nowrap !important;
+    }
+    @media (max-width: 767.98px) {
+      div.dataTables_wrapper .dataTables_length,
+      div.dataTables_wrapper .dataTables_filter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+      }
+      div.dataTables_wrapper div.dataTables_filter {
+        justify-content: flex-end;
+      }
+      div.dataTables_wrapper .dataTables_info,
+      div.dataTables_wrapper .dataTables_paginate {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+      }
     }
     /* Select2 Custom UIS Theme */
     .select2-container--bootstrap-5 .select2-selection {
@@ -210,24 +286,36 @@
   <script>
     // Bulletproof Mobile Sidebar Toggle
     (function () {
+      function openMobileSidenav() {
+        document.body.classList.add('g-sidenav-pinned');
+        var sidenav = document.getElementById('sidenav-main');
+        if (sidenav) {
+          sidenav.style.transform = 'translateX(0)';
+        }
+      }
+
+      function closeMobileSidenav() {
+        document.body.classList.remove('g-sidenav-pinned');
+        var sidenav = document.getElementById('sidenav-main');
+        if (sidenav) {
+          sidenav.style.transform = '';
+        }
+      }
+
       function toggleMobileSidenav(e) {
         if (e) {
           e.preventDefault();
           e.stopPropagation();
         }
-        document.body.classList.toggle('g-sidenav-pinned');
-      }
-
-      function closeMobileSidenav(e) {
-        if (e) {
-          e.preventDefault();
+        if (document.body.classList.contains('g-sidenav-pinned')) {
+          closeMobileSidenav();
+        } else {
+          openMobileSidenav();
         }
-        document.body.classList.remove('g-sidenav-pinned');
       }
 
-      // Event delegation handles dynamically loaded or present elements reliably
       document.addEventListener('click', function (e) {
-        var toggle = e.target.closest('#iconNavbarSidenav');
+        var toggle = e.target.closest('#btnToggleMobileSidebar') || e.target.closest('#iconNavbarSidenav');
         if (toggle) {
           toggleMobileSidenav(e);
           return;
@@ -235,7 +323,8 @@
 
         var close = e.target.closest('#iconSidenav') || e.target.closest('#sidenavBackdrop');
         if (close) {
-          closeMobileSidenav(e);
+          if (e) e.preventDefault();
+          closeMobileSidenav();
           return;
         }
       });

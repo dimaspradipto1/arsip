@@ -38,8 +38,8 @@
         <!-- Left: Breadcrumb & Mobile Hamburger -->
         <div class="d-flex align-items-center me-2 overflow-hidden" style="min-width: 0;">
             <!-- Mobile Hamburger Toggle -->
-            <button class="btn btn-link text-dark p-0 me-2 me-sm-3 d-xl-none fs-5 mb-0 shadow-none flex-shrink-0" id="iconNavbarSidenav" type="button" aria-label="Toggle Sidebar" style="line-height: 1; cursor: pointer;">
-                <i class="fas fa-bars text-dark" style="pointer-events: none;"></i>
+            <button class="btn btn-link text-dark p-0 me-2 me-sm-3 d-xl-none fs-5 mb-0 shadow-none flex-shrink-0" id="btnToggleMobileSidebar" type="button" aria-label="Toggle Sidebar" style="line-height: 1; cursor: pointer;">
+                <i class="fas fa-bars text-dark" style="pointer-events: none; font-size: 1.25rem;"></i>
             </button>
             <div class="overflow-hidden">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-0 px-0 d-none d-sm-flex">
