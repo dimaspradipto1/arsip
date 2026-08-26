@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class SkPembimbingKpmTemplateExport implements FromArray, WithHeadings, WithStyles, ShouldAutoSize
+class SkPengajaranTemplateExport implements FromArray, WithHeadings, WithStyles, ShouldAutoSize
 {
     public function headings(): array
     {
@@ -16,8 +16,6 @@ class SkPembimbingKpmTemplateExport implements FromArray, WithHeadings, WithStyl
             'tahun_akademik',
             'nama_dosen',
             'nomor_sk',
-            'fakultas',
-            'prodi',
             'dokumen',
         ];
     }
@@ -27,19 +25,15 @@ class SkPembimbingKpmTemplateExport implements FromArray, WithHeadings, WithStyl
         return [
             [
                 '2024/2025 GANJIL',
-                'Dosen FST, Dekan FST',
-                '001/SK-KPM/FST/UIS/2024',
-                'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
-                'S1-TEKNIK INFORMATIKA',
-                'https://drive.google.com/file/d/1exampleID_KPM/view?usp=sharing',
+                'Dosen FST',
+                '001/SK-PENGAJARAN/FST/UIS/2024',
+                'https://drive.google.com/file/d/1exampleID_Pengajaran/view?usp=sharing',
             ],
             [
                 '2024/2025 GENAP',
-                'Wakil Dekan 1 FST, Wakil Dekan 2 FST',
-                '002/SK-KPM/FST/UIS/2024',
-                'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
-                'S1-SISTEM INFORMASI',
-                'https://drive.google.com/file/d/1exampleID_KPM2/view?usp=sharing',
+                'Dekan FST',
+                '002/SK-PENGAJARAN/FST/UIS/2024',
+                'https://drive.google.com/file/d/1exampleID_Pengajaran2/view?usp=sharing',
             ],
         ];
     }

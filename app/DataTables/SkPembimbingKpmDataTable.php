@@ -81,7 +81,7 @@ class SkPembimbingKpmDataTable extends DataTable
      */
     public function query(SkPembimbingKpm $model): QueryBuilder
     {
-        return $model->newQuery()->with(['tahunakademik', 'users']);
+        return $model->newQuery()->select('sk_pembimbing_kpms.*')->with(['tahunakademik', 'users']);
     }
 
     /**

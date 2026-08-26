@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(SkPembimbingKpm::class, 'sk_pembimbing_kpm_user');
     }
+
+    public function skpengajaran()
+    {
+        return $this->hasMany(SkPengajaran::class, 'user_id');
+    }
+
+    public function skpembimbingtugasakhir()
+    {
+        return $this->hasMany(SkPembimbingTugasAkhir::class, 'user_id');
+    }
 }

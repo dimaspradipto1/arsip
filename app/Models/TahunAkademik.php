@@ -22,4 +22,14 @@ class TahunAkademik extends Model
     {
         return $this->hasMany(SkPembimbingKpm::class);
     }
+
+    public function skpengajaran()
+    {
+        return $this->hasMany(SkPengajaran::class, 'tahunakademik_id');
+    }
+
+    public function skpembimbingtugasakhir()
+    {
+        return $this->hasMany(SkPembimbingTugasAkhir::class, 'tahunakademik_id');
+    }
 }

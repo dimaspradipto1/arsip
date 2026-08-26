@@ -8,6 +8,8 @@ use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
 use App\Http\Controllers\SkPembimbingAkademikController;
 use App\Http\Controllers\SkPembimbingKpmController;
+use App\Http\Controllers\SkPembimbingTugasAkhirController;
+use App\Http\Controllers\SkPengajaranController;
 use App\Http\Controllers\TahunAkademikController;
 
 // Route::get('/', function () {
@@ -30,10 +32,16 @@ Route::middleware(['auth','checkrole'])->group(function(){
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('/kategorysk', KategorySkController::class);
     Route::resource('skkepanitiaan', SkKepanitiaanController::class);
+    Route::get('/skpengajaran/template', [SkPengajaranController::class, 'downloadTemplate'])->name('skpengajaran.template');
+    Route::post('/skpengajaran/import', [SkPengajaranController::class, 'import'])->name('skpengajaran.import');
+    Route::resource('skpengajaran', SkPengajaranController::class);
     Route::get('/skpembimbingakademik/template', [SkPembimbingAkademikController::class, 'downloadTemplate'])->name('skpembimbingakademik.template');
     Route::post('/skpembimbingakademik/import', [SkPembimbingAkademikController::class, 'import'])->name('skpembimbingakademik.import');
     Route::resource('skpembimbingakademik', SkPembimbingAkademikController::class);
     Route::get('/skpembimbingkpm/template', [SkPembimbingKpmController::class, 'downloadTemplate'])->name('skpembimbingkpm.template');
     Route::post('/skpembimbingkpm/import', [SkPembimbingKpmController::class, 'import'])->name('skpembimbingkpm.import');
     Route::resource('skpembimbingkpm', SkPembimbingKpmController::class);
+    Route::get('/skpembimbingtugasakhir/template', [SkPembimbingTugasAkhirController::class, 'downloadTemplate'])->name('skpembimbingtugasakhir.template');
+    Route::post('/skpembimbingtugasakhir/import', [SkPembimbingTugasAkhirController::class, 'import'])->name('skpembimbingtugasakhir.import');
+    Route::resource('skpembimbingtugasakhir', SkPembimbingTugasAkhirController::class);
 });

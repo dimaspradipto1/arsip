@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SkKepanitiaan;
 use App\Models\SkPembimbingAkademik;
 use App\Models\SkPembimbingKpm;
+use App\Models\SkPembimbingTugasAkhir;
+use App\Models\SkPengajaran;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,11 +16,13 @@ class DashboardController extends Controller
         $skPanitiaCount = SkKepanitiaan::query()->count();
         $skPaCount = SkPembimbingAkademik::query()->count();
         $skKpmCount = SkPembimbingKpm::query()->count();
+        $skPengajaranCount = SkPengajaran::query()->count();
+        $skTaCount = SkPembimbingTugasAkhir::query()->count();
 
         $bidang = [
             'BIDANG PENDIDIKAN' => [
-                ['nama' => 'SK PENGAJARAN', 'count' => 0],
-                ['nama' => 'SK PEMBIMBING TUGAS AKHIR', 'count' => 0],
+                ['nama' => 'SK PENGAJARAN', 'count' => $skPengajaranCount],
+                ['nama' => 'SK PEMBIMBING TUGAS AKHIR', 'count' => $skTaCount],
                 ['nama' => 'SK PEMBIMBING DAN BERITA ACARA MAHASISWA SIDANG', 'count' => 0],
                 ['nama' => 'SK PEMBIMBING DAN BERITA ACARA PENGUJI SEMINAR PROPOSAL', 'count' => 0],
                 ['nama' => 'DOKUMEN GABUNGAN PENGUJI SIDANG (SK PENGUJI DAN BERITA ACARA PENGUJI)', 'count' => 0],

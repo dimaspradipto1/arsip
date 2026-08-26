@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class SkPembimbingKpmTemplateExport implements FromArray, WithHeadings, WithStyles, ShouldAutoSize
+class SkPembimbingTugasAkhirTemplateExport implements FromArray, WithHeadings, WithStyles, ShouldAutoSize
 {
     public function headings(): array
     {
@@ -16,8 +16,8 @@ class SkPembimbingKpmTemplateExport implements FromArray, WithHeadings, WithStyl
             'tahun_akademik',
             'nama_dosen',
             'nomor_sk',
-            'fakultas',
-            'prodi',
+            'nama_mahasiswa',
+            'npm',
             'dokumen',
         ];
     }
@@ -27,19 +27,19 @@ class SkPembimbingKpmTemplateExport implements FromArray, WithHeadings, WithStyl
         return [
             [
                 '2024/2025 GANJIL',
-                'Dosen FST, Dekan FST',
-                '001/SK-KPM/FST/UIS/2024',
-                'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
-                'S1-TEKNIK INFORMATIKA',
-                'https://drive.google.com/file/d/1exampleID_KPM/view?usp=sharing',
+                'Dosen FST',
+                '001/SK-TA/FST/UIS/2024',
+                'Ahmad Fauzi',
+                '2021001001',
+                'https://drive.google.com/file/d/1exampleID_TugasAkhir1/view?usp=sharing',
             ],
             [
-                '2024/2025 GENAP',
-                'Wakil Dekan 1 FST, Wakil Dekan 2 FST',
-                '002/SK-KPM/FST/UIS/2024',
-                'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
-                'S1-SISTEM INFORMASI',
-                'https://drive.google.com/file/d/1exampleID_KPM2/view?usp=sharing',
+                '2024/2025 GANJIL',
+                'Dekan FST',
+                '002/SK-TA/FST/UIS/2024',
+                'Siti Nurhaliza',
+                '2021001002',
+                'https://drive.google.com/file/d/1exampleID_TugasAkhir2/view?usp=sharing',
             ],
         ];
     }
