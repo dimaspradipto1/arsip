@@ -21,17 +21,114 @@
   <link id="pagestyle" href="{{ asset('dashboard/assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
   {{--  datatables CSS  --}}
   <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
+  <style>
+    :root {
+      --primary-uis: #046B26;
+      --primary-uis-hover: #03521D;
+      --primary-uis-light: #E8F5E9;
+    }
+    html, body {
+      overflow-x: hidden;
+      max-width: 100vw;
+    }
+    body {
+      font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8fafc;
+    }
+    .main-content {
+      overflow-x: hidden !important;
+    }
+    /* Hide scrollbar tracks attached to navbar */
+    .navbar .ps__rail-x, .navbar .ps__rail-y, .navbar-collapse .ps__rail-x, .navbar-collapse .ps__rail-y {
+      display: none !important;
+    }
+    .bg-gradient-primary, .btn-primary {
+      background: linear-gradient(310deg, #046B26 0%, #0db846 100%) !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(4, 107, 38, 0.25);
+    }
+    .btn-primary:hover, .btn-primary:focus {
+      background: linear-gradient(310deg, #03521D 0%, #089637 100%) !important;
+      box-shadow: 0 6px 16px rgba(4, 107, 38, 0.35);
+    }
+    .card {
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,0.04);
+      box-shadow: 0 8px 24px rgba(149, 157, 165, 0.08);
+      transition: box-shadow 0.2s ease;
+    }
+    /* Mobile Sidebar & Backdrop */
+    .sidenav-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(2px);
+      z-index: 1045;
+      transition: opacity 0.3s ease;
+    }
+    body.g-sidenav-pinned .sidenav-backdrop {
+      display: block;
+    }
+    @media (max-width: 1199.98px) {
+      .sidenav {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        margin: 0 !important;
+        border-radius: 0 16px 16px 0 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        z-index: 1050 !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+      }
+      body.g-sidenav-pinned .sidenav {
+        transform: translateX(0) !important;
+      }
+      .main-content {
+        margin-left: 0 !important;
+      }
+    }
+    /* Responsive DataTables */
+    div.dataTables_wrapper div.dataTables_filter input {
+      border-radius: 20px !important;
+      padding: 6px 14px !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    div.dataTables_wrapper div.dataTables_filter input:focus {
+      border-color: #046B26 !important;
+      outline: none !important;
+      box-shadow: 0 0 0 3px rgba(4, 107, 38, 0.15) !important;
+    }
+    .page-item.active .page-link {
+      background-color: #046B26 !important;
+      border-color: #046B26 !important;
+    }
+    .table > :not(caption) > * > * {
+      padding: 0.75rem 1rem;
+    }
+  </style>
 </head>
 
-<body class="g-sidenav-show  bg-gray-100">
+<body class="g-sidenav-show bg-gray-100">
+  <div class="sidenav-backdrop" id="sidenavBackdrop"></div>
+
   @include('layouts.dashboard.sidebar')
   
-  <main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ">
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    @include('layouts.dashboard.navbar')
 
     @include('sweetalert::alert')
     
-    @yield('content')
-    
+    <div class="px-2 px-md-3">
+      @yield('content')
+    </div>
   </main>
 
   <!--   Core JS Files   -->
@@ -40,15 +137,44 @@
   <script src="{{ asset('dashboard/assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
   <script src="{{ asset('dashboard/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('dashboard/assets/js/plugins/chartjs.min.js') }}"></script>
-  <script src="dashboard/assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
-  <script src="https://kit.fontawesome.com/63b8672806.js" crossorigin="anonymous"></script>
-  	{{-- datatables --}}
+  <script src="{{ asset('dashboard/assets/js/soft-ui-dashboard.min.js?v=1.0.3') }}"></script>
+  
+  {{-- datatables --}}
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
   <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
   <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
-  {{-- <script src="dashboard/assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script> --}}
   @stack('script')
   @stack('style')
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleBtn = document.getElementById("iconNavbarSidenav");
+      const closeBtn = document.getElementById("iconSidenav");
+      const backdrop = document.getElementById("sidenavBackdrop");
+      const body = document.body;
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          body.classList.toggle("g-sidenav-pinned");
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          body.classList.remove("g-sidenav-pinned");
+        });
+      }
+
+      if (backdrop) {
+        backdrop.addEventListener("click", function () {
+          body.classList.remove("g-sidenav-pinned");
+        });
+      }
+    });
+  </script>
 
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");

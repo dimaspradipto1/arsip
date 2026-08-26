@@ -1,5 +1,7 @@
 @extends('layouts.dashboard.template')
 
+@section('title', 'Dashboard Utama')
+
 @php
     $sections = [
         ['id' => 'table-bidang-pendidikan', 'title' => 'Bidang Pendidikan', 'items' => $bidangPendidikan],

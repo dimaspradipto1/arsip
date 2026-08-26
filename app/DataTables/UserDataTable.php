@@ -40,17 +40,17 @@ class UserDataTable extends DataTable
             })
             ->addColumn('action', function($user){
                 return '
-                    <div class="d-flex justify-content-center align-items-center" style="gap: 4px;">
-                        <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-dark text-white mb-0 px-2 py-1" title="Ubah Password">
+                    <div class="d-flex justify-content-center align-items-center" style="gap: 6px;">
+                        <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-dark text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Ubah Password">
                             <i class="fas fa-key"></i>
                         </a>
-                        <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white mb-0 px-2 py-1" title="Edit">
+                        <a href="'.route('user.edit', $user->id).'" class="btn btn-warning text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Edit">
                             <i class="fas fa-pen-to-square"></i>
                         </a>
                         <form action="'.route('user.destroy', $user->id).'" method="POST" style="display: inline-block; margin: 0;">
                             '.csrf_field().'
                             '.method_field('DELETE').'
-                            <button type="submit" class="btn btn-sm btn-danger mb-0 px-2 py-1" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus">
+                            <button type="submit" class="btn btn-danger mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -112,7 +112,7 @@ class UserDataTable extends DataTable
             Column::computed('action')->title('Aksi')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(140)
                 ->addClass('text-center'),
         ];
     }

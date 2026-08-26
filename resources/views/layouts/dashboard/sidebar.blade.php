@@ -12,14 +12,14 @@
         display: block;
     }
 </style>
-<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3"
     id="sidenav-main">
-    <div class="sidenav-header">
-        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
-            aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" href="{{ route('dashboard') }}" target="_blank">
-            <img src="{{ asset('dashboard/assets/img/uis.png') }}" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold text-uppercase">arsip fst</span>
+    <div class="sidenav-header position-relative">
+        <i class="fas fa-times p-3 cursor-pointer text-secondary position-absolute end-0 top-0 d-xl-none fs-6"
+            aria-hidden="true" id="iconSidenav" style="z-index: 100;" title="Tutup Menu"></i>
+        <a class="navbar-brand m-0 d-flex align-items-center" href="{{ route('dashboard') }}">
+            <img src="{{ asset('dashboard/assets/img/uis.png') }}" class="navbar-brand-img h-100 me-2" alt="main_logo">
+            <span class="font-weight-bold text-dark text-uppercase" style="font-size: 0.95rem; letter-spacing: 0.5px;">E-Arsip UIS</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
@@ -1404,10 +1404,10 @@
                 </div>
             </li> --}}
         </ul>
-        <div class="sidenav-footer mx-3 mt-3 mb-3" style="width: 80%;">
-            <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
+        <div class="sidenav-footer mx-3 mt-3 mb-3">
+            <div class="card card-background shadow-none card-background-mask-secondary border-radius-lg" id="sidenavCard">
                 <div class="full-background"
-                    style="background-image: url('dashboard/assets/img/curved-images/white-curved.jpeg')"></div>
+                    style="background-image: url('{{ asset('dashboard/assets/img/curved-images/white-curved.jpeg') }}')"></div>
                 <div class="card-body text-start p-3 w-100">
                     <div
                         class="icon icon-shape icon-sm bg-white shadow text-center mb-3 d-flex align-items-center justify-content-center border-radius-md">
@@ -1423,9 +1423,11 @@
                     </div>
                     <div class="docs-info">
                         <h6 class="text-white up mb-0">{{ Auth::user()->name }}</h6>
-                        <p class="text-xs font-weight-bold">{{ Auth::user()->email }}</p>
-                        <a href="{{ route('logout') }}" class="btn bg-gradient-primary w-100"
-                            style="background: #046B26; color: white;">Logout</a>
+                        <p class="text-xs font-weight-bold text-white-50 mb-2">{{ Auth::user()->email }}</p>
+                        <a href="{{ route('logout') }}" class="btn btn-sm w-100 text-white font-weight-bold"
+                            style="background: #046B26; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
                     </div>
                 </div>
             </div>

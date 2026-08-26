@@ -1,108 +1,160 @@
-<nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
-      <div class="container-fluid py-1 px-3">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
-          </ol>
-          <h6 class="font-weight-bolder mb-0">Dashboard</h6>
-        </nav>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            <div class="input-group">
-              <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-              <input type="text" class="form-control" placeholder="Type here...">
+<style>
+    /* Prevent unwanted scrollbars on navbar */
+    #navbarBlur, #navbarBlur * {
+        scrollbar-width: none; /* Firefox */
+    }
+    #navbarBlur::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+    #navbarBlur .ps__rail-x, #navbarBlur .ps__rail-y {
+        display: none !important;
+    }
+    .user-dropdown-btn:hover {
+        background: rgba(0, 0, 0, 0.04);
+        border-radius: 10px;
+    }
+    .dropdown-item-hover:hover {
+        background-color: #f1f5f9 !important;
+        color: #046B26 !important;
+    }
+</style>
+
+<nav class="navbar navbar-main navbar-expand-lg px-0 mx-3 mx-md-4 mt-3 shadow-sm border-radius-xl bg-white position-sticky top-1 z-index-sticky" id="navbarBlur" navbar-scroll="true" style="backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0,0,0,0.06); overflow: visible !important;">
+    <div class="container-fluid py-1 px-3 d-flex justify-content-between align-items-center">
+        <!-- Left: Breadcrumb & Mobile Hamburger -->
+        <div class="d-flex align-items-center">
+            <!-- Mobile Hamburger Toggle -->
+            <button class="btn btn-link text-dark p-0 me-3 d-xl-none fs-5 mb-0 shadow-none" id="iconNavbarSidenav" type="button" aria-label="Toggle Sidebar" style="line-height: 1;">
+                <i class="fas fa-bars text-dark"></i>
+            </button>
+            <div>
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-3">
+                    <li class="breadcrumb-item text-xs"><a class="opacity-5 text-dark" href="{{ route('dashboard') }}"><i class="fas fa-home me-1"></i>Home</a></li>
+                    <li class="breadcrumb-item text-xs text-dark active font-weight-bold" aria-current="page">@yield('title', 'E-Arsip')</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0 text-dark" style="font-size: 0.95rem;">@yield('title', 'Dashboard')</h6>
             </div>
-          </div>
-          <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                  <i class="sidenav-toggler-line"></i>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item px-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0">
-                <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
-              </a>
-            </li>
-            <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-bell cursor-pointer"></i>
-              </a>
-              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New message</span> from Laur
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          13 minutes ago
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="mb-2">
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm bg-gradient-dark  me-3 ">
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          <span class="font-weight-bold">New album</span> by Travis Scott
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          1 day
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item border-radius-md" href="javascript:;">
-                    <div class="d-flex py-1">
-                      <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
-                        <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <title>credit-card</title>
-                          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF" fill-rule="nonzero">
-                              <g transform="translate(1716.000000, 291.000000)">
-                                <g transform="translate(453.000000, 454.000000)">
-                                  <path class="color-background" d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z" opacity="0.593633743"></path>
-                                  <path class="color-background" d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z"></path>
-                                </g>
-                              </g>
-                            </g>
-                          </g>
-                        </svg>
-                      </div>
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="text-sm font-weight-normal mb-1">
-                          Payment successfully completed
-                        </h6>
-                        <p class="text-xs text-secondary mb-0">
-                          <i class="fa fa-clock me-1"></i>
-                          2 days
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
         </div>
-      </div>
-    </nav>
+
+        <!-- Right: User Menu Dropdown -->
+        <div class="d-flex align-items-center">
+            @if(Auth::check())
+                @php
+                    $roleLabels = [
+                        'admin'       => ['label' => 'Admin', 'bg' => 'bg-danger'],
+                        'tatausaha'   => ['label' => 'Tata Usaha', 'bg' => 'bg-primary'],
+                        'dosen'       => ['label' => 'Dosen', 'bg' => 'bg-info'],
+                        'dekan'       => ['label' => 'Dekan', 'bg' => 'bg-success'],
+                        'wakilDekan1' => ['label' => 'Wakil Dekan 1', 'bg' => 'bg-warning text-dark'],
+                        'wakilDekan2' => ['label' => 'Wakil Dekan 2', 'bg' => 'bg-warning text-dark'],
+                        'kaprodi'     => ['label' => 'Kaprodi', 'bg' => 'bg-dark'],
+                        'sekprodi'    => ['label' => 'Sekprodi', 'bg' => 'bg-secondary'],
+                    ];
+                    $userRole = Auth::user()->roles ?? 'dosen';
+                    $roleData = $roleLabels[$userRole] ?? ['label' => ucfirst($userRole), 'bg' => 'bg-secondary'];
+                @endphp
+                <div class="dropdown">
+                    <a href="javascript:;" class="d-flex align-items-center px-2 py-1 user-dropdown-btn text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="avatar avatar-sm rounded-circle me-2 text-white font-weight-bold d-flex align-items-center justify-content-center" style="width: 34px; height: 34px; font-size: 14px; background: #046B26; box-shadow: 0 2px 8px rgba(4, 107, 38, 0.3);">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
+                        <div class="d-none d-sm-block text-start me-2">
+                            <span class="d-block text-xs font-weight-bold text-dark mb-0">{{ Auth::user()->name }}</span>
+                            <span class="badge {{ $roleData['bg'] }} text-xxs px-2 py-0" style="font-size: 10px; border-radius: 4px;">{{ $roleData['label'] }}</span>
+                        </div>
+                        <i class="fas fa-chevron-down text-xs text-secondary ms-1"></i>
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-menu-end px-2 py-2 mt-2" aria-labelledby="userDropdown" style="min-width: 230px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
+                        <!-- Header info -->
+                        <li class="px-2 py-2 mb-1 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-sm rounded-circle me-2 text-white font-weight-bold d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 13px; background: #046B26;">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </div>
+                                <div style="overflow: hidden;">
+                                    <h6 class="text-xs font-weight-bold text-dark mb-0 text-truncate">{{ Auth::user()->name }}</h6>
+                                    <p class="text-xxs text-secondary mb-0 text-truncate">{{ Auth::user()->email }}</p>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- Menu 1: Profile -->
+                        <li>
+                            <a class="dropdown-item dropdown-item-hover border-radius-md d-flex align-items-center py-2 text-dark font-weight-bold text-xs" href="javascript:;" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                <i class="fas fa-user-circle me-2 text-info" style="font-size: 14px;"></i>
+                                <span>Profil Pengguna</span>
+                            </a>
+                        </li>
+
+                        <!-- Menu 2: Update Password -->
+                        <li>
+                            <a class="dropdown-item dropdown-item-hover border-radius-md d-flex align-items-center py-2 text-dark font-weight-bold text-xs" href="{{ route('user.showUpdatePasswordForm', Auth::id()) }}">
+                                <i class="fas fa-key me-2 text-warning" style="font-size: 14px;"></i>
+                                <span>Update Password</span>
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider my-1"></li>
+
+                        <!-- Menu 3: Logout -->
+                        <li>
+                            <a class="dropdown-item dropdown-item-hover border-radius-md d-flex align-items-center py-2 text-danger font-weight-bold text-xs" href="{{ route('logout') }}">
+                                <i class="fas fa-sign-out-alt me-2 text-danger" style="font-size: 14px;"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+        </div>
+    </div>
+</nav>
+
+<!-- Modal Profil Pengguna -->
+@if(Auth::check())
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
+            <div class="modal-header text-white" style="background: linear-gradient(310deg, #046B26 0%, #0db846 100%); border-bottom: none;">
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-md bg-white text-dark font-weight-bold rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 18px; color: #046B26 !important;">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
+                    <div>
+                        <h5 class="modal-title text-white font-weight-bold mb-0" id="profileModalLabel">{{ Auth::user()->name }}</h5>
+                        <span class="badge bg-white text-dark text-xxs mt-1" style="font-weight: 700;">{{ $roleData['label'] }}</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-3">
+                    <div class="col-12 pb-2 border-bottom">
+                        <label class="text-xs text-secondary text-uppercase font-weight-bold mb-1">Email</label>
+                        <p class="text-sm font-weight-bold text-dark mb-0"><i class="fas fa-envelope text-secondary me-2"></i>{{ Auth::user()->email }}</p>
+                    </div>
+                    <div class="col-12 pb-2 border-bottom">
+                        <label class="text-xs text-secondary text-uppercase font-weight-bold mb-1">Role / Hak Akses</label>
+                        <p class="text-sm font-weight-bold text-dark mb-0"><i class="fas fa-shield-alt text-secondary me-2"></i>{{ $roleData['label'] }}</p>
+                    </div>
+                    <div class="col-12 pb-2 border-bottom">
+                        <label class="text-xs text-secondary text-uppercase font-weight-bold mb-1">Fakultas</label>
+                        <p class="text-sm font-weight-bold text-dark mb-0"><i class="fas fa-university text-secondary me-2"></i>{{ Auth::user()->fakultas ?? 'Universitas Ibnu Sina' }}</p>
+                    </div>
+                    <div class="col-12">
+                        <label class="text-xs text-secondary text-uppercase font-weight-bold mb-1">Homebase / Program Studi</label>
+                        <p class="text-sm font-weight-bold text-dark mb-0"><i class="fas fa-graduation-cap text-secondary me-2"></i>{{ Auth::user()->homebase ?? '-' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light p-3 border-0 d-flex justify-content-between">
+                <a href="{{ route('user.showUpdatePasswordForm', Auth::id()) }}" class="btn btn-sm btn-dark mb-0">
+                    <i class="fas fa-key me-1"></i> Ubah Password
+                </a>
+                <button type="button" class="btn btn-sm btn-secondary mb-0" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
