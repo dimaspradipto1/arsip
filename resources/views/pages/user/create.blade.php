@@ -76,25 +76,20 @@
                                             </label>
                                         </div>
 
-                                        <!-- Roles / Status as checkboxes -->
+                                        <!-- Role Akses Select -->
                                         <div class="col-md-6 mb-md-0 my-4">
-                                            <label class="d-block">Role Akses</label>
-
-                                            <!-- Hidden input to ensure value 0 is sent when checkbox is unchecked -->
-                                            <input type="hidden" name="isAdmin" value="0">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="isAdmin"
-                                                    id="isAdmin" value="1">
-                                                <label class="form-check-label" for="isAdmin">Admin</label>
-                                            </div>
-
-                                            <!-- Hidden input to ensure value 0 is sent when checkbox is unchecked -->
-                                            <input type="hidden" name="isDosen" value="0">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="isDosen"
-                                                    id="isDosen" value="1">
-                                                <label class="form-check-label" for="isDosen">Dosen</label>
-                                            </div>
+                                            <label for="roles">Role Akses</label>
+                                            <select name="roles" id="roles" class="form-control" required>
+                                                <option value="" disabled selected>-- Pilih Role --</option>
+                                                <option value="admin" {{ old('roles') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                                <option value="tatausaha" {{ old('roles') == 'tatausaha' ? 'selected' : '' }}>Tata Usaha</option>
+                                                <option value="dosen" {{ old('roles') == 'dosen' ? 'selected' : '' }}>Dosen</option>
+                                                <option value="dekan" {{ old('roles') == 'dekan' ? 'selected' : '' }}>Dekan</option>
+                                                <option value="wakilDekan1" {{ old('roles') == 'wakilDekan1' ? 'selected' : '' }}>Wakil Dekan 1</option>
+                                                <option value="wakilDekan2" {{ old('roles') == 'wakilDekan2' ? 'selected' : '' }}>Wakil Dekan 2</option>
+                                                <option value="kaprodi" {{ old('roles') == 'kaprodi' ? 'selected' : '' }}>Kaprodi</option>
+                                                <option value="sekprodi" {{ old('roles') == 'sekprodi' ? 'selected' : '' }}>Sekprodi</option>
+                                            </select>
                                         </div>
 
                                         <div class="col-12 text-start py-3">

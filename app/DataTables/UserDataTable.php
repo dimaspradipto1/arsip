@@ -25,30 +25,27 @@ class UserDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('DT_RowIndex', '')
             ->addColumn('role_status', function ($user) {
-                $status = '';
-    
-                if ($user->isAdmin) {
-                    $status .= '<span class="badge bg-success">Admin</span> ';
-                }
-    
-                if ($user->isDosen) {
-                    $status .= '<span class="badge bg-info">Dosen</span> ';
-                }
-    
-                if (!$user->isAdmin && !$user->isDosen) {
-                    $status .= '<span class="badge bg-secondary">Non-Role</span>';
-                }
-    
-                return $status;
+                $badges = [
+                    'admin'       => '<span class="badge bg-danger">Admin</span>',
+                    'tatausaha'   => '<span class="badge bg-primary">Tata Usaha</span>',
+                    'dosen'       => '<span class="badge bg-info">Dosen</span>',
+                    'dekan'       => '<span class="badge bg-success">Dekan</span>',
+                    'wakilDekan1' => '<span class="badge bg-warning text-dark">Wakil Dekan 1</span>',
+                    'wakilDekan2' => '<span class="badge bg-warning text-dark">Wakil Dekan 2</span>',
+                    'kaprodi'     => '<span class="badge bg-dark">Kaprodi</span>',
+                    'sekprodi'    => '<span class="badge bg-secondary">Sekprodi</span>',
+                ];
+
+                return $badges[$user->roles] ?? '<span class="badge bg-light text-dark">' . e($user->roles) . '</span>';
             })
             ->addColumn('action', function($user){
                 return '
-                    <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-dark text-white"><i class="fa-solid fa-key"></i></a>
-                    <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-sm btn-dark text-white" title="Ubah Password"><i class="fa-solid fa-key"></i></a>
+                    <a href="'.route('user.edit', $user->id).'" class="btn btn-sm btn-warning text-white" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>
                     <form action="'.route('user.destroy', $user->id).'" method="POST" style="display: inline">
                         '.csrf_field().'
                         '.method_field('DELETE').'
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confrm(\'Yakin ingin menghapus data ini?\')"><i class="fa-solid fa-trash"></i></button>
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                     </form>
                 ';
             })

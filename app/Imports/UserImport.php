@@ -16,13 +16,12 @@ class UserImport implements ToCollection, WithHeadingRow
     */
     public function collection(Collection $collection)
     {
-            foreach ($collection as $row) {
+        foreach ($collection as $row) {
             User::create([
-                'name' => $row['name'],
-                'email' => $row['email'],
-                'password' => Hash::make($row['password']),
-                'isAdmin' => $row['isAdmin'],
-                'isDosen' => $row['isDosen'],
+                'name'     => $row['name'],
+                'email'    => $row['email'],
+                'password' => Hash::make($row['password'] ?? 'password'),
+                'roles'    => $row['roles'] ?? 'dosen',
                 'fakultas' => $row['fakultas'] ?? null,
                 'homebase' => $row['homebase'] ?? null,
             ]);

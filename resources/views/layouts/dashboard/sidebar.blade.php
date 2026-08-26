@@ -1,3 +1,17 @@
+<style>
+    /*
+     * soft-ui-dashboard.min.js auto-attaches a PerfectScrollbar to every
+     * ".sidenav" AND every ".navbar-collapse" on the page. This layout has
+     * no top navbar, so "#sidenav-collapse-main" is the only ".navbar-collapse"
+     * in the DOM and it sits nested inside ".sidenav" — that's what produced
+     * two independent scrollbars. We keep ".navbar-collapse" out of its class
+     * list (below) so only the outer ".sidenav" scrollbar is created, and
+     * restore the visibility it relied on that class for here.
+     */
+    #sidenav-collapse-main {
+        display: block;
+    }
+</style>
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
     id="sidenav-main">
     <div class="sidenav-header">
@@ -9,7 +23,7 @@
         </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse  w-auto  max-height-vh-80 h-80" id="sidenav-collapse-main">
+    <div class="collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link active" href="{{ route('dashboard') }}">
@@ -1390,29 +1404,29 @@
                 </div>
             </li> --}}
         </ul>
-    </div>
-    <div class="sidenav-footer mx-3" style="position: relative; bottom: 0px; left: 0px; top: 10px; width: 80%; z-index: 9999;">
-        <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
-            <div class="full-background"
-                style="background-image: url('dashboard/assets/img/curved-images/white-curved.jpeg')"></div>
-            <div class="card-body text-start p-3 w-100">
-                <div
-                    class="icon icon-shape icon-sm bg-white shadow text-center mb-3 d-flex align-items-center justify-content-center border-radius-md">
-                    <svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"
-                        id="fi_5582872">
-                        <g id="Ikon">
-                            <circle cx="16" cy="8" fill="#388e3c" r="6"></circle>
-                            <path
-                                d="m16 15a10.01114 10.01114 0 0 0 -10 10v2a3.00328 3.00328 0 0 0 3 3h14a3.00328 3.00328 0 0 0 3-3v-2a10.01114 10.01114 0 0 0 -10-10z"
-                                fill="#4caf50"></path>
-                        </g>
-                    </svg>
-                </div>
-                <div class="docs-info">
-                    <h6 class="text-white up mb-0">{{ Auth::user()->name }}</h6>
-                    <p class="text-xs font-weight-bold">{{ Auth::user()->email }}</p>
-                    <a href="{{ route('logout') }}" class="btn bg-gradient-primary w-100"
-                        style="background: #046B26; color: white;">Logout</a>
+        <div class="sidenav-footer mx-3 mt-3 mb-3" style="width: 80%;">
+            <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
+                <div class="full-background"
+                    style="background-image: url('dashboard/assets/img/curved-images/white-curved.jpeg')"></div>
+                <div class="card-body text-start p-3 w-100">
+                    <div
+                        class="icon icon-shape icon-sm bg-white shadow text-center mb-3 d-flex align-items-center justify-content-center border-radius-md">
+                        <svg height="512" viewBox="0 0 32 32" width="512" xmlns="http://www.w3.org/2000/svg"
+                            id="fi_5582872">
+                            <g id="Ikon">
+                                <circle cx="16" cy="8" fill="#388e3c" r="6"></circle>
+                                <path
+                                    d="m16 15a10.01114 10.01114 0 0 0 -10 10v2a3.00328 3.00328 0 0 0 3 3h14a3.00328 3.00328 0 0 0 3-3v-2a10.01114 10.01114 0 0 0 -10-10z"
+                                    fill="#4caf50"></path>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="docs-info">
+                        <h6 class="text-white up mb-0">{{ Auth::user()->name }}</h6>
+                        <p class="text-xs font-weight-bold">{{ Auth::user()->email }}</p>
+                        <a href="{{ route('logout') }}" class="btn bg-gradient-primary w-100"
+                            style="background: #046B26; color: white;">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>

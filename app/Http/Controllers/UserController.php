@@ -31,34 +31,26 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-   public function store(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'  => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
-            'isAdmin' => ['nullable', 'boolean'],
-            'isDosen' => ['nullable', 'boolean'],
+            'roles'    => ['required', 'string', 'in:admin,tatausaha,dosen,dekan,wakilDekan1,wakilDekan2,kaprodi,sekprodi'],
             'fakultas' => ['nullable', 'string', 'max:255'],
             'homebase' => ['nullable', 'string', 'max:255'],
         ]);
 
-        // Mengambil nilai dari form (nilai default 0 jika checkbox tidak dicentang)
-        $isAdmin = $request->input('isAdmin', 0);  // 0 jika tidak dipilih
-        $isDosen = $request->input('isDosen', 0);  // 0 jika tidak dipilih
-
-        // Membuat user baru
         User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'isAdmin' => $isAdmin,  // Menyimpan nilai isAdmin
-            'isDosen' => $isDosen,  // Menyimpan nilai isDosen
+            'roles'    => $validated['roles'],
             'fakultas' => $validated['fakultas'] ?? null,
             'homebase' => $validated['homebase'] ?? null,
         ]);
 
-        // Menampilkan pesan sukses dan redirect
         Alert::success('Success', 'Pengguna berhasil ditambahkan')->autoclose(2000)->toToast();
         return redirect()->route('user.index');
     }
@@ -84,22 +76,33 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, string $id)
+    public function update(Request $request, string $id)
     {
-        $user = User::find($id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'isAdmin' => $request->isAdmin ? 1 : 0,
-            'isDosen' => $request->isDosen ? 1 : 0,
-            'fakultas' => $request->fakultas,
-            'homebase' => $request->homebase,
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
+            'roles'    => ['required', 'string', 'in:admin,tatausaha,dosen,dekan,wakilDekan1,wakilDekan2,kaprodi,sekprodi'],
+            'fakultas' => ['nullable', 'string', 'max:255'],
+            'homebase' => ['nullable', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'min:6'],
         ]);
 
-        if ($request->password) {
-            $user->password = Hash::make($request->password);
-            $user->save();
+        $data = [
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'roles'    => $validated['roles'],
+            'fakultas' => $validated['fakultas'] ?? null,
+            'homebase' => $validated['homebase'] ?? null,
+        ];
+
+        if (!empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
         }
+
+        $user->update($data);
+
         Alert::success('Success', 'Pengguna berhasil diubah')->autoclose(2000)->toToast();
         return redirect()->route('user.index');
     }

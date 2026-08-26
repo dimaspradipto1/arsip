@@ -14,12 +14,29 @@ class Checkrole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if(Auth::user()->isAdmin || Auth::user()->isDosen || Auth::user()->isDekan || Auth::user()->isKaprodi || Auth::user()->isSekProdi || Auth::user()->isWakilDekan1 || Auth::user()->isWakilDekan2){
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
 
+        $allowedRoles = [
+            'admin',
+            'tatausaha',
+            'dosen',
+            'dekan',
+            'wakilDekan1',
+            'wakilDekan2',
+            'kaprodi',
+            'sekprodi',
+        ];
+
+        $rolesToCheck = !empty($roles) ? $roles : $allowedRoles;
+
+        if (in_array(Auth::user()->roles, $rolesToCheck)) {
             return $next($request);
         }
-        return $next($request);
+
+        abort(403, 'Akses Tidak Diizinkan');
     }
 }
