@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('tahunakademik_id')->constrained('tahun_akademiks')->cascadeOnDelete();
             $table->string('nomor_sk');
+            $table->string('fakultas')->nullable();
             $table->string('prodi')->nullable();
             $table->string('dokumen');
             $table->timestamps();

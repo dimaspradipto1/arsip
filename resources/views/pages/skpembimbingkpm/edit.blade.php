@@ -15,6 +15,30 @@
                             @csrf
                             @method('PUT')
 
+                            @php
+                                $listFakultas = [
+                                    'FAKULTAS EKONOMI DAN BISNIS (FEB)',
+                                    'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
+                                    'FAKULTAS ILMU KESEHATAN (FIKes)',
+                                ];
+
+                                $listProdi = [
+                                    'S2-MAGISTER MANAJEMEN',
+                                    'S2-KESEHATAN MASYARAKAT',
+                                    'S1-AKUNTANSI',
+                                    'S1-MANAJEMEN',
+                                    'S1-TEKNIK INDUSTRI',
+                                    'S1-TEKNIK INFORMATIKA',
+                                    'S1-TEKNIK LOGISTIK',
+                                    'S1-SISTEM INFORMASI',
+                                    'S1-TEKNIK PERKAPALAN',
+                                    'S1-KESEHATAN DAN KESELAMATAN KERJA',
+                                    'S1-KESEHATAN LINGKUNGAN',
+                                ];
+
+                                $selectedDosenIds = old('user_ids', $skpembimbingkpm->users->pluck('id')->toArray());
+                            @endphp
+
                             <div class="mb-3">
                                 <label for="tahunakademik_id" class="form-label font-weight-bold text-xs text-dark">Tahun Akademik <span class="text-danger">*</span></label>
                                 <select name="tahunakademik_id" id="tahunakademik_id" class="form-control select2" data-placeholder="-- Pilih Tahun Akademik --" required>
@@ -28,15 +52,12 @@
                                 @enderror
                             </div>
 
-                            @php
-                                $selectedDosenIds = old('user_ids', $skpembimbingkpm->users->pluck('id')->toArray());
-                            @endphp
-
                             <div class="mb-3">
-                                <label for="user_ids" class="form-label font-weight-bold text-xs text-dark">Nama Dosen (Bisa Pilih Lebih Dari 1) <span class="text-danger">*</span></label>
-                                <select name="user_ids[]" id="user_ids" class="form-control select2" multiple="multiple" data-placeholder="-- Pilih Dosen Pembimbing --" required>
+                                <label for="user_ids" class="form-label font-weight-bold text-xs text-dark mb-0">Nama Dosen Pembimbing <span class="text-danger">*</span></label>
+                                <span class="d-block text-xxs text-secondary mb-2">Ketik untuk mencari dosen, klik untuk memilih (bisa pilih lebih dari satu).</span>
+                                <select name="user_ids[]" id="user_ids" class="form-control select2" multiple="multiple" data-placeholder="Ketik & cari nama dosen..." required>
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->id }}" data-homebase="{{ $user->homebase ?? '' }}" {{ (is_array($selectedDosenIds) && in_array($user->id, $selectedDosenIds)) ? 'selected' : '' }}>
+                                        <option value="{{ $user->id }}" data-homebase="{{ $user->homebase ?? '' }}" data-fakultas="{{ $user->fakultas ?? '' }}" {{ (is_array($selectedDosenIds) && in_array($user->id, $selectedDosenIds)) ? 'selected' : '' }}>
                                             {{ $user->name }} {{ $user->homebase ? '(' . $user->homebase . ')' : '' }}
                                         </option>
                                     @endforeach
@@ -55,8 +76,26 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="fakultas" class="form-label font-weight-bold text-xs text-dark">Fakultas</label>
+                                <select name="fakultas" id="fakultas" class="form-control select2" data-placeholder="-- Pilih Fakultas --">
+                                    <option value="">-- Pilih Fakultas --</option>
+                                    @foreach ($listFakultas as $fak)
+                                        <option value="{{ $fak }}" {{ old('fakultas', $skpembimbingkpm->fakultas) == $fak ? 'selected' : '' }}>{{ $fak }}</option>
+                                    @endforeach
+                                </select>
+                                @error('fakultas')
+                                    <div class="text-danger text-xs mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="prodi" class="form-label font-weight-bold text-xs text-dark">Program Studi (Prodi)</label>
-                                <input type="text" name="prodi" id="prodi" value="{{ old('prodi', $skpembimbingkpm->prodi) }}" class="form-control" placeholder="Masukkan nama prodi">
+                                <select name="prodi" id="prodi" class="form-control select2" data-placeholder="-- Pilih Program Studi --">
+                                    <option value="">-- Pilih Program Studi --</option>
+                                    @foreach ($listProdi as $prd)
+                                        <option value="{{ $prd }}" {{ old('prodi', $skpembimbingkpm->prodi) == $prd ? 'selected' : '' }}>{{ $prd }}</option>
+                                    @endforeach
+                                </select>
                                 @error('prodi')
                                     <div class="text-danger text-xs mt-1">{{ $message }}</div>
                                 @enderror
@@ -85,17 +124,3 @@
         </div>
     </div>
 @endsection
-
-@push('script')
-<script>
-    $(document).ready(function() {
-        $('#user_ids').on('change', function() {
-            var selectedOption = $(this).find('option:selected').first();
-            var homebase = selectedOption.data('homebase');
-            if (homebase) {
-                $('#prodi').val(homebase);
-            }
-        });
-    });
-</script>
-@endpush

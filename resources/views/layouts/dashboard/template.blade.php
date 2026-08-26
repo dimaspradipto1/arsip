@@ -209,19 +209,81 @@
       }
     }
     /* Select2 Custom UIS Theme */
-    .select2-container--bootstrap-5 .select2-selection {
+    .select2-container--bootstrap-5 .select2-selection--single {
       border-radius: 8px !important;
       border: 1px solid #d2d6da !important;
       padding: 0.45rem 0.75rem !important;
       font-size: 0.875rem !important;
-      min-height: 40px !important;
+      min-height: 42px !important;
       display: flex !important;
       align-items: center !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple {
+      border-radius: 8px !important;
+      border: 1px solid #d2d6da !important;
+      padding: 5px 8px !important;
+      font-size: 0.875rem !important;
+      min-height: 44px !important;
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      gap: 4px !important;
     }
     .select2-container--bootstrap-5.select2-container--focus .select2-selection,
     .select2-container--bootstrap-5.select2-container--open .select2-selection {
       border-color: #046B26 !important;
       box-shadow: 0 0 0 3px rgba(4, 107, 38, 0.15) !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: center !important;
+      gap: 4px !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice {
+      background-color: #E8F5E9 !important;
+      border: 1px solid #A5D6A7 !important;
+      color: #046B26 !important;
+      font-size: 0.8125rem !important;
+      font-weight: 600 !important;
+      border-radius: 6px !important;
+      padding: 4px 10px !important;
+      margin: 2px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      box-shadow: 0 1px 3px rgba(4, 107, 38, 0.1) !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove {
+      color: #046B26 !important;
+      margin-right: 6px !important;
+      border: none !important;
+      background: transparent !important;
+      font-weight: bold !important;
+      font-size: 14px !important;
+      line-height: 1 !important;
+      cursor: pointer !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:hover {
+      color: #c62828 !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-search--inline {
+      flex-grow: 1 !important;
+      margin: 0 !important;
+      display: inline-block !important;
+    }
+    .select2-container--bootstrap-5 .select2-selection--multiple .select2-search--inline .select2-search__field {
+      margin: 0 !important;
+      padding: 4px 8px !important;
+      height: 32px !important;
+      font-size: 0.875rem !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      min-width: 180px !important;
+      width: 100% !important;
     }
     .select2-container--bootstrap-5 .select2-dropdown {
       border-radius: 10px !important;
@@ -285,13 +347,15 @@
   <script>
     $(document).ready(function() {
       if ($.fn.select2) {
-        $('.select2').select2({
-          theme: 'bootstrap-5',
-          width: '100%',
-          placeholder: function() {
-            return $(this).data('placeholder') || $(this).find('option:first').text() || '-- Pilih --';
-          },
-          allowClear: false
+        $('.select2').each(function() {
+          var isMultiple = $(this).prop('multiple');
+          $(this).select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: $(this).data('placeholder') || '-- Pilih --',
+            allowClear: Boolean($(this).data('allow-clear')),
+            closeOnSelect: !isMultiple,
+          });
         });
       }
     });

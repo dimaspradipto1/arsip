@@ -34,7 +34,12 @@
 
                                 <div class="col-12 col-md-6">
                                     <label for="fakultas" class="form-label font-weight-bold text-xs text-dark">Fakultas</label>
-                                    <input type="text" name="fakultas" id="fakultas" class="form-control" value="{{ old('fakultas', $user->fakultas) }}">
+                                    <select name="fakultas" id="fakultas" class="form-control select2" data-placeholder="-- Pilih Fakultas --">
+                                        <option value="">-- Pilih Fakultas --</option>
+                                        <option value="FAKULTAS EKONOMI DAN BISNIS (FEB)" {{ old('fakultas', $user->fakultas) == 'FAKULTAS EKONOMI DAN BISNIS (FEB)' ? 'selected' : '' }}>FAKULTAS EKONOMI DAN BISNIS (FEB)</option>
+                                        <option value="FAKULTAS SAINS DAN TEKNOLOGI (FST)" {{ old('fakultas', $user->fakultas) == 'FAKULTAS SAINS DAN TEKNOLOGI (FST)' ? 'selected' : '' }}>FAKULTAS SAINS DAN TEKNOLOGI (FST)</option>
+                                        <option value="FAKULTAS ILMU KESEHATAN (FIKes)" {{ old('fakultas', $user->fakultas) == 'FAKULTAS ILMU KESEHATAN (FIKes)' ? 'selected' : '' }}>FAKULTAS ILMU KESEHATAN (FIKes)</option>
+                                    </select>
                                     @error('fakultas')
                                         <div class="text-danger text-xs mt-1">{{ $message }}</div>
                                     @enderror
@@ -42,7 +47,20 @@
 
                                 <div class="col-12 col-md-6">
                                     <label for="homebase" class="form-label font-weight-bold text-xs text-dark">Homebase / Program Studi</label>
-                                    <input type="text" name="homebase" id="homebase" class="form-control" value="{{ old('homebase', $user->homebase) }}">
+                                    <select name="homebase" id="homebase" class="form-control select2" data-placeholder="-- Pilih Program Studi --">
+                                        <option value="">-- Pilih Program Studi --</option>
+                                        <option value="S2-MAGISTER MANAJEMEN" {{ old('homebase', $user->homebase) == 'S2-MAGISTER MANAJEMEN' ? 'selected' : '' }}>S2-MAGISTER MANAJEMEN</option>
+                                        <option value="S2-KESEHATAN MASYARAKAT" {{ old('homebase', $user->homebase) == 'S2-KESEHATAN MASYARAKAT' ? 'selected' : '' }}>S2-KESEHATAN MASYARAKAT</option>
+                                        <option value="S1-AKUNTANSI" {{ old('homebase', $user->homebase) == 'S1-AKUNTANSI' ? 'selected' : '' }}>S1-AKUNTANSI</option>
+                                        <option value="S1-MANAJEMEN" {{ old('homebase', $user->homebase) == 'S1-MANAJEMEN' ? 'selected' : '' }}>S1-MANAJEMEN</option>
+                                        <option value="S1-TEKNIK INDUSTRI" {{ old('homebase', $user->homebase) == 'S1-TEKNIK INDUSTRI' ? 'selected' : '' }}>S1-TEKNIK INDUSTRI</option>
+                                        <option value="S1-TEKNIK INFORMATIKA" {{ old('homebase', $user->homebase) == 'S1-TEKNIK INFORMATIKA' ? 'selected' : '' }}>S1-TEKNIK INFORMATIKA</option>
+                                        <option value="S1-TEKNIK LOGISTIK" {{ old('homebase', $user->homebase) == 'S1-TEKNIK LOGISTIK' ? 'selected' : '' }}>S1-TEKNIK LOGISTIK</option>
+                                        <option value="S1-SISTEM INFORMASI" {{ old('homebase', $user->homebase) == 'S1-SISTEM INFORMASI' ? 'selected' : '' }}>S1-SISTEM INFORMASI</option>
+                                        <option value="S1-TEKNIK PERKAPALAN" {{ old('homebase', $user->homebase) == 'S1-TEKNIK PERKAPALAN' ? 'selected' : '' }}>S1-TEKNIK PERKAPALAN</option>
+                                        <option value="S1-KESEHATAN DAN KESELAMATAN KERJA" {{ old('homebase', $user->homebase) == 'S1-KESEHATAN DAN KESELAMATAN KERJA' ? 'selected' : '' }}>S1-KESEHATAN DAN KESELAMATAN KERJA</option>
+                                        <option value="S1-KESEHATAN LINGKUNGAN" {{ old('homebase', $user->homebase) == 'S1-KESEHATAN LINGKUNGAN' ? 'selected' : '' }}>S1-KESEHATAN LINGKUNGAN</option>
+                                    </select>
                                     @error('homebase')
                                         <div class="text-danger text-xs mt-1">{{ $message }}</div>
                                     @enderror

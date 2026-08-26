@@ -26,6 +26,7 @@ class SkpembimbingKpmRequest extends FormRequest
             'user_ids'          => 'required|array|min:1',
             'user_ids.*'        => 'exists:users,id',
             'nomor_sk'         => 'required',
+            'fakultas'         => 'nullable|string',
             'prodi'            => 'nullable|string',
             'dokumen'          => 'required',
         ];

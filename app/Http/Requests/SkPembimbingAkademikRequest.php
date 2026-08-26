@@ -25,6 +25,7 @@ class SkPembimbingAkademikRequest extends FormRequest
             'tahunakademik_id' => 'required',
             'user_id'          => 'required',
             'nomor_sk'         => 'required',
+            'fakultas'         => 'nullable|string',
             'prodi'            => 'nullable|string',
             'dokumen'          => 'required',
         ];
