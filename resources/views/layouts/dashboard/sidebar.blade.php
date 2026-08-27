@@ -357,7 +357,7 @@
             @if (auth()->check() && auth()->user()->roles !== 'dosen')
                 <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
                 @php
-                    $isLpjActive = request()->routeIs('bebankerjadosen*');
+                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*');
                 @endphp
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}"
@@ -380,7 +380,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link {{ request()->routeIs('semesterantara*') ? 'active' : '' }}"
+                                    href="{{ route('semesterantara.index') }}">
                                     <i class="fas fa-right-left"></i> Semester Antara
                                 </a>
                             </li>

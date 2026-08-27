@@ -8,6 +8,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\HKIController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\BebanKerjaDosenController;
+use App\Http\Controllers\SemesterAntaraController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -92,7 +93,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::post('/bebankerjadosen/import', [BebanKerjaDosenController::class, 'import'])->name('bebankerjadosen.import')->middleware('restrict.dosen');
     Route::resource('bebankerjadosen', BebanKerjaDosenController::class);
 
-    // 14. Master Data (Tahun Akademik & Kategori SK)
+    // 14. LPJ Semester Antara (LPJ Kegiatan Panitia Semester)
+    Route::get('/semesterantara/template', [SemesterAntaraController::class, 'downloadTemplate'])->name('semesterantara.template');
+    Route::post('/semesterantara/import', [SemesterAntaraController::class, 'import'])->name('semesterantara.import')->middleware('restrict.dosen');
+    Route::resource('semesterantara', SemesterAntaraController::class);
+
+    // 15. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 
