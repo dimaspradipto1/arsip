@@ -230,7 +230,7 @@
 
             <!-- 4. Bidang Penelitian (Dropdown) -->
             @php
-                $isPenelitianActive = request()->routeIs('buku*', 'hki*');
+                $isPenelitianActive = request()->routeIs('buku*', 'hki*', 'laporanpenelitian*');
             @endphp
             <li class="nav-item">
                 <a class="nav-link d-flex align-items-center justify-content-between {{ $isPenelitianActive ? 'bg-light text-dark' : '' }}"
@@ -259,8 +259,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('laporanpenelitian*') ? 'active' : '' }}"
+                                href="{{ route('laporanpenelitian.index') }}">
+                                <i class="fas fa-file-lines"></i> Laporan Penelitian
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#">
-                                <i class="fas fa-newspaper"></i> Pengelola Jurnal
+                                <i class="fas fa-newspaper"></i> Laporan Jurnal
                             </a>
                         </li>
                     </ul>

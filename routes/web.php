@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\HKIController;
+use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -80,7 +81,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::post('/hki/import', [HKIController::class, 'import'])->name('hki.import')->middleware('restrict.dosen');
     Route::resource('hki', HKIController::class);
 
-    // 12. Master Data (Tahun Akademik & Kategori SK)
+    // 12. Laporan Penelitian (Bidang Penelitian)
+    Route::get('/laporanpenelitian/template', [LaporanPenelitianController::class, 'downloadTemplate'])->name('laporanpenelitian.template');
+    Route::post('/laporanpenelitian/import', [LaporanPenelitianController::class, 'import'])->name('laporanpenelitian.import')->middleware('restrict.dosen');
+    Route::resource('laporanpenelitian', LaporanPenelitianController::class);
+
+    // 13. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 
