@@ -357,7 +357,7 @@
             @if (auth()->check() && auth()->user()->roles !== 'dosen')
                 <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
                 @php
-                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*');
+                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*', 'karturencanaStudi*');
                 @endphp
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}"
@@ -392,7 +392,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link {{ request()->routeIs('karturencanaStudi*') ? 'active' : '' }}"
+                                    href="{{ route('karturencanaStudi.index') }}">
                                     <i class="fas fa-id-card"></i> Kartu Rencana Studi
                                 </a>
                             </li>

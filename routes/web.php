@@ -10,6 +10,7 @@ use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\BebanKerjaDosenController;
 use App\Http\Controllers\SemesterAntaraController;
 use App\Http\Controllers\KuliahPengabdianMasyarakatController;
+use App\Http\Controllers\KartuRencanaStudiController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -104,7 +105,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::post('/kuliahpengabdianmasyarakat/import', [KuliahPengabdianMasyarakatController::class, 'import'])->name('kuliahpengabdianmasyarakat.import')->middleware('restrict.dosen');
     Route::resource('kuliahpengabdianmasyarakat', KuliahPengabdianMasyarakatController::class);
 
-    // 16. Master Data (Tahun Akademik & Kategori SK)
+    // 16. LPJ Kartu Rencana Studi (LPJ Kegiatan Panitia Semester)
+    Route::get('/karturencanaStudi/template', [KartuRencanaStudiController::class, 'downloadTemplate'])->name('karturencanaStudi.template');
+    Route::post('/karturencanaStudi/import', [KartuRencanaStudiController::class, 'import'])->name('karturencanaStudi.import')->middleware('restrict.dosen');
+    Route::resource('karturencanaStudi', KartuRencanaStudiController::class);
+
+    // 17. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 
