@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\SkPengujiTugasAkhir;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
@@ -43,6 +44,10 @@ class SkPengujiTugasAkhirDataTable extends DataTable
                 </a>';
             })
             ->addColumn('action', function ($item) {
+                if (Auth::check() && Auth::user()->roles === 'dosen') {
+                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                }
+
                 $editUrl = route('skpengujitugasakhir.edit', $item->id);
                 $deleteUrl = route('skpengujitugasakhir.destroy', $item->id);
                 $csrf = csrf_field();

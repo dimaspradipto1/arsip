@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\IdentitasKaryaIlmiah;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
@@ -42,6 +43,10 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
                 return '<span class="badge badge-sm bg-gradient-primary text-white px-2 py-1">' . e($item->kategori_publikasi) . '</span>';
             })
             ->addColumn('action', function ($item) {
+                if (Auth::check() && Auth::user()->roles === 'dosen') {
+                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                }
+
                 $editUrl = route('identitaskaryailmiah.edit', $item->id);
                 $deleteUrl = route('identitaskaryailmiah.destroy', $item->id);
                 $csrf = csrf_field();

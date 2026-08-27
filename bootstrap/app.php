@@ -13,7 +13,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'checkrole' => Checkrole::class,
+            'checkrole'      => Checkrole::class,
+            'restrict.dosen' => \App\Http\Middleware\RestrictDosenWrite::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

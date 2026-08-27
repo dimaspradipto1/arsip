@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
@@ -39,6 +40,10 @@ class UserDataTable extends DataTable
                 return $badges[$user->roles] ?? '<span class="badge bg-light text-dark">' . e($user->roles) . '</span>';
             })
             ->addColumn('action', function($user){
+                if (Auth::check() && Auth::user()->roles === 'dosen') {
+                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                }
+
                 return '
                     <div class="d-flex justify-content-center align-items-center" style="gap: 6px;">
                         <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-dark text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Ubah Password">
