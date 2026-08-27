@@ -10,11 +10,11 @@ class KategorySk extends Model
 
     public function skkepanitiaan()
     {
-        return $this->hasMany(SkKepanitiaan::class);
+        return $this->hasMany(SkKepanitiaan::class, 'kategorysk_id');
     }
 
     public function skpembimbingakademik()
     {
-        return $this->hasMany(SkPembimbingAkademik::class);
+        return $this->hasMany(SkPembimbingAkademik::class, 'kategorysk_id');
     }
 }

@@ -94,6 +94,9 @@ class DashboardController extends Controller
         ];
 
         $karyaIlmiahData = IdentitasKaryaIlmiah::latest()->get();
+        $totalKaryaIlmiah = IdentitasKaryaIlmiah::count();
+        $karyaIlmiahRecent = IdentitasKaryaIlmiah::latest()->take(5)->get();
+        $kategoriSkList = \App\Models\KategorySk::withCount('skkepanitiaan')->get();
 
         // Recent SK Activity for Admin / TU
         $recentSks = collect();
@@ -174,6 +177,9 @@ class DashboardController extends Controller
             'totalDokumenPelaksanaan',
             'dokumenPendukung',
             'karyaIlmiahData',
+            'totalKaryaIlmiah',
+            'karyaIlmiahRecent',
+            'kategoriSkList',
             'rekapPublikasi',
             'recentSks',
             'chartSkLabels',

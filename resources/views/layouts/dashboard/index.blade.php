@@ -233,6 +233,105 @@
     </div>
   </div>
 
+  <!-- Section 1: Data Penelitian / Identitas Karya Ilmiah (Tabel) -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h6 class="mb-3 font-weight-bold text-dark"><i class="fas fa-book-bookmark me-2 text-success"></i>Data Penelitian / Identitas Karya Ilmiah</h6>
+      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
+        <div class="card-body pt-3">
+          <div class="table-responsive">
+            <table id="table-identitas-karya-ilmiah-dosen" class="table table-bordered excel-table doc-table align-items-center mb-0" style="width:100%">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width:50px">No</th>
+                  <th class="text-center" style="width:70px">Tahun</th>
+                  <th>Judul Karya Ilmiah</th>
+                  <th>Nama Jurnal</th>
+                  <th>Nomor ISSN</th>
+                  <th>Volume, Nomor, Tahun</th>
+                  <th>DOI Artikel</th>
+                  <th>Alamat Web</th>
+                  <th class="text-center">Indexing</th>
+                  <th class="text-center">Kategori Publikasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($karyaIlmiahData->count() > 0)
+                  @foreach($karyaIlmiahData as $idx => $item)
+                    <tr>
+                      <td class="text-center font-weight-bold">{{ $idx + 1 }}</td>
+                      <td class="text-center">{{ $item->tahun }}</td>
+                      <td class="font-weight-bold text-dark">{{ $item->judul_karya_ilmiah }}</td>
+                      <td>{{ $item->nama_jurnal }}</td>
+                      <td>{{ $item->nomor_issn }}</td>
+                      <td>{{ $item->volume_nomor_tahun }}</td>
+                      <td>{{ $item->doi_artikel }}</td>
+                      <td>{{ $item->alamat_web }}</td>
+                      <td class="text-center">{{ $item->indexing }}</td>
+                      <td class="text-center">{{ $item->kategori_publikasi }}</td>
+                    </tr>
+                  @endforeach
+                @else
+                  @for ($i = 1; $i <= 10; $i++)
+                    <tr>
+                      <td class="text-center">{{ $i }}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  @endfor
+                @endif
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Rekapitulasi Data Publikasi Ilmiah (Tabel) -->
+      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
+        <div class="card-header bg-white pb-0 border-bottom">
+          <h6 class="mb-2 font-weight-bold text-dark">Rekapitulasi Data Publikasi Ilmiah</h6>
+        </div>
+        <div class="card-body pt-3">
+          <div class="table-responsive">
+            <table class="table table-bordered excel-table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-center">Tahun</th>
+                  <th class="text-center">JNTT</th>
+                  <th class="text-center">JNT</th>
+                  <th class="text-center">JT</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($rekapPublikasi as $row)
+                  <tr>
+                    <td class="text-center">{{ $row['tahun'] }}</td>
+                    <td class="text-center">{{ $row['jntt'] }}</td>
+                    <td class="text-center">{{ $row['jnt'] }}</td>
+                    <td class="text-center">{{ $row['jt'] }}</td>
+                  </tr>
+                @endforeach
+                <tr class="fw-bold bg-light">
+                  <td class="text-center">JUMLAH</td>
+                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jntt') }}</td>
+                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jnt') }}</td>
+                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jt') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Rekapitulasi Dokumen Tridharma Dosen -->
   <div class="row">
     <div class="col-12">
@@ -283,6 +382,49 @@
           </div>
         </div>
       @endforeach
+
+      <!-- Section 3: Rekapitulasi Kategori SK Kepanitiaan (Tabel) -->
+      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
+        <div class="card-header bg-white pb-0 border-bottom d-flex align-items-center justify-content-between">
+          <h6 class="mb-2 font-weight-bold text-dark"><i class="fas fa-tags me-2 text-danger"></i>Rekapitulasi Kategori SK Kepanitiaan</h6>
+          <a href="{{ route('skkepanitiaan.index') }}" class="btn btn-xs btn-outline-danger mb-2">
+            <i class="fas fa-eye me-1"></i> Buka SK Kepanitiaan
+          </a>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-items-center mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:60px">No</th>
+                  <th class="text-secondary text-xxs font-weight-bolder opacity-7">Nama Kategori SK Kepanitiaan</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:160px">Jumlah Dokumen</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:140px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($kategoriSkList as $idx => $kat)
+                  <tr>
+                    <td class="text-center text-xs font-weight-bold">{{ $idx + 1 }}</td>
+                    <td class="text-xs font-weight-bold text-dark">{{ $kat->kategory_sk }}</td>
+                    <td class="text-center">
+                      <span class="badge {{ $kat->skkepanitiaan_count > 0 ? 'bg-primary' : 'bg-light text-secondary' }} text-xs font-weight-bold px-2 py-1">
+                        {{ $kat->skkepanitiaan_count }} Dokumen
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <a href="{{ route('skkepanitiaan.index') }}" class="btn btn-xs btn-outline-danger mb-0 px-3 py-1">
+                        <i class="fas fa-folder-open me-1"></i> Lihat SK
+                      </a>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -582,6 +724,147 @@
     </div>
   </div>
 
+  <!-- Section: Data Penelitian & Identitas Karya Ilmiah (Tabel) -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h6 class="mb-3 font-weight-bold text-dark"><i class="fas fa-book-bookmark me-2 text-success"></i>Data Penelitian / Identitas Karya Ilmiah</h6>
+      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
+        <div class="card-body pt-3">
+          <div class="table-responsive">
+            <table id="table-identitas-karya-ilmiah-admin" class="table table-bordered excel-table doc-table align-items-center mb-0" style="width:100%">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width:50px">No</th>
+                  <th class="text-center" style="width:70px">Tahun</th>
+                  <th>Judul Karya Ilmiah</th>
+                  <th>Nama Jurnal</th>
+                  <th>Nomor ISSN</th>
+                  <th>Volume, Nomor, Tahun</th>
+                  <th>DOI Artikel</th>
+                  <th>Alamat Web</th>
+                  <th class="text-center">Indexing</th>
+                  <th class="text-center">Kategori Publikasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($karyaIlmiahData->count() > 0)
+                  @foreach($karyaIlmiahData as $idx => $item)
+                    <tr>
+                      <td class="text-center font-weight-bold">{{ $idx + 1 }}</td>
+                      <td class="text-center">{{ $item->tahun }}</td>
+                      <td class="font-weight-bold text-dark">{{ $item->judul_karya_ilmiah }}</td>
+                      <td>{{ $item->nama_jurnal }}</td>
+                      <td>{{ $item->nomor_issn }}</td>
+                      <td>{{ $item->volume_nomor_tahun }}</td>
+                      <td>{{ $item->doi_artikel }}</td>
+                      <td>{{ $item->alamat_web }}</td>
+                      <td class="text-center">{{ $item->indexing }}</td>
+                      <td class="text-center">{{ $item->kategori_publikasi }}</td>
+                    </tr>
+                  @endforeach
+                @else
+                  @for ($i = 1; $i <= 10; $i++)
+                    <tr>
+                      <td class="text-center">{{ $i }}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  @endfor
+                @endif
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rekapitulasi Data Publikasi Ilmiah (Admin) -->
+      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
+        <div class="card-header bg-white pb-0 border-bottom">
+          <h6 class="mb-2 font-weight-bold text-dark">Rekapitulasi Data Publikasi Ilmiah</h6>
+        </div>
+        <div class="card-body pt-3">
+          <div class="table-responsive">
+            <table class="table table-bordered excel-table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-center">Tahun</th>
+                  <th class="text-center">JNTT</th>
+                  <th class="text-center">JNT</th>
+                  <th class="text-center">JT</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($rekapPublikasi as $row)
+                  <tr>
+                    <td class="text-center">{{ $row['tahun'] }}</td>
+                    <td class="text-center">{{ $row['jntt'] }}</td>
+                    <td class="text-center">{{ $row['jnt'] }}</td>
+                    <td class="text-center">{{ $row['jt'] }}</td>
+                  </tr>
+                @endforeach
+                <tr class="fw-bold bg-light">
+                  <td class="text-center">JUMLAH</td>
+                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jntt') }}</td>
+                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jnt') }}</td>
+                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jt') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Rekapitulasi Kategori SK Kepanitiaan (Tabel Admin) -->
+      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
+        <div class="card-header bg-white pb-0 border-bottom d-flex align-items-center justify-content-between">
+          <h6 class="mb-2 font-weight-bold text-dark"><i class="fas fa-tags me-2 text-danger"></i>Rekapitulasi Kategori SK Kepanitiaan</h6>
+          <a href="{{ route('skkepanitiaan.index') }}" class="btn btn-xs btn-outline-danger mb-2">
+            <i class="fas fa-eye me-1"></i> Buka SK Kepanitiaan
+          </a>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover align-items-center mb-0">
+              <thead class="bg-light">
+                <tr>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:60px">No</th>
+                  <th class="text-secondary text-xxs font-weight-bolder opacity-7">Nama Kategori SK Kepanitiaan</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:160px">Jumlah Dokumen</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:140px">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($kategoriSkList as $idx => $kat)
+                  <tr>
+                    <td class="text-center text-xs font-weight-bold">{{ $idx + 1 }}</td>
+                    <td class="text-xs font-weight-bold text-dark">{{ $kat->kategory_sk }}</td>
+                    <td class="text-center">
+                      <span class="badge {{ $kat->skkepanitiaan_count > 0 ? 'bg-primary' : 'bg-light text-secondary' }} text-xs font-weight-bold px-2 py-1">
+                        {{ $kat->skkepanitiaan_count }} Dokumen
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <a href="{{ route('skkepanitiaan.index') }}" class="btn btn-xs btn-outline-danger mb-0 px-3 py-1">
+                        <i class="fas fa-folder-open me-1"></i> Lihat SK
+                      </a>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Overview Dokumen Pelaksanaan Tridharma Pendidikan Global -->
   <div class="row">
     <div class="col-12">
@@ -660,10 +943,52 @@
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
   }
+  .excel-table th {
+    background-color: #f8f9fa;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .excel-table td,
+  .excel-table th {
+    border-color: #dee2e6;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
 </style>
 @endsection
 
 @push('script')
+<script>
+  $(function () {
+    if ($.fn.DataTable) {
+      $('.doc-table').each(function () {
+        if (!$.fn.DataTable.isDataTable(this)) {
+          $(this).DataTable({
+            scrollX: true,
+            pageLength: 10,
+            autoWidth: false,
+            language: {
+              search: 'Cari:',
+              searchPlaceholder: 'Ketik pencarian...',
+              lengthMenu: '_MENU_ per halaman',
+              info: 'Menampilkan _START_ s/d _END_ dari _TOTAL_ entri',
+              infoEmpty: 'Tidak ada data',
+              zeroRecords: 'Data tidak ditemukan',
+              paginate: {
+                first: '«',
+                previous: '‹',
+                next: '›',
+                last: '»'
+              }
+            }
+          });
+        }
+      });
+    }
+  });
+</script>
+
 @if(!$isDosen)
 <script>
   document.addEventListener('DOMContentLoaded', function () {

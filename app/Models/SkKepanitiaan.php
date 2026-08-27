@@ -15,6 +15,6 @@ class SkKepanitiaan extends Model
 
     public function kategorysk()
     {
-        return $this->belongsTo(KategorySk::class);
+        return $this->belongsTo(KategorySk::class, 'kategorysk_id');
     }
 }
