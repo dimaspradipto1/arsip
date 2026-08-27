@@ -123,22 +123,34 @@
     .modal-content {
       background-color: #ffffff !important;
       background: #ffffff !important;
-      opacity: 1 !important;
     }
     /* Navbar & Dropdown Layering */
     #navbarBlur, .navbar-main {
       position: sticky !important;
       top: 0.5rem !important;
-      z-index: 1050 !important;
+      z-index: 1040 !important;
     }
-    .dropdown-menu,
-    .user-dropdown-menu {
-      z-index: 1070 !important;
+    .dropdown-menu {
       background-color: #ffffff !important;
       background: #ffffff !important;
-      opacity: 1 !important;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
       border: 1px solid rgba(0,0,0,0.08) !important;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    }
+    .dropdown-menu:not(.show) {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    .dropdown-menu.show {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      z-index: 1060 !important;
+    }
+    .user-dropdown-menu.show {
+      z-index: 1070 !important;
     }
     /* Mobile Sidebar & Backdrop */
     .sidenav-backdrop {

@@ -3,13 +3,24 @@
     #navbarBlur, .navbar-main {
         position: sticky !important;
         top: 0.5rem !important;
-        z-index: 1050 !important;
+        z-index: 1040 !important;
     }
     .user-dropdown-menu {
-        z-index: 1080 !important;
         background: #ffffff !important;
         background-color: #ffffff !important;
+    }
+    .user-dropdown-menu:not(.show) {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    .user-dropdown-menu.show {
+        display: block !important;
         opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        z-index: 1070 !important;
     }
     /* Prevent unwanted scrollbars on navbar */
     #navbarBlur, #navbarBlur * {

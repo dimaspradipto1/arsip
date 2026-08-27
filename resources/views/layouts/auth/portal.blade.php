@@ -113,12 +113,6 @@
             border-color: #046B26 !important;
         }
 
-        .role-portal-item.active-item {
-            border-color: #046B26 !important;
-            box-shadow: 0 8px 24px rgba(4, 107, 38, 0.16);
-            background: #fafdfb;
-        }
-
         .role-icon-box {
             width: 68px;
             height: 68px;
@@ -274,19 +268,10 @@
                                 'bg_icon' => '#E8F5E9',
                                 'accent' => '#046B26',
                             ];
-                            $isActive = ($activeRole === $roleKey);
                         @endphp
 
                         <div class="col-12 col-sm-6 col-lg-{{ count($userRoles) == 2 ? '6' : '4' }}">
-                            <a href="{{ route('switch.role.get', ['role' => $roleKey]) }}" class="role-portal-item {{ $isActive ? 'active-item' : '' }}">
-                                @if($isActive)
-                                    <div class="position-absolute top-0 end-0 mt-2 me-2">
-                                        <span class="badge bg-success rounded-pill px-2.5 py-1 text-xxs font-weight-bold shadow-sm">
-                                            <i class="fas fa-check me-1"></i> AKTIF
-                                        </span>
-                                    </div>
-                                @endif
-
+                            <a href="{{ route('switch.role.get', ['role' => $roleKey]) }}" class="role-portal-item">
                                 <div class="text-center pt-2">
                                     <div class="role-icon-box" style="background-color: {{ $roleInfo['bg_icon'] }};">
                                         <i class="{{ $roleInfo['icon'] }} fs-2" style="color: {{ $roleInfo['icon_color'] }};"></i>
@@ -296,8 +281,8 @@
                                 </div>
 
                                 <div class="mt-4 pt-3 border-top w-100 text-center">
-                                    <span class="btn btn-sm w-100 mb-0 font-weight-bold rounded-3 {{ $isActive ? 'btn-success text-white' : 'btn-outline-primary' }}" style="font-size: 0.8rem;">
-                                        {{ $isActive ? 'Sedang Digunakan' : 'Masuk Portal' }} <i class="fas fa-arrow-right ms-1 text-xs"></i>
+                                    <span class="btn btn-sm btn-primary w-100 mb-0 font-weight-bold rounded-3 shadow-sm" style="font-size: 0.82rem;">
+                                        Masuk Portal <i class="fas fa-arrow-right ms-1 text-xs"></i>
                                     </span>
                                 </div>
                             </a>

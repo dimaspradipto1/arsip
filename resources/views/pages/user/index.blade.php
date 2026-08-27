@@ -31,12 +31,12 @@
                             <!-- Right: Dropdown & Toggle Action Buttons -->
                             <div class="d-flex flex-wrap align-items-center gap-2">
                                 <!-- Dropdown Filter / Rincian Per Prodi -->
-                                <div class="dropdown" style="position: relative; z-index: 1050;">
+                                <div class="dropdown">
                                     <button class="btn btn-sm btn-outline-success dropdown-toggle mb-0 d-flex align-items-center gap-2 px-3 py-2 rounded-3 shadow-none font-weight-bold" type="button" id="dropdownProdiDosen" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.8rem;">
                                         <i class="fas fa-filter text-success"></i>
                                         <span id="selectedProdiLabel">Pilih / Rincian Prodi</span>
                                     </button>
-                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2 mt-2" aria-labelledby="dropdownProdiDosen" style="min-width: 300px; max-height: 380px; overflow-y: auto; border-radius: 14px; z-index: 1060; box-shadow: 0 10px 30px rgba(0,0,0,0.18) !important;">
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2 mt-2" aria-labelledby="dropdownProdiDosen" style="min-width: 300px; max-height: 380px; overflow-y: auto; border-radius: 14px; background: #ffffff !important; box-shadow: 0 10px 30px rgba(0,0,0,0.18) !important;">
                                         <li>
                                             <h6 class="dropdown-header text-uppercase text-xxs font-weight-bolder text-secondary px-3 py-1 mb-1">
                                                 <i class="fas fa-layer-group me-1 text-success"></i> Distribusi Per Prodi
