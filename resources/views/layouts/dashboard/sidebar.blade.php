@@ -345,11 +345,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-id-card-clip"></i> SK Anggota Profesi
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('skpengangkatanstruktural*') ? 'active' : '' }}"
                                 href="{{ route('skpengangkatanstruktural.index') }}">
                                 <i class="fas fa-sitemap"></i> SK Jabatan Struktural
