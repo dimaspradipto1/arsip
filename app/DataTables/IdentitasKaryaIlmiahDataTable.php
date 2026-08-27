@@ -118,7 +118,7 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::computed('DT_RowIndex')
                   ->title('No')
                   ->width(40)
@@ -158,13 +158,18 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
                   ->data('kategori_badge')
                   ->name('kategori_publikasi')
                   ->addClass('align-middle text-center text-xs'),
-            Column::computed('action')
+        ];
+
+        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')
                   ->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
                   ->width(100)
-                  ->addClass('text-center align-middle'),
-        ];
+                  ->addClass('text-center align-middle');
+        }
+
+        return $columns;
     }
 
     /**

@@ -122,7 +122,7 @@ class SkPengujiSemproDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::computed('DT_RowIndex')
                   ->title('No')
                   ->width(40)
@@ -153,13 +153,18 @@ class SkPengujiSemproDataTable extends DataTable
                   ->title('Dokumen')
                   ->width(120)
                   ->addClass('text-center align-middle text-xs'),
-            Column::computed('action')
+        ];
+
+        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')
                   ->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
                   ->width(100)
-                  ->addClass('text-center align-middle'),
-        ];
+                  ->addClass('text-center align-middle');
+        }
+
+        return $columns;
     }
 
     /**

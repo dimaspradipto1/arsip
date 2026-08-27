@@ -120,7 +120,7 @@ class SkPembimbingAkademikDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::make('DT_RowIndex')
                 ->title('No')
                 ->addClass('text-center'),
@@ -139,13 +139,18 @@ class SkPembimbingAkademikDataTable extends DataTable
             Column::make('dokumen')
                 ->title('Dokumen')
                 ->addClass('text-start'),
-            Column::computed('action')
+        ];
+
+        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')
                 ->title('Aksi')
                 ->exportable(false)
                 ->printable(false)
                 ->width(120)
-                ->addClass('text-center'),
-        ];
+                ->addClass('text-center');
+        }
+
+        return $columns;
     }
 
     /**

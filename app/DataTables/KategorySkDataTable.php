@@ -96,7 +96,7 @@ class KategorySkDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::make('DT_RowIndex')
                   ->title('No')
                   ->width(20)
@@ -104,13 +104,18 @@ class KategorySkDataTable extends DataTable
             Column::make('kategory_sk')
                   ->title('Kategori SK')
                   ->addClass('text-start'),
-            Column::computed('action')
+        ];
+
+        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')
                   ->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
                   ->width(120)
-                  ->addClass('text-center'),
-        ];
+                  ->addClass('text-center');
+        }
+
+        return $columns;
     }
 
     /**

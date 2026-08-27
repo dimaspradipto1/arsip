@@ -42,8 +42,8 @@
     }
 </style>
 
-<nav class="navbar navbar-main px-0 mx-2 mx-md-4 mt-2 mt-md-3 shadow-sm border-radius-xl bg-white position-sticky top-1 z-index-sticky" id="navbarBlur" navbar-scroll="true" style="backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0,0,0,0.06); overflow: visible !important;">
-    <div class="container-fluid py-1 px-2 px-sm-3 d-flex justify-content-between align-items-center flex-nowrap" style="min-height: 48px;">
+<nav class="navbar navbar-main px-0 mx-3 mx-md-4 mt-3 shadow-sm border-radius-xl bg-white position-sticky top-1 z-index-sticky" id="navbarBlur" navbar-scroll="true" style="backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95) !important; border: 1px solid rgba(0,0,0,0.06); overflow: visible !important;">
+    <div class="container-fluid py-1 px-3 px-sm-3 d-flex justify-content-between align-items-center flex-nowrap" style="min-height: 48px;">
         <!-- Left: Breadcrumb & Mobile Hamburger -->
         <div class="d-flex align-items-center me-2 overflow-hidden" style="min-width: 0;">
             <!-- Mobile Hamburger Toggle -->

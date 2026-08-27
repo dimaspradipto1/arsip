@@ -31,8 +31,8 @@
       --primary-uis-light: #E8F5E9;
     }
     html, body {
-      overflow-x: hidden;
-      max-width: 100vw;
+      overflow-x: hidden !important;
+      max-width: 100vw !important;
     }
     body {
       font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -40,6 +40,20 @@
     }
     .main-content {
       overflow-x: hidden !important;
+      min-height: 100vh;
+    }
+    /* Sembunyikan semua horizontal scrollbar track (PerfectScrollbar & browser) */
+    .ps__rail-x,
+    .main-content .ps__rail-x,
+    body > .ps__rail-x,
+    html > .ps__rail-x,
+    .ps__thumb-x {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 0 !important;
+      width: 0 !important;
     }
     /* Hide scrollbar tracks attached to navbar */
     .navbar .ps__rail-x, .navbar .ps__rail-y, .navbar-collapse .ps__rail-x, .navbar-collapse .ps__rail-y {
@@ -59,6 +73,22 @@
       border: 1px solid rgba(0,0,0,0.04);
       box-shadow: 0 8px 24px rgba(149, 157, 165, 0.08);
       transition: box-shadow 0.2s ease;
+    }
+    @media (min-width: 1200px) {
+      .g-sidenav-show .main-content {
+        margin-left: 17.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+    }
+    .main-content .container-fluid {
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+    }
+    @media (max-width: 768px) {
+      .main-content .container-fluid {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
     }
     /* Modal & Backdrop Layering */
     .modal-backdrop {
@@ -372,14 +402,12 @@
 
   @include('layouts.dashboard.sidebar')
   
-  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+  <main class="main-content position-relative border-radius-lg">
     @include('layouts.dashboard.navbar')
 
     @include('sweetalert::alert')
     
-    <div class="px-2 px-md-3">
-      @yield('content')
-    </div>
+    @yield('content')
   </main>
 
   <!--   Core JS Files   -->

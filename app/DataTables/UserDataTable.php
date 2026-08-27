@@ -117,7 +117,7 @@ class UserDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::make('DT_RowIndex')
                 ->title('NO')
                 ->width(60)
@@ -129,12 +129,17 @@ class UserDataTable extends DataTable
             Column::computed('role_status')
                 ->title('Status')
                 ->addClass('text-center'),
-            Column::computed('action')->title('Aksi')
+        ];
+
+        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')->title('Aksi')
                 ->exportable(false)
                 ->printable(false)
                 ->width(140)
-                ->addClass('text-center'),
-        ];
+                ->addClass('text-center');
+        }
+
+        return $columns;
     }
 
     /**
