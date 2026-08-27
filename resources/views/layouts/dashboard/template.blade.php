@@ -439,38 +439,31 @@
     .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove,
     .select2-container--default .select2-selection--multiple .select2-selection__choice__remove,
     .select2-container .select2-selection--multiple .select2-selection__choice__remove {
-      color: #046B26 !important;
-      margin-right: 6px !important;
       border: none !important;
-      background: rgba(4, 107, 38, 0.1) !important;
-      font-weight: bold !important;
-      font-size: 14px !important;
-      line-height: 1 !important;
+      background: rgba(4, 107, 38, 0.12) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23046B26'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/8px auto no-repeat !important;
+      margin-right: 6px !important;
       cursor: pointer !important;
       padding: 0 !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 16px !important;
-      height: 16px !important;
+      display: inline-block !important;
+      width: 18px !important;
+      height: 18px !important;
+      min-width: 18px !important;
+      min-height: 18px !important;
       border-radius: 50% !important;
       transition: all 0.2s ease !important;
+      vertical-align: middle !important;
     }
     .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove::before,
     .select2-container--default .select2-selection--multiple .select2-selection__choice__remove::before,
     .select2-container .select2-selection--multiple .select2-selection__choice__remove::before {
-      content: "×" !important;
-      display: block !important;
-      font-size: 15px !important;
-      font-weight: 700 !important;
-      line-height: 1 !important;
-      margin-top: -1px !important;
+      display: none !important;
+      content: "" !important;
     }
     .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:hover,
     .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover,
     .select2-container .select2-selection--multiple .select2-selection__choice__remove:hover {
-      background-color: #ef4444 !important;
-      color: #ffffff !important;
+      background: #ef4444 url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/8px auto no-repeat !important;
+      transform: scale(1.08) !important;
     }
     /* 4. Inline Search Item - ABSOLUTELY NO BORDER / NO BOX */
     .select2-container .select2-selection--multiple .select2-search,
