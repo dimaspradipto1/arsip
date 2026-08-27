@@ -360,8 +360,9 @@
                     $isLpjActive = request()->routeIs('bebankerjadosen*');
                 @endphp
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}" data-bs-toggle="collapse"
-                        href="#collapseLPJ" role="button" aria-expanded="{{ $isLpjActive ? 'true' : 'false' }}" aria-controls="collapseLPJ">
+                    <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}"
+                        data-bs-toggle="collapse" href="#collapseLPJ" role="button"
+                        aria-expanded="{{ $isLpjActive ? 'true' : 'false' }}" aria-controls="collapseLPJ">
                         <div class="menu-title-wrapper">
                             <div class="menu-icon-box">
                                 <i class="fas fa-folder-closed"></i>
@@ -380,7 +381,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <i class="fas fa-right-left"></i> Konversi
+                                    <i class="fas fa-right-left"></i> Semester Antara
                                 </a>
                             </li>
                             <li class="nav-item">
