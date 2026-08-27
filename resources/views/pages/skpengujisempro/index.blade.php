@@ -17,12 +17,10 @@
                     </div>
 
                     <div class="card-body p-3">
-                        <div class="table-responsive">
-                            {{ $dataTable->table([
-                                'class' => 'table table-hover align-items-center mb-0 w-100',
-                                'style' => 'width: 100%;',
-                            ]) }}
-                        </div>
+                        {{ $dataTable->table([
+                            'class' => 'table table-hover align-items-center mb-0 w-100',
+                            'style' => 'width: 100%;',
+                        ]) }}
                     </div>
                 </div>
             </div>

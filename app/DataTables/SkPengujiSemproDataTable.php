@@ -90,7 +90,26 @@ class SkPengujiSemproDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->orderBy(0, 'asc')
-                    ->selectStyleSingle();
+                    ->selectStyleSingle()
+                    ->parameters([
+                        'scrollX' => true,
+                        'autoWidth' => false,
+                        'language' => [
+                            'search' => 'Cari:',
+                            'searchPlaceholder' => 'Ketik pencarian...',
+                            'lengthMenu' => '_MENU_ per halaman',
+                            'info' => 'Menampilkan _START_ s/d _END_ dari _TOTAL_ data',
+                            'infoEmpty' => 'Tidak ada data',
+                            'infoFiltered' => '(difilter dari _MAX_ data)',
+                            'zeroRecords' => 'Data tidak ditemukan',
+                            'paginate' => [
+                                'first' => '«',
+                                'previous' => '‹',
+                                'next' => '›',
+                                'last' => '»'
+                            ]
+                        ]
+                    ]);
     }
 
     /**

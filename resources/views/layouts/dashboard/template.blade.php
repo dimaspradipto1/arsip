@@ -168,12 +168,27 @@
       -webkit-overflow-scrolling: touch;
       border-radius: 8px;
     }
-    .table-responsive::-webkit-scrollbar {
+    .table-responsive::-webkit-scrollbar,
+    .dataTables_scrollBody::-webkit-scrollbar {
       height: 6px;
+      width: 6px;
     }
-    .table-responsive::-webkit-scrollbar-thumb {
+    .table-responsive::-webkit-scrollbar-thumb,
+    .dataTables_scrollBody::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 4px;
+    }
+    .table-responsive::-webkit-scrollbar-track,
+    .dataTables_scrollBody::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    div.dataTables_wrapper .dataTables_scroll {
+      margin-bottom: 0.75rem;
+    }
+    div.dataTables_wrapper .dataTables_scrollBody {
+      border-bottom: 1px solid #e2e8f0;
+      border-radius: 0 0 8px 8px;
     }
     .table > :not(caption) > * > * {
       padding: 0.75rem 1rem;
