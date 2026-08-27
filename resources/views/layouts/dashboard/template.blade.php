@@ -282,7 +282,8 @@
       white-space: normal !important;
       word-wrap: break-word !important;
       word-break: break-all !important;
-      max-width: 250px !important;
+      max-width: 450px !important;
+      min-width: 280px !important;
       width: 100% !important;
       display: block !important;
       text-align: center !important;
