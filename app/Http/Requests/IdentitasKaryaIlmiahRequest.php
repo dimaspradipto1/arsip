@@ -11,7 +11,7 @@ class IdentitasKaryaIlmiahRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,29 @@ class IdentitasKaryaIlmiahRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'tahun'               => 'required',
+            'judul_karya_ilmiah'  => 'required|string',
+            'nama_jurnal'         => 'required|string',
+            'nomor_issn'          => 'nullable|string|max:100',
+            'volume_nomor_tahun'  => 'nullable|string|max:100',
+            'doi_artikel'         => 'nullable|string',
+            'alamat_web'          => 'nullable|string',
+            'indexing'            => 'nullable|string|max:100',
+            'kategori_publikasi'  => 'required|string|max:100',
+        ];
+    }
+
+    /**
+     * Custom messages for validation
+     */
+    public function messages(): array
+    {
+        return [
+            'tahun.required'              => 'Tahun wajib diisi.',
+            'judul_karya_ilmiah.required' => 'Judul Karya Ilmiah wajib diisi.',
+            'nama_jurnal.required'        => 'Nama Jurnal wajib diisi.',
+            'kategori_publikasi.required' => 'Kategori Publikasi wajib diisi.',
         ];
     }
 }
+

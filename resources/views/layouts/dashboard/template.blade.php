@@ -123,6 +123,19 @@
     /* Responsive DataTables Modern Styling */
     div.dataTables_wrapper {
       padding: 0.25rem 0;
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+    div.dataTables_wrapper > .row {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      align-items: center;
+    }
+    div.dataTables_wrapper > .row > * {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
     div.dataTables_wrapper .dataTables_length select {
       border-radius: 8px !important;
@@ -184,11 +197,36 @@
       border-radius: 4px;
     }
     div.dataTables_wrapper .dataTables_scroll {
+      margin-top: 0.5rem;
       margin-bottom: 0.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ffffff;
+      width: 100% !important;
+    }
+    div.dataTables_wrapper .dataTables_scrollHead {
+      border-bottom: 1px solid #e2e8f0 !important;
+      background: #f8fafc !important;
+    }
+    div.dataTables_wrapper .dataTables_scrollHeadInner {
+      box-sizing: border-box !important;
+      width: 100% !important;
+      padding-right: 0 !important;
+    }
+    div.dataTables_wrapper .dataTables_scrollHeadInner table {
+      width: 100% !important;
+      margin-bottom: 0 !important;
     }
     div.dataTables_wrapper .dataTables_scrollBody {
-      border-bottom: 1px solid #e2e8f0;
-      border-radius: 0 0 8px 8px;
+      border-bottom: none !important;
+      border-radius: 0 !important;
+      width: 100% !important;
+    }
+    div.dataTables_wrapper .dataTables_scrollBody table {
+      width: 100% !important;
+      margin-bottom: 0 !important;
+      border-top: none !important;
     }
     .table > :not(caption) > * > * {
       padding: 0.75rem 1rem;

@@ -26,9 +26,9 @@
     <div class="collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ route('dashboard') }}">
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                     <div class="icon icon-shape icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
-                        style="background: #046B26; color: white;">
+                        style="{{ request()->routeIs('dashboard') ? 'background: #046B26; color: white;' : 'background: white;' }}">
                         <svg clip-rule="evenodd" fill-rule="evenodd" height="512" image-rendering="optimizeQuality"
                             shape-rendering="geometricPrecision" text-rendering="geometricPrecision"
                             viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg"
@@ -71,6 +71,16 @@
                         </svg>
                     </div>
                     <span class="nav-link-text ms-1">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('identitaskaryailmiah*') ? 'active' : '' }}" href="{{ route('identitaskaryailmiah.index') }}">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md text-center me-2 d-flex align-items-center justify-content-center"
+                        style="{{ request()->routeIs('identitaskaryailmiah*') ? 'background: #046B26; color: white;' : 'background: white;' }}">
+                        <i class="fas fa-book-open {{ request()->routeIs('identitaskaryailmiah*') ? 'text-white' : 'text-dark' }}" style="font-size: 13px;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Identitas Karya Ilmiah</span>
                 </a>
             </li>
 
@@ -966,7 +976,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  " href="../pages/virtual-reality.html">
+                <a class="nav-link {{ request()->routeIs('skpengujitugasakhir*') ? 'active' : '' }}" href="{{ route('skpengujitugasakhir.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <svg height="512" viewBox="0 0 64 64" width="512" xmlns="http://www.w3.org/2000/svg"

@@ -9,6 +9,7 @@ use App\Models\SkPembimbingTugasAkhir;
 use App\Models\SkPengajaran;
 use App\Models\SkPengangkatanStruktural;
 use App\Models\SkPengujiSempro;
+use App\Models\SkPengujiTugasAkhir;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -22,6 +23,7 @@ class DashboardController extends Controller
         $skTaCount = SkPembimbingTugasAkhir::query()->count();
         $skStrukturalCount = SkPengangkatanStruktural::query()->count();
         $skSemproCount = SkPengujiSempro::query()->count();
+        $skPengujiTaCount = SkPengujiTugasAkhir::query()->count();
 
 
         $bidang = [
@@ -30,7 +32,7 @@ class DashboardController extends Controller
                 ['nama' => 'SK PEMBIMBING TUGAS AKHIR', 'count' => $skTaCount],
                 ['nama' => 'SK PEMBIMBING DAN BERITA ACARA MAHASISWA SIDANG', 'count' => 0],
                 ['nama' => 'SK PEMBIMBING DAN BERITA ACARA PENGUJI SEMINAR PROPOSAL', 'count' => $skSemproCount],
-                ['nama' => 'DOKUMEN GABUNGAN PENGUJI SIDANG (SK PENGUJI DAN BERITA ACARA PENGUJI)', 'count' => 0],
+                ['nama' => 'DOKUMEN GABUNGAN PENGUJI SIDANG (SK PENGUJI DAN BERITA ACARA PENGUJI)', 'count' => $skPengujiTaCount],
                 ['nama' => 'SK PENGUJIAN MAHASISWA', 'count' => 0],
                 ['nama' => 'SK DOSEN PEBIMBING KPM', 'count' => $skKpmCount],
                 ['nama' => 'SK PEMBIMBING AKADEMIK (PA)', 'count' => $skPaCount],

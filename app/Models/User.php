@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(SkPengujiSempro::class, 'sk_penguji_sempro_user');
     }
+
+    public function skpengujitugasakhir()
+    {
+        return $this->belongsToMany(SkPengujiTugasAkhir::class, 'sk_penguji_tugas_akhir_user');
+    }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
 use App\Http\Controllers\SkPembimbingAkademikController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\SkPembimbingTugasAkhirController;
 use App\Http\Controllers\SkPengajaranController;
 use App\Http\Controllers\SkPengangkatanStrukturalController;
 use App\Http\Controllers\SkPengujiSemproController;
+use App\Http\Controllers\SkPengujiTugasAkhirController;
 use App\Http\Controllers\TahunAkademikController;
 
 // Route::get('/', function () {
@@ -26,6 +28,9 @@ Route::controller(LoginController::class)->group(function () {
 
 Route::middleware(['auth','checkrole'])->group(function(){
     Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/identitaskaryailmiah/template', [IdentitasKaryaIlmiahController::class, 'downloadTemplate'])->name('identitaskaryailmiah.template');
+    Route::post('/identitaskaryailmiah/import', [IdentitasKaryaIlmiahController::class, 'import'])->name('identitaskaryailmiah.import');
+    Route::resource('identitaskaryailmiah', IdentitasKaryaIlmiahController::class);
     Route::get('/user/template', [UserController::class, 'downloadTemplate'])->name('user.template');
     Route::post('/user/import', [UserController::class, 'import'])->name('user.import');
     Route::get('/user/{id}/update-password', [UserController::class, 'showUpdatePasswordForm'])->name('user.showUpdatePasswordForm');
@@ -52,6 +57,10 @@ Route::middleware(['auth','checkrole'])->group(function(){
     Route::get('/skpengujisempro/template', [SkPengujiSemproController::class, 'downloadTemplate'])->name('skpengujisempro.template');
     Route::post('/skpengujisempro/import', [SkPengujiSemproController::class, 'import'])->name('skpengujisempro.import');
     Route::resource('skpengujisempro', SkPengujiSemproController::class);
+    Route::get('/skpengujitugasakhir/template', [SkPengujiTugasAkhirController::class, 'downloadTemplate'])->name('skpengujitugasakhir.template');
+    Route::post('/skpengujitugasakhir/import', [SkPengujiTugasAkhirController::class, 'import'])->name('skpengujitugasakhir.import');
+    Route::resource('skpengujitugasakhir', SkPengujiTugasAkhirController::class);
 });
+
 
 

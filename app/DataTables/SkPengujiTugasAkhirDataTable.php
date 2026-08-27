@@ -2,48 +2,49 @@
 
 namespace App\DataTables;
 
-use App\Models\IdentitasKaryaIlmiah;
+use App\Models\SkPengujiTugasAkhir;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class IdentitasKaryaIlmiahDataTable extends DataTable
+class SkPengujiTugasAkhirDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
      *
-     * @param QueryBuilder<IdentitasKaryaIlmiah> $query Results from query() method.
+     * @param QueryBuilder<SkPengujiTugasAkhir> $query Results from query() method.
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('doi_link', function ($item) {
-                if (empty($item->doi_artikel)) return '-';
-                $url = str_starts_with($item->doi_artikel, 'http') ? $item->doi_artikel : 'https://doi.org/' . $item->doi_artikel;
-                return '<a href="' . e($url) . '" target="_blank" class="badge badge-sm bg-gradient-secondary text-white text-decoration-none px-2 py-1">
-                    <i class="fas fa-external-link-alt me-1"></i> ' . e(substr($item->doi_artikel, 0, 25)) . (strlen($item->doi_artikel) > 25 ? '...' : '') . '
+            ->addColumn('dosen', function ($item) {
+                if ($item->users->isEmpty()) {
+                    return '<span class="text-muted text-xs">-</span>';
+                }
+                return '<div class="d-flex flex-wrap gap-1">' . $item->users->map(function ($u) {
+                    return '<span class="badge badge-sm bg-gradient-success text-white px-2 py-1" style="font-size: 11px;">
+                        <i class="fas fa-user-tie me-1"></i>' . e($u->name) . '
+                    </span>';
+                })->implode(' ') . '</div>';
+            })
+            ->addColumn('tahun_akademik', function ($item) {
+                return $item->tahunakademik ? $item->tahunakademik->tahun_akademik : '-';
+            })
+            ->addColumn('tanggal_sk_formatted', function ($item) {
+                return $item->tanggal_sk ? \Carbon\Carbon::parse($item->tanggal_sk)->translatedFormat('d M Y') : '-';
+            })
+            ->addColumn('dokumen_link', function ($item) {
+                if (!$item->dokumen) return '-';
+                return '<a href="' . e($item->dokumen) . '" target="_blank" class="badge badge-sm bg-gradient-info text-white text-decoration-none px-2 py-1">
+                    <i class="fas fa-file-pdf me-1"></i> Lihat Dokumen
                 </a>';
-            })
-            ->addColumn('web_link', function ($item) {
-                if (empty($item->alamat_web)) return '-';
-                return '<a href="' . e($item->alamat_web) . '" target="_blank" class="badge badge-sm bg-gradient-info text-white text-decoration-none px-2 py-1">
-                    <i class="fas fa-globe me-1"></i> Buka Link
-                </a>';
-            })
-            ->addColumn('indexing_badge', function ($item) {
-                if (empty($item->indexing)) return '-';
-                return '<span class="badge badge-sm bg-gradient-success text-white px-2 py-1">' . e($item->indexing) . '</span>';
-            })
-            ->addColumn('kategori_badge', function ($item) {
-                if (empty($item->kategori_publikasi)) return '-';
-                return '<span class="badge badge-sm bg-gradient-primary text-white px-2 py-1">' . e($item->kategori_publikasi) . '</span>';
             })
             ->addColumn('action', function ($item) {
-                $editUrl = route('identitaskaryailmiah.edit', $item->id);
-                $deleteUrl = route('identitaskaryailmiah.destroy', $item->id);
+                $editUrl = route('skpengujitugasakhir.edit', $item->id);
+                $deleteUrl = route('skpengujitugasakhir.destroy', $item->id);
                 $csrf = csrf_field();
                 $method = method_field('DELETE');
 
@@ -62,18 +63,21 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
                     </div>
                 ';
             })
-            ->rawColumns(['doi_link', 'web_link', 'indexing_badge', 'kategori_badge', 'action'])
+            ->rawColumns(['dosen', 'dokumen_link', 'action'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      *
-     * @return QueryBuilder<IdentitasKaryaIlmiah>
+     * @return QueryBuilder<SkPengujiTugasAkhir>
      */
-    public function query(IdentitasKaryaIlmiah $model): QueryBuilder
+    public function query(SkPengujiTugasAkhir $model): QueryBuilder
     {
-        return $model->newQuery()->latest('created_at');
+        return $model->newQuery()
+            ->select('sk_penguji_tugas_akhirs.*')
+            ->with(['tahunakademik', 'users'])
+            ->latest('sk_penguji_tugas_akhirs.created_at');
     }
 
     /**
@@ -82,7 +86,7 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('identitaskaryailmiah-table')
+                    ->setTableId('skpengujitugasakhir-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->orderBy(0, 'asc')
@@ -118,41 +122,32 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
                   ->title('No')
                   ->width(40)
                   ->addClass('text-center align-middle font-weight-bold text-xs'),
-            Column::make('tahun')
-                  ->title('Tahun')
-                  ->addClass('align-middle text-center text-xs font-weight-bold'),
-            Column::make('judul_karya_ilmiah')
-                  ->title('Judul Karya Ilmiah')
+            Column::make('tahun_akademik')
+                  ->title('Tahun Akademik')
+                  ->data('tahun_akademik')
+                  ->name('tahunakademik.tahun_akademik')
+                  ->addClass('align-middle text-xs'),
+            Column::computed('dosen')
+                  ->title('Nama Dosen Penguji')
+                  ->addClass('align-middle text-xs font-weight-bold'),
+            Column::make('nomor_sk')
+                  ->title('Nomor SK')
+                  ->addClass('align-middle text-xs'),
+            Column::make('nama_mahasiswa')
+                  ->title('Nama Mahasiswa')
                   ->addClass('align-middle text-xs font-weight-bold text-dark'),
-            Column::make('nama_jurnal')
-                  ->title('Nama Jurnal')
+            Column::make('npm')
+                  ->title('NPM')
                   ->addClass('align-middle text-xs'),
-            Column::make('nomor_issn')
-                  ->title('Nomor ISSN')
-                  ->addClass('align-middle text-xs'),
-            Column::make('volume_nomor_tahun')
-                  ->title('Volume, Nomor, Tahun')
-                  ->addClass('align-middle text-xs'),
-            Column::computed('doi_link')
-                  ->title('DOI Artikel')
-                  ->data('doi_link')
-                  ->name('doi_artikel')
+            Column::make('tanggal_sk_formatted')
+                  ->title('Tanggal SK')
+                  ->data('tanggal_sk_formatted')
+                  ->name('tanggal_sk')
                   ->addClass('align-middle text-xs text-center'),
-            Column::computed('web_link')
-                  ->title('Alamat Web')
-                  ->data('web_link')
-                  ->name('alamat_web')
-                  ->addClass('align-middle text-xs text-center'),
-            Column::computed('indexing_badge')
-                  ->title('Indexing')
-                  ->data('indexing_badge')
-                  ->name('indexing')
-                  ->addClass('align-middle text-center text-xs'),
-            Column::computed('kategori_badge')
-                  ->title('Kategori Publikasi')
-                  ->data('kategori_badge')
-                  ->name('kategori_publikasi')
-                  ->addClass('align-middle text-center text-xs'),
+            Column::computed('dokumen_link')
+                  ->title('Dokumen')
+                  ->width(120)
+                  ->addClass('text-center align-middle text-xs'),
             Column::computed('action')
                   ->title('Aksi')
                   ->exportable(false)
@@ -167,6 +162,6 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'IdentitasKaryaIlmiah_' . date('YmdHis');
+        return 'SkPengujiTugasAkhir_' . date('YmdHis');
     }
 }
