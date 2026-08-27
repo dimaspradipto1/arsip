@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BukuController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -68,7 +69,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     // 9. SK Kepanitiaan
     Route::resource('skkepanitiaan', SkKepanitiaanController::class);
 
-    // 10. Master Data (Tahun Akademik & Kategori SK)
+    // 10. Buku (Bidang Penelitian)
+    Route::get('/buku/template', [BukuController::class, 'downloadTemplate'])->name('buku.template');
+    Route::post('/buku/import', [BukuController::class, 'import'])->name('buku.import')->middleware('restrict.dosen');
+    Route::resource('buku', BukuController::class);
+
+    // 11. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 

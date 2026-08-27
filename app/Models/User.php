@@ -85,6 +85,11 @@ class User extends Authenticatable
         return $this->belongsToMany(SkPengujiTugasAkhir::class, 'sk_penguji_tugas_akhir_user');
     }
 
+    public function buku()
+    {
+        return $this->hasMany(Buku::class, 'user_id');
+    }
+
     /**
      * Scope query to filter users by the faculty of the given/authenticated user.
      */

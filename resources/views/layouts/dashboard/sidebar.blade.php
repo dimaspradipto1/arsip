@@ -207,12 +207,15 @@
             </li>
 
             <!-- 4. Bidang Penelitian (Dropdown) -->
+            @php
+                $isPenelitianActive = request()->routeIs('buku*');
+            @endphp
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center justify-content-between" 
+                <a class="nav-link d-flex align-items-center justify-content-between {{ $isPenelitianActive ? 'bg-light text-dark' : '' }}" 
                    data-bs-toggle="collapse" 
                    href="#collapsePenelitian" 
                    role="button" 
-                   aria-expanded="false" 
+                   aria-expanded="{{ $isPenelitianActive ? 'true' : 'false' }}" 
                    aria-controls="collapsePenelitian">
                     <div class="d-flex align-items-center">
                         <div class="menu-icon-box">
@@ -222,10 +225,10 @@
                     </div>
                     <i class="fas fa-chevron-down sidebar-dropdown-arrow ms-auto"></i>
                 </a>
-                <div class="collapse" id="collapsePenelitian">
+                <div class="collapse {{ $isPenelitianActive ? 'show' : '' }}" id="collapsePenelitian">
                     <ul class="sidebar-submenu">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link {{ request()->routeIs('buku*') ? 'active' : '' }}" href="{{ route('buku.index') }}">
                                 <i class="fas fa-book"></i> Buku
                             </a>
                         </li>
