@@ -68,4 +68,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SkPembimbingTugasAkhir::class, 'user_id');
     }
+
+    public function skpengangkatanstruktural()
+    {
+        return $this->hasMany(SkPengangkatanStruktural::class, 'user_id');
+    }
 }

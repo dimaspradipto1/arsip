@@ -7,6 +7,7 @@ use App\Models\SkPembimbingAkademik;
 use App\Models\SkPembimbingKpm;
 use App\Models\SkPembimbingTugasAkhir;
 use App\Models\SkPengajaran;
+use App\Models\SkPengangkatanStruktural;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -18,6 +19,8 @@ class DashboardController extends Controller
         $skKpmCount = SkPembimbingKpm::query()->count();
         $skPengajaranCount = SkPengajaran::query()->count();
         $skTaCount = SkPembimbingTugasAkhir::query()->count();
+        $skStrukturalCount = SkPengangkatanStruktural::query()->count();
+
 
         $bidang = [
             'BIDANG PENDIDIKAN' => [
@@ -41,7 +44,7 @@ class DashboardController extends Controller
             'PENUNJANG' => [
                 ['nama' => 'SK PANITIA', 'count' => $skPanitiaCount],
                 ['nama' => 'SK ANGGOTA PROFESI', 'count' => 0],
-                ['nama' => 'SK JABATAN STRUKTURAL', 'count' => 0],
+                ['nama' => 'SK JABATAN STRUKTURAL', 'count' => $skStrukturalCount],
             ],
         ];
 
