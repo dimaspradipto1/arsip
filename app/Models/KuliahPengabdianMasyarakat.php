@@ -14,7 +14,6 @@ class KuliahPengabdianMasyarakat extends Model
     protected $fillable = [
         'tahunakademik_id',
         'ketua_panitia_id',
-        'sekretaris_id',
         'dokumen',
     ];
 
@@ -30,6 +29,6 @@ class KuliahPengabdianMasyarakat extends Model
 
     public function sekretaris()
     {
-        return $this->belongsTo(User::class, 'sekretaris_id');
+        return $this->belongsToMany(User::class, 'kuliah_pengabdian_masyarakat_sekretaris');
     }
 }

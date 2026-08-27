@@ -38,7 +38,15 @@ class UjianTengahSemesterController extends Controller
      */
     public function store(UjianTengahSemesterRequest $request)
     {
-        UjianTengahSemester::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $uts = UjianTengahSemester::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $uts->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class UjianTengahSemesterController extends Controller
      */
     public function edit(UjianTengahSemester $ujiantengahsemester)
     {
+        $ujiantengahsemester->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.ujiantengahsemester.edit', compact('ujiantengahsemester', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class UjianTengahSemesterController extends Controller
      */
     public function update(UjianTengahSemesterRequest $request, UjianTengahSemester $ujiantengahsemester)
     {
-        $ujiantengahsemester->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $ujiantengahsemester->update($data);
+        $ujiantengahsemester->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

@@ -14,7 +14,6 @@ class BebanKerjaDosen extends Model
     protected $fillable = [
         'tahunakademik_id',
         'ketua_panitia_id',
-        'sekretaris_id',
         'dokumen',
     ];
 
@@ -30,6 +29,6 @@ class BebanKerjaDosen extends Model
 
     public function sekretaris()
     {
-        return $this->belongsTo(User::class, 'sekretaris_id');
+        return $this->belongsToMany(User::class, 'beban_kerja_dosen_sekretaris');
     }
 }

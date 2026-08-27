@@ -24,7 +24,8 @@ class YudisiumRequest extends FormRequest
         return [
             'tahunakademik_id' => 'required|exists:tahun_akademiks,id',
             'ketua_id'         => 'required|exists:users,id',
-            'sekretaris_id'    => 'required|exists:users,id',
+            'sekretaris_id'    => 'required|array|min:1',
+            'sekretaris_id.*'  => 'exists:users,id',
             'dokumen'          => 'required|string',
         ];
     }
@@ -39,8 +40,9 @@ class YudisiumRequest extends FormRequest
             'tahunakademik_id.exists'   => 'Tahun Akademik yang dipilih tidak valid.',
             'ketua_id.required'         => 'Ketua wajib dipilih.',
             'ketua_id.exists'           => 'Ketua yang dipilih tidak valid.',
-            'sekretaris_id.required'    => 'Sekretaris wajib dipilih.',
-            'sekretaris_id.exists'      => 'Sekretaris yang dipilih tidak valid.',
+            'sekretaris_id.required'    => 'Sekretaris wajib dipilih minimal 1.',
+            'sekretaris_id.array'       => 'Format data Sekretaris tidak valid.',
+            'sekretaris_id.*.exists'    => 'Sekretaris yang dipilih tidak valid.',
             'dokumen.required'          => 'Link Dokumen wajib diisi.',
         ];
     }

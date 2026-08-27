@@ -38,7 +38,15 @@ class KartuRencanaStudiController extends Controller
      */
     public function store(KartuRencanaStudiRequest $request)
     {
-        KartuRencanaStudi::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $krs = KartuRencanaStudi::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $krs->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -60,9 +68,9 @@ class KartuRencanaStudiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(KartuRencanaStudi $karturencanaStudi)
     {
-        $karturencanaStudi = KartuRencanaStudi::findOrFail($id);
+        $karturencanaStudi->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.karturencanaStudi.edit', compact('karturencanaStudi', 'tahunakademik', 'users'));
@@ -71,10 +79,14 @@ class KartuRencanaStudiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(KartuRencanaStudiRequest $request, $id)
+    public function update(KartuRencanaStudiRequest $request, KartuRencanaStudi $karturencanaStudi)
     {
-        $karturencanaStudi = KartuRencanaStudi::findOrFail($id);
-        $karturencanaStudi->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $karturencanaStudi->update($data);
+        $karturencanaStudi->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

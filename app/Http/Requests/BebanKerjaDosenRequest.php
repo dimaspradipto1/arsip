@@ -22,10 +22,11 @@ class BebanKerjaDosenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tahunakademik_id' => 'required|exists:tahun_akademiks,id',
-            'ketua_panitia_id' => 'required|exists:users,id',
-            'sekretaris_id'    => 'required|exists:users,id',
-            'dokumen'          => 'required|string',
+            'tahunakademik_id'  => 'required|exists:tahun_akademiks,id',
+            'ketua_panitia_id'  => 'required|exists:users,id',
+            'sekretaris_id'     => 'required|array|min:1',
+            'sekretaris_id.*'   => 'exists:users,id',
+            'dokumen'           => 'required|string',
         ];
     }
 
@@ -39,8 +40,9 @@ class BebanKerjaDosenRequest extends FormRequest
             'tahunakademik_id.exists'   => 'Tahun Akademik yang dipilih tidak valid.',
             'ketua_panitia_id.required' => 'Ketua Panitia wajib dipilih.',
             'ketua_panitia_id.exists'   => 'Ketua Panitia yang dipilih tidak valid.',
-            'sekretaris_id.required'    => 'Sekretaris wajib dipilih.',
-            'sekretaris_id.exists'      => 'Sekretaris yang dipilih tidak valid.',
+            'sekretaris_id.required'    => 'Sekretaris wajib dipilih minimal 1.',
+            'sekretaris_id.array'       => 'Format data Sekretaris tidak valid.',
+            'sekretaris_id.*.exists'    => 'Sekretaris yang dipilih tidak valid.',
             'dokumen.required'          => 'Link Dokumen wajib diisi.',
         ];
     }

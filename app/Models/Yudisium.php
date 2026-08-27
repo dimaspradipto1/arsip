@@ -14,7 +14,6 @@ class Yudisium extends Model
     protected $fillable = [
         'tahunakademik_id',
         'ketua_id',
-        'sekretaris_id',
         'dokumen',
     ];
 
@@ -30,6 +29,6 @@ class Yudisium extends Model
 
     public function sekretaris()
     {
-        return $this->belongsTo(User::class, 'sekretaris_id');
+        return $this->belongsToMany(User::class, 'yudisium_sekretaris');
     }
 }

@@ -28,7 +28,12 @@ class WisudaDataTable extends DataTable
                 return $item->ketua ? $item->ketua->name : '-';
             })
             ->addColumn('sekretaris', function ($item) {
-                return $item->sekretaris ? $item->sekretaris->name : '-';
+                if ($item->sekretaris->isEmpty()) {
+                    return '<span class="text-muted text-xs">-</span>';
+                }
+                return '<div class="d-flex flex-wrap" style="gap: 4px;">' . $item->sekretaris->map(function ($u) {
+                    return '<span class="badge bg-light text-dark border px-2 py-1" style="font-size: 11px; font-weight: 600;"><i class="fas fa-user-tie text-success me-1"></i>' . e($u->name) . '</span>';
+                })->implode('') . '</div>';
             })
             ->addColumn('dokumen_link', function ($item) {
                 if (!$item->dokumen) return '<span class="text-muted text-xs">-</span>';
@@ -74,7 +79,7 @@ class WisudaDataTable extends DataTable
                     </div>
                 ';
             })
-            ->rawColumns(['dokumen_link', 'action'])
+            ->rawColumns(['sekretaris', 'dokumen_link', 'action'])
             ->setRowId('id');
     }
 
@@ -95,7 +100,9 @@ class WisudaDataTable extends DataTable
             if ($user->roles === 'dosen') {
                 $query->where(function ($q) use ($user) {
                     $q->where('wisudas.ketua_id', $user->id)
-                      ->orWhere('wisudas.sekretaris_id', $user->id);
+                      ->orWhereHas('sekretaris', function ($sub) use ($user) {
+                          $sub->where('users.id', $user->id);
+                      });
                 });
             } elseif ($user->roles !== 'admin') {
                 $query->where(function ($q) use ($user) {
@@ -163,10 +170,8 @@ class WisudaDataTable extends DataTable
                 ->data('ketua')
                 ->name('ketua.name')
                 ->addClass('align-middle text-xs font-weight-bold'),
-            Column::make('sekretaris')
+            Column::computed('sekretaris')
                 ->title('Sekretaris')
-                ->data('sekretaris')
-                ->name('sekretaris.name')
                 ->addClass('align-middle text-xs font-weight-bold'),
             Column::computed('dokumen_link')
                 ->title('Dokumen')

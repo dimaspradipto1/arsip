@@ -38,7 +38,15 @@ class YudisiumController extends Controller
      */
     public function store(YudisiumRequest $request)
     {
-        Yudisium::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $yudisium = Yudisium::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $yudisium->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class YudisiumController extends Controller
      */
     public function edit(Yudisium $yudisium)
     {
+        $yudisium->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.yudisium.edit', compact('yudisium', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class YudisiumController extends Controller
      */
     public function update(YudisiumRequest $request, Yudisium $yudisium)
     {
-        $yudisium->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $yudisium->update($data);
+        $yudisium->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

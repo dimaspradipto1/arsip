@@ -38,7 +38,15 @@ class KuliahPengabdianMasyarakatController extends Controller
      */
     public function store(KuliahPengabdianMasyarakatRequest $request)
     {
-        KuliahPengabdianMasyarakat::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $kpm = KuliahPengabdianMasyarakat::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $kpm->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class KuliahPengabdianMasyarakatController extends Controller
      */
     public function edit(KuliahPengabdianMasyarakat $kuliahpengabdianmasyarakat)
     {
+        $kuliahpengabdianmasyarakat->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.kuliahpengabdianmasyarakat.edit', compact('kuliahpengabdianmasyarakat', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class KuliahPengabdianMasyarakatController extends Controller
      */
     public function update(KuliahPengabdianMasyarakatRequest $request, KuliahPengabdianMasyarakat $kuliahpengabdianmasyarakat)
     {
-        $kuliahpengabdianmasyarakat->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $kuliahpengabdianmasyarakat->update($data);
+        $kuliahpengabdianmasyarakat->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

@@ -44,11 +44,13 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="sekretaris_id" class="form-label font-weight-bold text-xs text-dark">Sekretaris <span class="text-danger">*</span></label>
-                                    <select name="sekretaris_id" id="sekretaris_id" class="form-control select2" data-placeholder="-- Pilih Sekretaris --" required>
-                                        <option value="">-- Pilih Sekretaris --</option>
+                                    <label for="sekretaris_id" class="form-label font-weight-bold text-xs text-dark">Sekretaris <span class="text-danger">*</span> <small class="text-muted">(Bisa pilih lebih dari 1)</small></label>
+                                    @php
+                                        $selectedSekretaris = old('sekretaris_id', $yudisium->sekretaris->pluck('id')->toArray());
+                                    @endphp
+                                    <select name="sekretaris_id[]" id="sekretaris_id" class="form-control select2" multiple="multiple" data-placeholder="-- Pilih Sekretaris --" required>
                                         @foreach ($users as $user)
-                                            <option value="{{ $user->id }}" {{ old('sekretaris_id', $yudisium->sekretaris_id) == $user->id ? 'selected' : '' }}>
+                                            <option value="{{ $user->id }}" {{ in_array($user->id, $selectedSekretaris) ? 'selected' : '' }}>
                                                 {{ $user->name }} {{ $user->homebase ? '(' . $user->homebase . ')' : '' }}
                                             </option>
                                         @endforeach

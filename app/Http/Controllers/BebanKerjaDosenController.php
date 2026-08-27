@@ -38,7 +38,15 @@ class BebanKerjaDosenController extends Controller
      */
     public function store(BebanKerjaDosenRequest $request)
     {
-        BebanKerjaDosen::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $bebankerjadosen = BebanKerjaDosen::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $bebankerjadosen->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class BebanKerjaDosenController extends Controller
      */
     public function edit(BebanKerjaDosen $bebankerjadosen)
     {
+        $bebankerjadosen->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.bebankerjadosen.edit', compact('bebankerjadosen', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class BebanKerjaDosenController extends Controller
      */
     public function update(BebanKerjaDosenRequest $request, BebanKerjaDosen $bebankerjadosen)
     {
-        $bebankerjadosen->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $bebankerjadosen->update($data);
+        $bebankerjadosen->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

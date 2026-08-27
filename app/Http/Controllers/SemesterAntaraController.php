@@ -38,7 +38,15 @@ class SemesterAntaraController extends Controller
      */
     public function store(SemesterAntaraRequest $request)
     {
-        SemesterAntara::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $semesterantara = SemesterAntara::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $semesterantara->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class SemesterAntaraController extends Controller
      */
     public function edit(SemesterAntara $semesterantara)
     {
+        $semesterantara->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.semesterantara.edit', compact('semesterantara', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class SemesterAntaraController extends Controller
      */
     public function update(SemesterAntaraRequest $request, SemesterAntara $semesterantara)
     {
-        $semesterantara->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $semesterantara->update($data);
+        $semesterantara->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

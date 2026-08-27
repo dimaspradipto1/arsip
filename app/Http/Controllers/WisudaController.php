@@ -38,7 +38,15 @@ class WisudaController extends Controller
      */
     public function store(WisudaRequest $request)
     {
-        Wisuda::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $wisuda = Wisuda::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $wisuda->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class WisudaController extends Controller
      */
     public function edit(Wisuda $wisuda)
     {
+        $wisuda->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.wisuda.edit', compact('wisuda', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class WisudaController extends Controller
      */
     public function update(WisudaRequest $request, Wisuda $wisuda)
     {
-        $wisuda->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $wisuda->update($data);
+        $wisuda->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)

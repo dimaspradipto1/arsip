@@ -14,7 +14,6 @@ class UjianTengahSemester extends Model
     protected $fillable = [
         'tahunakademik_id',
         'ketua_id',
-        'sekretaris_id',
         'dokumen',
     ];
 
@@ -30,6 +29,6 @@ class UjianTengahSemester extends Model
 
     public function sekretaris()
     {
-        return $this->belongsTo(User::class, 'sekretaris_id');
+        return $this->belongsToMany(User::class, 'ujian_tengah_semester_sekretaris');
     }
 }

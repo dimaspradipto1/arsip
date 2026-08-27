@@ -22,7 +22,6 @@ class WisudaImport implements ToCollection, WithHeadingRow
             $sekretarisRaw = trim($row['sekretaris'] ?? $row['nama_sekretaris'] ?? '');
             $dokumen = trim($row['dokumen'] ?? $row['link_dokumen'] ?? $row['link'] ?? $row['url'] ?? '');
 
-            // Skip empty rows
             if (empty($dokumen)) {
                 continue;
             }
@@ -39,7 +38,7 @@ class WisudaImport implements ToCollection, WithHeadingRow
                 $tahunAkademikId = $ta ? $ta->id : 1;
             }
 
-            // Resolve Ketua (User)
+            // Resolve Ketua
             $ketuaId = null;
             if (!empty($ketuaRaw)) {
                 $userKetua = User::where('name', 'like', '%' . $ketuaRaw . '%')
@@ -61,34 +60,45 @@ class WisudaImport implements ToCollection, WithHeadingRow
                 $ketuaId = $userKetua ? $userKetua->id : 1;
             }
 
-            // Resolve Sekretaris (User)
-            $sekretarisId = null;
+            // Resolve Multi Sekretaris
+            $sekretarisIds = [];
             if (!empty($sekretarisRaw)) {
-                $userSekretaris = User::where('name', 'like', '%' . $sekretarisRaw . '%')
-                    ->orWhere('email', $sekretarisRaw)
-                    ->first();
+                $names = preg_split('/[,;]+/', $sekretarisRaw);
+                foreach ($names as $name) {
+                    $trimmedName = trim($name);
+                    if (empty($trimmedName)) continue;
 
-                if (!$userSekretaris) {
-                    $slug = \Illuminate\Support\Str::slug($sekretarisRaw, '');
-                    $userSekretaris = User::create([
-                        'name'      => $sekretarisRaw,
-                        'email'     => ($slug ?: 'sekretaris') . rand(10, 99) . '@uis.ac.id',
-                        'password'  => bcrypt('password'),
-                        'roles'     => 'dosen',
-                    ]);
+                    $userSekretaris = User::where('name', 'like', '%' . $trimmedName . '%')
+                        ->orWhere('email', $trimmedName)
+                        ->first();
+
+                    if (!$userSekretaris) {
+                        $slug = \Illuminate\Support\Str::slug($trimmedName, '');
+                        $userSekretaris = User::create([
+                            'name'      => $trimmedName,
+                            'email'     => ($slug ?: 'sekretaris') . rand(10, 99) . '@uis.ac.id',
+                            'password'  => bcrypt('password'),
+                            'roles'     => 'dosen',
+                        ]);
+                    }
+                    $sekretarisIds[] = $userSekretaris->id;
                 }
-                $sekretarisId = $userSekretaris->id;
             } else {
                 $userSekretaris = User::first();
-                $sekretarisId = $userSekretaris ? $userSekretaris->id : 1;
+                if ($userSekretaris) {
+                    $sekretarisIds[] = $userSekretaris->id;
+                }
             }
 
-            Wisuda::create([
+            $record = Wisuda::create([
                 'tahunakademik_id' => $tahunAkademikId,
                 'ketua_id'         => $ketuaId,
-                'sekretaris_id'    => $sekretarisId,
                 'dokumen'          => $dokumen,
             ]);
+
+            if (!empty($sekretarisIds)) {
+                $record->sekretaris()->sync($sekretarisIds);
+            }
         }
     }
 }

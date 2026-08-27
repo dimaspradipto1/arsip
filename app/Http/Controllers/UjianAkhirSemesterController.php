@@ -38,7 +38,15 @@ class UjianAkhirSemesterController extends Controller
      */
     public function store(UjianAkhirSemesterRequest $request)
     {
-        UjianAkhirSemester::create($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $uas = UjianAkhirSemester::create($data);
+
+        if (!empty($sekretarisIds)) {
+            $uas->sekretaris()->sync($sekretarisIds);
+        }
 
         Alert::success('Data berhasil ditambahkan')
             ->autoclose(3000)
@@ -62,6 +70,7 @@ class UjianAkhirSemesterController extends Controller
      */
     public function edit(UjianAkhirSemester $ujianakhirsemester)
     {
+        $ujianakhirsemester->load('sekretaris');
         $tahunakademik = TahunAkademik::all();
         $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.ujianakhirsemester.edit', compact('ujianakhirsemester', 'tahunakademik', 'users'));
@@ -72,7 +81,12 @@ class UjianAkhirSemesterController extends Controller
      */
     public function update(UjianAkhirSemesterRequest $request, UjianAkhirSemester $ujianakhirsemester)
     {
-        $ujianakhirsemester->update($request->validated());
+        $data = $request->validated();
+        $sekretarisIds = $data['sekretaris_id'] ?? [];
+        unset($data['sekretaris_id']);
+
+        $ujianakhirsemester->update($data);
+        $ujianakhirsemester->sekretaris()->sync($sekretarisIds);
 
         Alert::success('Data berhasil diupdate')
             ->autoclose(3000)
