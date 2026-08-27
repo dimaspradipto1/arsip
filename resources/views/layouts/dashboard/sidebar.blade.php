@@ -357,7 +357,7 @@
             @if (auth()->check() && auth()->user()->roles !== 'dosen')
                 <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
                 @php
-                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*', 'karturencanaStudi*');
+                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*', 'karturencanaStudi*', 'ujiantengahsemester*');
                 @endphp
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}"
@@ -398,7 +398,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link {{ request()->routeIs('ujiantengahsemester*') ? 'active' : '' }}"
+                                    href="{{ route('ujiantengahsemester.index') }}">
                                     <i class="fas fa-pen-to-square"></i> Ujian Tengah Semester (UTS)
                                 </a>
                             </li>
