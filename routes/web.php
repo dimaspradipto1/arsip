@@ -9,6 +9,7 @@ use App\Http\Controllers\HKIController;
 use App\Http\Controllers\LaporanPenelitianController;
 use App\Http\Controllers\BebanKerjaDosenController;
 use App\Http\Controllers\SemesterAntaraController;
+use App\Http\Controllers\KuliahPengabdianMasyarakatController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -98,7 +99,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::post('/semesterantara/import', [SemesterAntaraController::class, 'import'])->name('semesterantara.import')->middleware('restrict.dosen');
     Route::resource('semesterantara', SemesterAntaraController::class);
 
-    // 15. Master Data (Tahun Akademik & Kategori SK)
+    // 15. LPJ Kuliah Pengabdian Masyarakat (LPJ Kegiatan Panitia Semester)
+    Route::get('/kuliahpengabdianmasyarakat/template', [KuliahPengabdianMasyarakatController::class, 'downloadTemplate'])->name('kuliahpengabdianmasyarakat.template');
+    Route::post('/kuliahpengabdianmasyarakat/import', [KuliahPengabdianMasyarakatController::class, 'import'])->name('kuliahpengabdianmasyarakat.import')->middleware('restrict.dosen');
+    Route::resource('kuliahpengabdianmasyarakat', KuliahPengabdianMasyarakatController::class);
+
+    // 16. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 
