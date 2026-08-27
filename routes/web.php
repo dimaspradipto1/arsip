@@ -13,6 +13,7 @@ use App\Http\Controllers\KuliahPengabdianMasyarakatController;
 use App\Http\Controllers\KartuRencanaStudiController;
 use App\Http\Controllers\UjianTengahSemesterController;
 use App\Http\Controllers\UjianAkhirSemesterController;
+use App\Http\Controllers\YudisiumController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -122,7 +123,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::post('/ujianakhirsemester/import', [UjianAkhirSemesterController::class, 'import'])->name('ujianakhirsemester.import')->middleware('restrict.dosen');
     Route::resource('ujianakhirsemester', UjianAkhirSemesterController::class);
 
-    // 19. Master Data (Tahun Akademik & Kategori SK)
+    // 19. LPJ Yudisium (LPJ Kegiatan Panitia Semester)
+    Route::get('/yudisium/template', [YudisiumController::class, 'downloadTemplate'])->name('yudisium.template');
+    Route::post('/yudisium/import', [YudisiumController::class, 'import'])->name('yudisium.import')->middleware('restrict.dosen');
+    Route::resource('yudisium', YudisiumController::class);
+
+    // 20. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 

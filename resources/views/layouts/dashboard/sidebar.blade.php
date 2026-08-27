@@ -357,7 +357,7 @@
             @if (auth()->check() && auth()->user()->roles !== 'dosen')
                 <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
                 @php
-                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*', 'karturencanaStudi*', 'ujiantengahsemester*', 'ujianakhirsemester*');
+                    $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*', 'karturencanaStudi*', 'ujiantengahsemester*', 'ujianakhirsemester*', 'yudisium*');
                 @endphp
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}"
@@ -410,7 +410,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link {{ request()->routeIs('yudisium*') ? 'active' : '' }}"
+                                    href="{{ route('yudisium.index') }}">
                                     <i class="fas fa-award"></i> Yudisium
                                 </a>
                             </li>
