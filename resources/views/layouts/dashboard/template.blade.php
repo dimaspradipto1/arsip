@@ -334,6 +334,7 @@
     div.dataTables_wrapper .dataTables_scrollHeadInner table {
       width: 100% !important;
       margin-bottom: 0 !important;
+      table-layout: auto !important;
     }
     div.dataTables_wrapper .dataTables_scrollBody {
       border-bottom: none !important;
@@ -344,11 +345,12 @@
       width: 100% !important;
       margin-bottom: 0 !important;
       border-top: none !important;
+      table-layout: auto !important;
     }
     .table > :not(caption) > * > * {
-      padding: 0.75rem 1rem;
-      vertical-align: middle;
-      white-space: nowrap;
+      padding: 0.75rem 1rem !important;
+      vertical-align: middle !important;
+      box-sizing: border-box !important;
     }
     table.dataTable thead th {
       font-size: 0.75rem !important;
@@ -358,7 +360,18 @@
       color: #475569 !important;
       background: #f8fafc !important;
       border-bottom: 1px solid #e2e8f0 !important;
-      white-space: nowrap !important;
+      vertical-align: middle !important;
+      box-sizing: border-box !important;
+      padding: 0.75rem 1rem !important;
+    }
+    table.dataTable tbody td {
+      vertical-align: middle !important;
+      box-sizing: border-box !important;
+      padding: 0.75rem 1rem !important;
+    }
+    table.dataTable thead th.text-center,
+    table.dataTable tbody td.text-center {
+      text-align: center !important;
     }
     @media (max-width: 767.98px) {
       div.dataTables_wrapper .dataTables_length,
@@ -583,6 +596,18 @@
             allowClear: Boolean($(this).data('allow-clear')),
             closeOnSelect: !isMultiple,
           });
+        });
+      }
+
+      // Auto adjust DataTables header and column widths
+      if ($.fn.dataTable) {
+        $(document).on('draw.dt init.dt', function () {
+          setTimeout(function() {
+            $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+          }, 50);
+        });
+        $(window).on('resize', function () {
+          $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
         });
       }
     });

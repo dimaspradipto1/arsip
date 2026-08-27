@@ -11,7 +11,7 @@
                         <h6 class="mb-0 font-weight-bolder text-dark">Form Edit Identitas Karya Ilmiah</h6>
                     </div>
                     <div class="card-body p-3 p-md-4">
-                        <form action="{{ route('identitaskaryailmiah.update', $identitaskaryailmiah) }}" method="POST">
+                        <form action="{{ route('identitaskaryailmiah.update', $identitaskaryailmiah->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
@@ -24,18 +24,32 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-8 mb-3">
+                                    <label for="user_id" class="form-label font-weight-bold text-xs text-dark">Dosen / Penulis <span class="text-danger">*</span></label>
+                                    <select name="user_id" id="user_id" class="form-control select2" data-placeholder="-- Pilih Dosen / Penulis --" required>
+                                        <option value="">-- Pilih Dosen / Penulis --</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}" {{ old('user_id', $identitaskaryailmiah->user_id) == $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }} {{ $user->homebase ? '(' . $user->homebase . ')' : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('user_id')
+                                        <div class="text-danger text-xs mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-3">
                                     <label for="kategori_publikasi" class="form-label font-weight-bold text-xs text-dark">Kategori Publikasi <span class="text-danger">*</span></label>
                                     <select name="kategori_publikasi" id="kategori_publikasi" class="form-control select2" data-placeholder="-- Pilih Kategori Publikasi --" required>
                                         <option value="">-- Pilih Kategori Publikasi --</option>
-                                        @php
-                                            $currentKategori = old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi);
-                                        @endphp
-                                        <option value="Jurnal Internasional Bereputasi" {{ $currentKategori == 'Jurnal Internasional Bereputasi' ? 'selected' : '' }}>Jurnal Internasional Bereputasi</option>
-                                        <option value="Jurnal Internasional Terindeks" {{ $currentKategori == 'Jurnal Internasional Terindeks' ? 'selected' : '' }}>Jurnal Internasional Terindeks</option>
-                                        <option value="Jurnal Nasional Terakreditasi" {{ $currentKategori == 'Jurnal Nasional Terakreditasi' ? 'selected' : '' }}>Jurnal Nasional Terakreditasi</option>
-                                        <option value="Jurnal Nasional Tidak Terakreditasi" {{ $currentKategori == 'Jurnal Nasional Tidak Terakreditasi' ? 'selected' : '' }}>Jurnal Nasional Tidak Terakreditasi</option>
-                                        <option value="Prosiding Internasional Terindeks" {{ $currentKategori == 'Prosiding Internasional Terindeks' ? 'selected' : '' }}>Prosiding Internasional Terindeks</option>
-                                        <option value="Prosiding Nasional" {{ $currentKategori == 'Prosiding Nasional' ? 'selected' : '' }}>Prosiding Nasional</option>
+                                        <option value="Jurnal Internasional Bereputasi" {{ old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi) == 'Jurnal Internasional Bereputasi' ? 'selected' : '' }}>Jurnal Internasional Bereputasi</option>
+                                        <option value="Jurnal Internasional Terindeks" {{ old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi) == 'Jurnal Internasional Terindeks' ? 'selected' : '' }}>Jurnal Internasional Terindeks</option>
+                                        <option value="Jurnal Nasional Terakreditasi" {{ old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi) == 'Jurnal Nasional Terakreditasi' ? 'selected' : '' }}>Jurnal Nasional Terakreditasi</option>
+                                        <option value="Jurnal Nasional Tidak Terakreditasi" {{ old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi) == 'Jurnal Nasional Tidak Terakreditasi' ? 'selected' : '' }}>Jurnal Nasional Tidak Terakreditasi</option>
+                                        <option value="Prosiding Internasional Terindeks" {{ old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi) == 'Prosiding Internasional Terindeks' ? 'selected' : '' }}>Prosiding Internasional Terindeks</option>
+                                        <option value="Prosiding Nasional" {{ old('kategori_publikasi', $identitaskaryailmiah->kategori_publikasi) == 'Prosiding Nasional' ? 'selected' : '' }}>Prosiding Nasional</option>
                                     </select>
                                     @error('kategori_publikasi')
                                         <div class="text-danger text-xs mt-1">{{ $message }}</div>

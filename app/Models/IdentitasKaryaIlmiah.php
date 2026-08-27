@@ -12,6 +12,7 @@ class IdentitasKaryaIlmiah extends Model
     protected $table = 'identitas_karya_ilmiahs';
 
     protected $fillable = [
+        'user_id',
         'tahun',
         'judul_karya_ilmiah',
         'nama_jurnal',
@@ -24,5 +25,9 @@ class IdentitasKaryaIlmiah extends Model
         'indexing',
         'kategori_publikasi',
     ];
-}
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+}

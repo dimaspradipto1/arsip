@@ -24,7 +24,6 @@ class UserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('DT_RowIndex', '')
             ->addColumn('role_status', function ($user) {
                 $badges = [
                     'admin'       => '<span class="badge bg-danger">Admin</span>',
@@ -68,7 +67,7 @@ class UserDataTable extends DataTable
                     </div>
                 ';
             })
-            ->setRowId('DT_RowIndex')
+            ->setRowId('id')
             ->rawColumns(['action', 'role_status']);
     }
 
@@ -128,25 +127,35 @@ class UserDataTable extends DataTable
     public function getColumns(): array
     {
         $columns = [
-            Column::make('DT_RowIndex')
-                ->title('NO')
-                ->width(60)
-                ->addClass('text-center'),
-            Column::make('name')->title('Nama'),
-            Column::make('email')->title('Email'),
-            Column::make('fakultas')->title('Fakultas'),
-            Column::make('homebase')->title('Homebase'),
+            Column::computed('DT_RowIndex')
+                ->title('No')
+                ->width(40)
+                ->addClass('text-center align-middle font-weight-bold text-xs'),
+            Column::make('name')
+                ->title('Nama')
+                ->addClass('align-middle text-xs font-weight-bold'),
+            Column::make('email')
+                ->title('Email')
+                ->addClass('align-middle text-xs'),
+            Column::make('fakultas')
+                ->title('Fakultas')
+                ->addClass('align-middle text-xs'),
+            Column::make('homebase')
+                ->title('Homebase')
+                ->addClass('align-middle text-xs'),
             Column::computed('role_status')
                 ->title('Status')
-                ->addClass('text-center'),
+                ->width(120)
+                ->addClass('text-center align-middle text-xs'),
         ];
 
-        if (Auth::check() && Auth::user()->roles !== 'dosen') {
-            $columns[] = Column::computed('action')->title('Aksi')
+        if (!Auth::check() || Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')
+                ->title('Aksi')
                 ->exportable(false)
                 ->printable(false)
-                ->width(140)
-                ->addClass('text-center');
+                ->width(130)
+                ->addClass('text-center align-middle');
         }
 
         return $columns;

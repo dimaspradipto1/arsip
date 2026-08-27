@@ -14,6 +14,7 @@ class IdentitasKaryaIlmiahTemplateExport implements FromArray, WithHeadings, Wit
     {
         return [
             'tahun',
+            'nama_dosen',
             'judul_karya_ilmiah',
             'nama_jurnal',
             'nomor_issn',
@@ -30,6 +31,7 @@ class IdentitasKaryaIlmiahTemplateExport implements FromArray, WithHeadings, Wit
         return [
             [
                 '2024',
+                'Dr. Budi Santoso, M.Kom.',
                 'Analisis Performa Algoritma Machine Learning Pada Sistem Pengarsipan Digital',
                 'Jurnal Sistem Informasi dan Teknologi (JUSTIK)',
                 '2502-1234',
@@ -41,6 +43,7 @@ class IdentitasKaryaIlmiahTemplateExport implements FromArray, WithHeadings, Wit
             ],
             [
                 '2024',
+                'Siti Rahmawati, M.T.',
                 'Deep Learning Approaches for Automated Document Classification in Higher Education',
                 'International Journal of Intelligent Systems and Applications',
                 '2074-9090',

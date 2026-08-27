@@ -22,6 +22,7 @@ class IdentitasKaryaIlmiahRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id'             => 'required|exists:users,id',
             'tahun'               => 'required',
             'judul_karya_ilmiah'  => 'required|string',
             'nama_jurnal'         => 'required|string',
@@ -40,6 +41,8 @@ class IdentitasKaryaIlmiahRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'user_id.required'            => 'Dosen / Penulis wajib dipilih.',
+            'user_id.exists'              => 'Dosen yang dipilih tidak valid.',
             'tahun.required'              => 'Tahun wajib diisi.',
             'judul_karya_ilmiah.required' => 'Judul Karya Ilmiah wajib diisi.',
             'nama_jurnal.required'        => 'Nama Jurnal wajib diisi.',
@@ -47,4 +50,3 @@ class IdentitasKaryaIlmiahRequest extends FormRequest
         ];
     }
 }
-

@@ -23,6 +23,23 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-8 mb-3">
+                                    <label for="user_id" class="form-label font-weight-bold text-xs text-dark">Dosen / Penulis <span class="text-danger">*</span></label>
+                                    <select name="user_id" id="user_id" class="form-control select2" data-placeholder="-- Pilih Dosen / Penulis --" required>
+                                        <option value="">-- Pilih Dosen / Penulis --</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                                {{ $user->name }} {{ $user->homebase ? '(' . $user->homebase . ')' : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('user_id')
+                                        <div class="text-danger text-xs mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 mb-3">
                                     <label for="kategori_publikasi" class="form-label font-weight-bold text-xs text-dark">Kategori Publikasi <span class="text-danger">*</span></label>
                                     <select name="kategori_publikasi" id="kategori_publikasi" class="form-control select2" data-placeholder="-- Pilih Kategori Publikasi --" required>
                                         <option value="">-- Pilih Kategori Publikasi --</option>

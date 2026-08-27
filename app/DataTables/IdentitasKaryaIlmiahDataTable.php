@@ -21,6 +21,9 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
+            ->addColumn('dosen', function ($item) {
+                return $item->user ? $item->user->name : '-';
+            })
             ->addColumn('doi_link', function ($item) {
                 if (empty($item->doi_artikel)) return '-';
                 $url = str_starts_with($item->doi_artikel, 'http') ? $item->doi_artikel : 'https://doi.org/' . $item->doi_artikel;
@@ -78,7 +81,23 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
      */
     public function query(IdentitasKaryaIlmiah $model): QueryBuilder
     {
-        return $model->newQuery()->latest('created_at');
+        $query = $model->newQuery()
+            ->select('identitas_karya_ilmiahs.*')
+            ->with(['user'])
+            ->latest('identitas_karya_ilmiahs.created_at');
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->roles === 'dosen') {
+                $query->where('identitas_karya_ilmiahs.user_id', $user->id);
+            } elseif ($user->roles !== 'admin') {
+                $query->whereHas('user', function ($q) use ($user) {
+                    $q->facultyScope($user);
+                });
+            }
+        }
+
+        return $query;
     }
 
     /**
@@ -87,30 +106,30 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('identitaskaryailmiah-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->orderBy(0, 'asc')
-                    ->selectStyleSingle()
-                    ->parameters([
-                        'scrollX' => true,
-                        'autoWidth' => false,
-                        'language' => [
-                            'search' => 'Cari:',
-                            'searchPlaceholder' => 'Ketik pencarian...',
-                            'lengthMenu' => '_MENU_ per halaman',
-                            'info' => 'Menampilkan _START_ s/d _END_ dari _TOTAL_ data',
-                            'infoEmpty' => 'Tidak ada data',
-                            'infoFiltered' => '(difilter dari _MAX_ data)',
-                            'zeroRecords' => 'Data tidak ditemukan',
-                            'paginate' => [
-                                'first' => '«',
-                                'previous' => '‹',
-                                'next' => '›',
-                                'last' => '»'
-                            ]
-                        ]
-                    ]);
+            ->setTableId('identitaskaryailmiah-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->orderBy(0, 'asc')
+            ->selectStyleSingle()
+            ->parameters([
+                'scrollX' => true,
+                'autoWidth' => false,
+                'language' => [
+                    'search' => 'Cari:',
+                    'searchPlaceholder' => 'Ketik pencarian...',
+                    'lengthMenu' => '_MENU_ per halaman',
+                    'info' => 'Menampilkan _START_ s/d _END_ dari _TOTAL_ data',
+                    'infoEmpty' => 'Tidak ada data',
+                    'infoFiltered' => '(difilter dari _MAX_ data)',
+                    'zeroRecords' => 'Data tidak ditemukan',
+                    'paginate' => [
+                        'first' => '«',
+                        'previous' => '‹',
+                        'next' => '›',
+                        'last' => '»'
+                    ]
+                ]
+            ]);
     }
 
     /**
@@ -120,53 +139,64 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
     {
         $columns = [
             Column::computed('DT_RowIndex')
-                  ->title('No')
-                  ->width(40)
-                  ->addClass('text-center align-middle font-weight-bold text-xs'),
+                ->title('No')
+                ->width(40)
+                ->addClass('text-center align-middle font-weight-bold text-xs'),
             Column::make('tahun')
-                  ->title('Tahun')
-                  ->addClass('align-middle text-center text-xs font-weight-bold'),
-            Column::make('judul_karya_ilmiah')
-                  ->title('Judul Karya Ilmiah')
-                  ->addClass('align-middle text-xs font-weight-bold text-dark'),
-            Column::make('nama_jurnal')
-                  ->title('Nama Jurnal')
-                  ->addClass('align-middle text-xs'),
-            Column::make('nomor_issn')
-                  ->title('Nomor ISSN')
-                  ->addClass('align-middle text-xs'),
-            Column::make('volume_nomor_tahun')
-                  ->title('Volume, Nomor, Tahun')
-                  ->addClass('align-middle text-xs'),
-            Column::computed('doi_link')
-                  ->title('DOI Artikel')
-                  ->data('doi_link')
-                  ->name('doi_artikel')
-                  ->addClass('align-middle text-xs text-center'),
-            Column::computed('web_link')
-                  ->title('Alamat Web')
-                  ->data('web_link')
-                  ->name('alamat_web')
-                  ->addClass('align-middle text-xs text-center'),
-            Column::computed('indexing_badge')
-                  ->title('Indexing')
-                  ->data('indexing_badge')
-                  ->name('indexing')
-                  ->addClass('align-middle text-center text-xs'),
-            Column::computed('kategori_badge')
-                  ->title('Kategori Publikasi')
-                  ->data('kategori_badge')
-                  ->name('kategori_publikasi')
-                  ->addClass('align-middle text-center text-xs'),
+                ->title('Tahun')
+                ->addClass('align-middle text-center text-xs font-weight-bold'),
         ];
 
-        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+        if (!Auth::check() || Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::make('dosen')
+                ->title('Nama Dosen')
+                ->data('dosen')
+                ->name('user.name')
+                ->addClass('align-middle text-xs font-weight-bold');
+        }
+
+        $columns = array_merge($columns, [
+            Column::make('judul_karya_ilmiah')
+                ->title('Judul Karya Ilmiah')
+                ->addClass('align-middle text-xs font-weight-bold text-dark'),
+            Column::make('nama_jurnal')
+                ->title('Nama Jurnal')
+                ->addClass('align-middle text-xs'),
+            Column::make('nomor_issn')
+                ->title('Nomor ISSN')
+                ->addClass('align-middle text-xs'),
+            Column::make('volume_nomor_tahun')
+                ->title('Volume, Nomor, Tahun')
+                ->addClass('align-middle text-xs'),
+            Column::computed('doi_link')
+                ->title('DOI Artikel')
+                ->data('doi_link')
+                ->name('doi_artikel')
+                ->addClass('align-middle text-xs text-center'),
+            Column::computed('web_link')
+                ->title('Alamat Web')
+                ->data('web_link')
+                ->name('alamat_web')
+                ->addClass('align-middle text-xs text-center'),
+            Column::computed('indexing_badge')
+                ->title('Indexing')
+                ->data('indexing_badge')
+                ->name('indexing')
+                ->addClass('align-middle text-center text-xs'),
+            Column::computed('kategori_badge')
+                ->title('Kategori Publikasi')
+                ->data('kategori_badge')
+                ->name('kategori_publikasi')
+                ->addClass('align-middle text-center text-xs'),
+        ]);
+
+        if (!Auth::check() || Auth::user()->roles !== 'dosen') {
             $columns[] = Column::computed('action')
-                  ->title('Aksi')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(100)
-                  ->addClass('text-center align-middle');
+                ->title('Aksi')
+                ->exportable(false)
+                ->printable(false)
+                ->width(100)
+                ->addClass('text-center align-middle');
         }
 
         return $columns;

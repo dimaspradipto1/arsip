@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\IdentitasKaryaIlmiah;
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -15,6 +16,7 @@ class IdentitasKaryaIlmiahImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         foreach ($collection as $row) {
+            $namaDosen = trim($row['nama_dosen'] ?? $row['dosen'] ?? $row['penulis'] ?? $row['nama_penulis'] ?? '');
             $tahun = trim((string)($row['tahun'] ?? ''));
             $judul = trim($row['judul_karya_ilmiah'] ?? $row['judul'] ?? $row['judul_artikel'] ?? '');
             $namaJurnal = trim($row['nama_jurnal'] ?? $row['jurnal'] ?? '');
@@ -30,7 +32,30 @@ class IdentitasKaryaIlmiahImport implements ToCollection, WithHeadingRow
                 continue;
             }
 
+            // Resolve Dosen User
+            $userId = null;
+            if (!empty($namaDosen)) {
+                $user = User::where('name', 'like', '%' . $namaDosen . '%')
+                    ->orWhere('email', $namaDosen)
+                    ->first();
+
+                if (!$user) {
+                    $slug = \Illuminate\Support\Str::slug($namaDosen, '');
+                    $user = User::create([
+                        'name'     => $namaDosen,
+                        'email'    => ($slug ?: 'dosen') . rand(10, 99) . '@uis.ac.id',
+                        'password' => bcrypt('password'),
+                        'roles'    => 'dosen',
+                    ]);
+                }
+                $userId = $user->id;
+            } else {
+                $user = User::first();
+                $userId = $user ? $user->id : 1;
+            }
+
             IdentitasKaryaIlmiah::create([
+                'user_id'             => $userId,
                 'tahun'               => !empty($tahun) ? $tahun : date('Y'),
                 'judul_karya_ilmiah'  => $judul,
                 'nama_jurnal'         => $namaJurnal,

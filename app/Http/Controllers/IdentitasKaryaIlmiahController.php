@@ -7,6 +7,7 @@ use App\Exports\IdentitasKaryaIlmiahTemplateExport;
 use App\Http\Requests\IdentitasKaryaIlmiahRequest;
 use App\Imports\IdentitasKaryaIlmiahImport;
 use App\Models\IdentitasKaryaIlmiah;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -26,7 +27,8 @@ class IdentitasKaryaIlmiahController extends Controller
      */
     public function create()
     {
-        return view('pages.identitaskaryailmiah.create');
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
+        return view('pages.identitaskaryailmiah.create', compact('users'));
     }
 
     /**
@@ -58,7 +60,8 @@ class IdentitasKaryaIlmiahController extends Controller
      */
     public function edit(IdentitasKaryaIlmiah $identitaskaryailmiah)
     {
-        return view('pages.identitaskaryailmiah.edit', compact('identitaskaryailmiah'));
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
+        return view('pages.identitaskaryailmiah.edit', compact('identitaskaryailmiah', 'users'));
     }
 
     /**
@@ -122,4 +125,3 @@ class IdentitasKaryaIlmiahController extends Controller
         return Excel::download(new IdentitasKaryaIlmiahTemplateExport, 'Template_Identitas_Karya_Ilmiah.xlsx');
     }
 }
-
