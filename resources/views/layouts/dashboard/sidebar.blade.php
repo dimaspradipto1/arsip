@@ -264,11 +264,6 @@
                                 <i class="fas fa-file-lines"></i> Laporan Penelitian
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-newspaper"></i> Laporan Jurnal
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </li>
@@ -337,7 +332,7 @@
             </li>
 
             @if (auth()->check() && auth()->user()->roles !== 'dosen')
-                <!-- 7. LPJ Kegiatan Panitia Tahunan (Dropdown) -->
+                <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse"
                         href="#collapseLPJ" role="button" aria-expanded="false" aria-controls="collapseLPJ">
@@ -345,7 +340,7 @@
                             <div class="menu-icon-box">
                                 <i class="fas fa-folder-closed"></i>
                             </div>
-                            <span class="nav-link-text">LPJ Kegiatan Panitia</span>
+                            <span class="nav-link-text">LPJ Kegiatan Panitia Semester</span>
                         </div>
                         <i class="fas fa-chevron-down sidebar-dropdown-arrow ms-auto"></i>
                     </a>
@@ -353,32 +348,42 @@
                         <ul class="sidebar-submenu">
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <i class="fas fa-magnifying-glass-chart"></i> Audit Mutu Internal
+                                    <i class="fas fa-briefcase"></i> Beban Kerja Dosen
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <i class="fas fa-heart-pulse"></i> Pendidikan Karakter
+                                    <i class="fas fa-right-left"></i> Konversi
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <i class="fas fa-user-plus"></i> PMB
+                                    <i class="fas fa-hand-holding-heart"></i> Kuliah Pengabdian Masyarakat
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
-                                    <i class="fas fa-cake-candles"></i> Milad
+                                    <i class="fas fa-id-card"></i> Kartu Rencana Studi
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-pen-to-square"></i> Ujian Tengah Semester (UTS)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-file-signature"></i> Ujian Akhir Semester (UAS)
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <i class="fas fa-award"></i> Yudisium
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">
                                     <i class="fas fa-user-graduate"></i> Wisuda
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="fas fa-building-columns"></i> LPPM
                                 </a>
                             </li>
                         </ul>
