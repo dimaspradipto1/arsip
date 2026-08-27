@@ -79,13 +79,17 @@
                 Dashboard ini menampilkan rekapitulasi data arsip dan Surat Keputusan (SK) resmi yang diterbitkan untuk Anda.
               </p>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-center">
-              <span class="badge bg-white text-dark px-3 py-2 text-xs font-weight-bold rounded-3">
-                <i class="fas fa-university me-1 text-success"></i> {{ Auth::user()->fakultas ?? 'Universitas Ibnu Sina' }}
-              </span>
-              <span class="badge bg-white text-dark px-3 py-2 text-xs font-weight-bold rounded-3">
-                <i class="fas fa-graduation-cap me-1 text-primary"></i> {{ Auth::user()->homebase ?? 'Fakultas Sains dan Teknologi' }}
-              </span>
+            <div class="d-flex flex-column flex-sm-row gap-2 align-items-sm-center justify-content-md-end flex-shrink-0 mt-2 mt-md-0">
+              <div class="d-inline-flex align-items-center gap-2 bg-white text-dark px-3 py-2 shadow-sm" style="font-size: 0.8rem; font-weight: 700; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);">
+                <i class="fas fa-university text-success fs-6"></i>
+                <span>{{ Auth::user()->fakultas ?? 'Universitas Ibnu Sina' }}</span>
+              </div>
+              @if(!empty(Auth::user()->homebase))
+                <div class="d-inline-flex align-items-center gap-2 bg-white text-dark px-3 py-2 shadow-sm" style="font-size: 0.8rem; font-weight: 700; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);">
+                  <i class="fas fa-graduation-cap text-primary fs-6"></i>
+                  <span>{{ Auth::user()->homebase }}</span>
+                </div>
+              @endif
             </div>
           </div>
         </div>
@@ -135,13 +139,15 @@
                 @endif
               </p>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-center">
-              <span class="badge bg-white text-dark px-3 py-2 text-xs font-weight-bold rounded-3">
-                <i class="fas fa-building me-1 text-success"></i> {{ $scopeBadge }}
-              </span>
-              <span class="badge bg-warning text-dark px-3 py-2 text-xs font-weight-bold rounded-3">
-                <i class="fas fa-users me-1"></i> {{ $totalDosen }} Dosen Terdata
-              </span>
+            <div class="d-flex flex-column flex-sm-row gap-2 align-items-sm-center justify-content-md-end flex-shrink-0 mt-2 mt-md-0">
+              <div class="d-inline-flex align-items-center gap-2 bg-white text-dark px-3 py-2 shadow-sm" style="font-size: 0.8rem; font-weight: 700; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);">
+                <i class="fas fa-building text-success fs-6"></i>
+                <span>{{ $scopeBadge }}</span>
+              </div>
+              <div class="d-inline-flex align-items-center gap-2 bg-warning text-dark px-3 py-2 shadow-sm" style="font-size: 0.8rem; font-weight: 700; border-radius: 12px; border: 1px solid rgba(0,0,0,0.06);">
+                <i class="fas fa-users fs-6"></i>
+                <span>{{ $totalDosen }} Dosen Terdata</span>
+              </div>
             </div>
           </div>
         </div>

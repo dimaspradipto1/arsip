@@ -31,6 +31,9 @@ Route::controller(LoginController::class)->group(function () {
     Route::get('/', 'index')->name('login');
     Route::post('/loginproses', 'loginproses')->name('loginproses');
     Route::get('/logout', 'logout')->name('logout');
+    Route::get('/portal', 'portal')->name('portal')->middleware('auth');
+    Route::post('/switch-role', 'switchRole')->name('switch.role')->middleware('auth');
+    Route::get('/switch-role/{role}', 'switchRoleGet')->name('switch.role.get')->middleware('auth');
 });
 
 Route::middleware(['auth', 'checkrole'])->group(function () {

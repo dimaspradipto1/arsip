@@ -3,10 +3,13 @@
     #navbarBlur, .navbar-main {
         position: sticky !important;
         top: 0.5rem !important;
-        z-index: 1040 !important;
+        z-index: 1050 !important;
     }
     .user-dropdown-menu {
-        z-index: 1050 !important;
+        z-index: 1080 !important;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        opacity: 1 !important;
     }
     /* Prevent unwanted scrollbars on navbar */
     #navbarBlur, #navbarBlur * {
@@ -78,6 +81,19 @@
                         $userRoles = (array) $userRoles;
                     }
                 @endphp
+                @php
+                    $currActive = Auth::user()->getActiveRole();
+                    $activeRoleData = $roleLabels[$currActive] ?? ['label' => ucfirst($currActive), 'bg' => 'bg-success text-white'];
+                @endphp
+
+                @if(count($userRoles) > 1)
+                    <!-- Switch Role Trigger Button -->
+                    <a href="{{ route('portal') }}" class="btn btn-xs btn-outline-success d-flex align-items-center gap-1.5 mb-0 me-2 rounded-pill px-2.5 py-1 text-xs font-weight-bold shadow-none" title="Pilih / Ganti Peran Ruang Kerja">
+                        <i class="fas fa-arrows-rotate text-success"></i>
+                        <span class="d-none d-sm-inline">Peran: {{ $activeRoleData['label'] }}</span>
+                    </a>
+                @endif
+
                 <div class="dropdown position-relative">
                     <a href="javascript:;" class="d-flex align-items-center px-1 px-sm-2 py-1 user-dropdown-btn text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
                         <div class="avatar avatar-sm rounded-circle text-white font-weight-bold d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-size: 13px; background: #046B26; box-shadow: 0 2px 8px rgba(4, 107, 38, 0.3);">
@@ -86,18 +102,15 @@
                         <div class="d-none d-md-block text-start ms-2 me-1">
                             <span class="d-block text-xs font-weight-bold text-dark mb-0" style="line-height: 1.2;">{{ Auth::user()->name }}</span>
                             <div class="d-flex flex-wrap gap-1 mt-0.5">
-                                @foreach($userRoles as $r)
-                                    @php
-                                        $roleData = $roleLabels[$r] ?? ['label' => ucfirst($r), 'bg' => 'bg-secondary text-white'];
-                                    @endphp
-                                    <span class="badge {{ $roleData['bg'] }}" style="padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; border-radius: 4px; line-height: 1.2;">{{ $roleData['label'] }}</span>
-                                @endforeach
+                                <span class="badge {{ $activeRoleData['bg'] }}" style="padding: 2px 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; border-radius: 4px; line-height: 1.2;">
+                                    Aktif: {{ $activeRoleData['label'] }}
+                                </span>
                             </div>
                         </div>
                         <i class="fas fa-chevron-down text-xxs text-secondary ms-1"></i>
                     </a>
                     
-                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu px-2 py-2 mt-2 shadow-lg" aria-labelledby="userDropdown" style="position: absolute; right: 0; left: auto; min-width: 230px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.12);">
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu px-2 py-2 mt-2 shadow-lg" aria-labelledby="userDropdown" style="position: absolute; right: 0; left: auto; min-width: 230px; border-radius: 12px; background: #ffffff !important; background-color: #ffffff !important; opacity: 1 !important; z-index: 1080 !important; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.18) !important;">
                         <!-- Header info -->
                         <li class="px-2 py-2 mb-1 border-bottom">
                             <div class="d-flex align-items-center">
@@ -110,6 +123,17 @@
                                 </div>
                             </div>
                         </li>
+
+                        @if(count($userRoles) > 1)
+                            <!-- Ganti Peran Menu -->
+                            <li>
+                                <a class="dropdown-item dropdown-item-hover border-radius-md d-flex align-items-center py-2 text-success font-weight-bold text-xs" href="{{ route('portal') }}">
+                                    <i class="fas fa-arrows-rotate me-2 text-success" style="font-size: 14px;"></i>
+                                    <span>Ganti Peran / Portal ({{ count($userRoles) }})</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                        @endif
 
                         <!-- Menu 1: Profile -->
                         <li>
@@ -155,7 +179,7 @@
                     </div>
                     <div>
                         <h6 class="modal-title text-white font-weight-bold mb-0 text-truncate" style="max-width: 170px;" id="profileModalLabel">{{ Auth::user()->name }}</h6>
-                        <span class="badge bg-white text-dark text-xxs mt-1" style="font-weight: 700;">{{ $roleData['label'] }}</span>
+                        <span class="badge bg-white text-dark text-xxs mt-1" style="font-weight: 700;">{{ $activeRoleData['label'] }}</span>
                     </div>
                 </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -168,7 +192,17 @@
                     </div>
                     <div class="col-12 pb-2 border-bottom">
                         <label class="text-xxs text-secondary text-uppercase font-weight-bold mb-1">Role / Hak Akses</label>
-                        <p class="text-xs font-weight-bold text-dark mb-0"><i class="fas fa-shield-alt text-secondary me-2"></i>{{ $roleData['label'] }}</p>
+                        <div class="d-flex flex-wrap gap-1 mt-1">
+                            @foreach($userRoles as $roleItem)
+                                @php
+                                    $itemRoleData = $roleLabels[$roleItem] ?? ['label' => ucfirst($roleItem), 'bg' => 'bg-secondary text-white'];
+                                    $isThisActive = (Auth::user()->getActiveRole() === $roleItem);
+                                @endphp
+                                <span class="badge {{ $itemRoleData['bg'] }} text-xxs py-1 px-2">
+                                    {{ $itemRoleData['label'] }} {{ $isThisActive ? '(Aktif)' : '' }}
+                                </span>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="col-12 pb-2 border-bottom">
                         <label class="text-xxs text-secondary text-uppercase font-weight-bold mb-1">Fakultas</label>

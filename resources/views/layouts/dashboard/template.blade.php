@@ -115,19 +115,30 @@
     }
     /* Modal & Backdrop Layering */
     .modal-backdrop {
-      z-index: 1065 !important;
+      z-index: 1075 !important;
     }
     .modal {
-      z-index: 1070 !important;
+      z-index: 1080 !important;
+    }
+    .modal-content {
+      background-color: #ffffff !important;
+      background: #ffffff !important;
+      opacity: 1 !important;
     }
     /* Navbar & Dropdown Layering */
     #navbarBlur, .navbar-main {
       position: sticky !important;
       top: 0.5rem !important;
-      z-index: 1040 !important;
-    }
-    .user-dropdown-menu {
       z-index: 1050 !important;
+    }
+    .dropdown-menu,
+    .user-dropdown-menu {
+      z-index: 1070 !important;
+      background-color: #ffffff !important;
+      background: #ffffff !important;
+      opacity: 1 !important;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+      border: 1px solid rgba(0,0,0,0.08) !important;
     }
     /* Mobile Sidebar & Backdrop */
     .sidenav-backdrop {
@@ -797,6 +808,8 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
+
+  @include('layouts.dashboard.partials.role_switcher_modal')
 </body>
 
 </html>

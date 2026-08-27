@@ -22,16 +22,22 @@ class DashboardController extends Controller
         $user = Auth::user();
         $userId = $user ? $user->id : null;
 
-        $isPureDosen = $user && $user->isOnlyDosen();
+        if ($user && count($user->roles) > 1 && !session()->has('active_role')) {
+            return redirect()->route('portal');
+        }
+
+        $activeRole = $user ? $user->getActiveRole() : 'dosen';
+
+        $isPureDosen = ($activeRole === 'dosen');
         $isDosen = $isPureDosen;
         $hasDosenRole = $user && $user->hasRole('dosen');
-        $isDekan = $user && $user->hasRole('dekan');
-        $isWd1 = $user && $user->hasRole('wakilDekan1');
-        $isWd2 = $user && $user->hasRole('wakilDekan2');
-        $isKaprodi = $user && $user->hasRole('kaprodi');
-        $isSekprodi = $user && $user->hasRole('sekprodi');
-        $isTataUsaha = $user && $user->hasRole('tatausaha');
-        $isAdmin = $user && $user->hasRole('admin');
+        $isDekan = ($activeRole === 'dekan');
+        $isWd1 = ($activeRole === 'wakilDekan1');
+        $isWd2 = ($activeRole === 'wakilDekan2');
+        $isKaprodi = ($activeRole === 'kaprodi');
+        $isSekprodi = ($activeRole === 'sekprodi');
+        $isTataUsaha = ($activeRole === 'tatausaha');
+        $isAdmin = ($activeRole === 'admin');
         $isLeadership = ($isDekan || $isWd1 || $isWd2 || $isKaprodi || $isSekprodi || $isTataUsaha || $isAdmin);
 
         // ==========================================

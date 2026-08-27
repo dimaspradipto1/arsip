@@ -165,10 +165,38 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user is solely a Dosen (read-only without administrative roles).
+     * Get currently active role for the session.
+     */
+    public function getActiveRole(): string
+    {
+        $roles = $this->roles;
+        if (empty($roles)) {
+            return 'dosen';
+        }
+        $sessionRole = session('active_role');
+        if ($sessionRole && in_array($sessionRole, $roles, true)) {
+            return $sessionRole;
+        }
+        return $roles[0];
+    }
+
+    /**
+     * Check if user is currently acting in a specific role.
+     */
+    public function isActingAs(string $role): bool
+    {
+        return $this->getActiveRole() === $role;
+    }
+
+    /**
+     * Check if user is solely a Dosen (or currently acting only as Dosen).
      */
     public function isOnlyDosen(): bool
     {
+        $activeRole = $this->getActiveRole();
+        if ($activeRole === 'dosen') {
+            return true;
+        }
         $privilegedRoles = ['admin', 'tatausaha', 'dekan', 'wakilDekan1', 'wakilDekan2', 'kaprodi', 'sekprodi'];
         return $this->hasRole('dosen') && !$this->hasAnyRole($privilegedRoles);
     }
@@ -178,7 +206,7 @@ class User extends Authenticatable
      */
     public function canWrite(): bool
     {
-        return !$this->isOnlyDosen();
+        return $this->getActiveRole() !== 'dosen';
     }
 
     /**
