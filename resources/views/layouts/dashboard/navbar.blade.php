@@ -64,17 +64,17 @@
             @if(Auth::check())
                 @php
                     $roleLabels = [
-                        'admin'       => ['label' => 'Admin', 'bg' => 'bg-danger'],
-                        'tatausaha'   => ['label' => 'Tata Usaha', 'bg' => 'bg-primary'],
-                        'dosen'       => ['label' => 'Dosen', 'bg' => 'bg-info'],
-                        'dekan'       => ['label' => 'Dekan', 'bg' => 'bg-success'],
-                        'wakilDekan1' => ['label' => 'Wakil Dekan 1', 'bg' => 'bg-warning text-dark'],
-                        'wakilDekan2' => ['label' => 'Wakil Dekan 2', 'bg' => 'bg-warning text-dark'],
-                        'kaprodi'     => ['label' => 'Kaprodi', 'bg' => 'bg-dark'],
-                        'sekprodi'    => ['label' => 'Sekprodi', 'bg' => 'bg-secondary'],
+                        'admin'       => ['label' => 'Admin', 'bg' => 'bg-danger text-white'],
+                        'tatausaha'   => ['label' => 'Tata Usaha', 'bg' => 'bg-primary text-white'],
+                        'dosen'       => ['label' => 'Dosen', 'bg' => 'bg-info text-white'],
+                        'dekan'       => ['label' => 'Dekan', 'bg' => 'bg-success text-white'],
+                        'wakilDekan1' => ['label' => 'Wakil Dekan 1', 'bg' => 'bg-warning text-white'],
+                        'wakilDekan2' => ['label' => 'Wakil Dekan 2', 'bg' => 'bg-warning text-white'],
+                        'kaprodi'     => ['label' => 'Kaprodi', 'bg' => 'bg-dark text-white'],
+                        'sekprodi'    => ['label' => 'Sekprodi', 'bg' => 'bg-secondary text-white'],
                     ];
                     $userRole = Auth::user()->roles ?? 'dosen';
-                    $roleData = $roleLabels[$userRole] ?? ['label' => ucfirst($userRole), 'bg' => 'bg-secondary'];
+                    $roleData = $roleLabels[$userRole] ?? ['label' => ucfirst($userRole), 'bg' => 'bg-secondary text-white'];
                 @endphp
                 <div class="dropdown position-relative">
                     <a href="javascript:;" class="d-flex align-items-center px-1 px-sm-2 py-1 user-dropdown-btn text-decoration-none" id="userDropdown" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
@@ -82,8 +82,8 @@
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
                         <div class="d-none d-md-block text-start ms-2 me-1">
-                            <span class="d-block text-xs font-weight-bold text-dark mb-0">{{ Auth::user()->name }}</span>
-                            <span class="badge {{ $roleData['bg'] }} text-xxs px-2 py-0" style="font-size: 10px; border-radius: 4px;">{{ $roleData['label'] }}</span>
+                            <span class="d-block text-xs font-weight-bold text-dark mb-0" style="line-height: 1.2;">{{ Auth::user()->name }}</span>
+                            <span class="badge {{ $roleData['bg'] }}" style="padding: 3px 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; border-radius: 5px; line-height: 1.2; margin-top: 2px;">{{ $roleData['label'] }}</span>
                         </div>
                         <i class="fas fa-chevron-down text-xxs text-secondary ms-1"></i>
                     </a>

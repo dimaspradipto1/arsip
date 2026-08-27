@@ -10,45 +10,65 @@ use App\Models\SkPengajaran;
 use App\Models\SkPengangkatanStruktural;
 use App\Models\SkPengujiSempro;
 use App\Models\SkPengujiTugasAkhir;
+use App\Models\IdentitasKaryaIlmiah;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $skPanitiaCount = SkKepanitiaan::query()->count();
-        $skPaCount = SkPembimbingAkademik::query()->count();
-        $skKpmCount = SkPembimbingKpm::query()->count();
-        $skPengajaranCount = SkPengajaran::query()->count();
-        $skTaCount = SkPembimbingTugasAkhir::query()->count();
-        $skStrukturalCount = SkPengangkatanStruktural::query()->count();
-        $skSemproCount = SkPengujiSempro::query()->count();
-        $skPengujiTaCount = SkPengujiTugasAkhir::query()->count();
+        $user = Auth::user();
+        $isDosen = $user && $user->roles === 'dosen';
+        $userId = $user ? $user->id : null;
 
+        if ($isDosen) {
+            // Dosen only sees their own data
+            $skPanitiaCount = 0;
+            $skPaCount = SkPembimbingAkademik::where('user_id', $userId)->count();
+            $skKpmCount = SkPembimbingKpm::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+            $skPengajaranCount = SkPengajaran::where('user_id', $userId)->count();
+            $skTaCount = SkPembimbingTugasAkhir::where('user_id', $userId)->count();
+            $skStrukturalCount = SkPengangkatanStruktural::where('user_id', $userId)->count();
+            $skSemproCount = SkPengujiSempro::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+            $skPengujiTaCount = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+            $totalDosen = 1;
+        } else {
+            // Admin, Tata Usaha, Dekan, Kaprodi see institution-wide data
+            $skPanitiaCount = SkKepanitiaan::count();
+            $skPaCount = SkPembimbingAkademik::count();
+            $skKpmCount = SkPembimbingKpm::count();
+            $skPengajaranCount = SkPengajaran::count();
+            $skTaCount = SkPembimbingTugasAkhir::count();
+            $skStrukturalCount = SkPengangkatanStruktural::count();
+            $skSemproCount = SkPengujiSempro::count();
+            $skPengujiTaCount = SkPengujiTugasAkhir::count();
+            $totalDosen = User::where('roles', 'dosen')->count();
+        }
 
         $bidang = [
             'BIDANG PENDIDIKAN' => [
-                ['nama' => 'SK PENGAJARAN', 'count' => $skPengajaranCount],
-                ['nama' => 'SK PEMBIMBING TUGAS AKHIR', 'count' => $skTaCount],
-                ['nama' => 'SK PEMBIMBING DAN BERITA ACARA MAHASISWA SIDANG', 'count' => 0],
-                ['nama' => 'SK PEMBIMBING DAN BERITA ACARA PENGUJI SEMINAR PROPOSAL', 'count' => $skSemproCount],
-                ['nama' => 'DOKUMEN GABUNGAN PENGUJI SIDANG (SK PENGUJI DAN BERITA ACARA PENGUJI)', 'count' => $skPengujiTaCount],
-                ['nama' => 'SK PENGUJIAN MAHASISWA', 'count' => 0],
-                ['nama' => 'SK DOSEN PEBIMBING KPM', 'count' => $skKpmCount],
-                ['nama' => 'SK PEMBIMBING AKADEMIK (PA)', 'count' => $skPaCount],
+                ['nama' => 'SK PENGAJARAN', 'count' => $skPengajaranCount, 'route' => route('skpengajaran.index')],
+                ['nama' => 'SK PEMBIMBING TUGAS AKHIR', 'count' => $skTaCount, 'route' => route('skpembimbingtugasakhir.index')],
+                ['nama' => 'SK PEMBIMBING DAN BERITA ACARA MAHASISWA SIDANG', 'count' => 0, 'route' => null],
+                ['nama' => 'SK PENGUJI SEMINAR PROPOSAL', 'count' => $skSemproCount, 'route' => route('skpengujisempro.index')],
+                ['nama' => 'SK PENGUJI SIDANG TUGAS AKHIR', 'count' => $skPengujiTaCount, 'route' => route('skpengujitugasakhir.index')],
+                ['nama' => 'SK DOSEN PEMBIMBING KPM', 'count' => $skKpmCount, 'route' => route('skpembimbingkpm.index')],
+                ['nama' => 'SK PEMBIMBING AKADEMIK (PA)', 'count' => $skPaCount, 'route' => route('skpembimbingakademik.index')],
             ],
             'BIDANG PENELITIAN' => [
-                ['nama' => 'BUKU', 'count' => 0],
-                ['nama' => 'HAKI', 'count' => 0],
-                ['nama' => 'PENGELOLA JURNAL', 'count' => 0],
+                ['nama' => 'BUKU', 'count' => 0, 'route' => null],
+                ['nama' => 'HAKI', 'count' => 0, 'route' => null],
+                ['nama' => 'PENGELOLA JURNAL', 'count' => 0, 'route' => null],
             ],
             'BIDANG PENGABDIAN' => [
-                ['nama' => 'LAPORAN PENGABDIAN', 'count' => 0],
+                ['nama' => 'LAPORAN PENGABDIAN', 'count' => 0, 'route' => null],
             ],
             'PENUNJANG' => [
-                ['nama' => 'SK PANITIA', 'count' => $skPanitiaCount],
-                ['nama' => 'SK ANGGOTA PROFESI', 'count' => 0],
-                ['nama' => 'SK JABATAN STRUKTURAL', 'count' => $skStrukturalCount],
+                ['nama' => 'SK PANITIA', 'count' => $skPanitiaCount, 'route' => route('skkepanitiaan.index')],
+                ['nama' => 'SK ANGGOTA PROFESI', 'count' => 0, 'route' => null],
+                ['nama' => 'SK JABATAN STRUKTURAL', 'count' => $skStrukturalCount, 'route' => route('skpengangkatanstruktural.index')],
             ],
         ];
 
@@ -73,23 +93,91 @@ class DashboardController extends Controller
             ['no' => 12, 'nama' => 'SK LEKTOR KEPALA', 'count' => 0],
         ];
 
+        $karyaIlmiahData = IdentitasKaryaIlmiah::latest()->get();
+
+        // Recent SK Activity for Admin / TU
+        $recentSks = collect();
+        if (!$isDosen) {
+            $pengajaranLatest = SkPengajaran::with(['user', 'tahunakademik'])->latest()->take(3)->get()->map(function($item) {
+                return [
+                    'type' => 'SK Pengajaran',
+                    'badge_bg' => 'bg-primary text-white',
+                    'icon' => 'fas fa-chalkboard-teacher',
+                    'nomor_sk' => $item->nomor_sk,
+                    'dosen' => $item->user ? $item->user->name : '-',
+                    'tahun' => $item->tahunakademik ? $item->tahunakademik->tahun_akademik : '-',
+                    'created_at' => $item->created_at,
+                    'route' => route('skpengajaran.index'),
+                    'dokumen' => $item->dokumen,
+                ];
+            });
+
+            $taLatest = SkPembimbingTugasAkhir::with(['user', 'tahunakademik'])->latest()->take(3)->get()->map(function($item) {
+                return [
+                    'type' => 'SK Pembimbing TA',
+                    'badge_bg' => 'bg-info text-white',
+                    'icon' => 'fas fa-user-graduate',
+                    'nomor_sk' => $item->nomor_sk,
+                    'dosen' => ($item->user ? $item->user->name : '-') . ' (Mhs: ' . ($item->nama_mahasiswa ?? '-') . ')',
+                    'tahun' => $item->tahunakademik ? $item->tahunakademik->tahun_akademik : '-',
+                    'created_at' => $item->created_at,
+                    'route' => route('skpembimbingtugasakhir.index'),
+                    'dokumen' => $item->dokumen,
+                ];
+            });
+
+            $semproLatest = SkPengujiSempro::with(['users', 'tahunakademik'])->latest()->take(3)->get()->map(function($item) {
+                return [
+                    'type' => 'SK Penguji Sempro',
+                    'badge_bg' => 'bg-warning text-white',
+                    'icon' => 'fas fa-clipboard-check',
+                    'nomor_sk' => $item->nomor_sk,
+                    'dosen' => $item->users->pluck('name')->implode(', ') ?: '-',
+                    'tahun' => $item->tahunakademik ? $item->tahunakademik->tahun_akademik : '-',
+                    'created_at' => $item->created_at,
+                    'route' => route('skpengujisempro.index'),
+                    'dokumen' => $item->dokumen,
+                ];
+            });
+
+            $recentSks = $pengajaranLatest->concat($taLatest)->concat($semproLatest)->sortByDesc('created_at')->take(6)->values();
+        }
+
+        // Chart Data for Admin/TU
+        $chartSkLabels = ['Pengajaran', 'Pembimbing TA', 'Penguji Sempro', 'Penguji TA', 'Bimbingan KPM', 'Bimbingan PA', 'Struktural', 'Kepanitiaan'];
+        $chartSkData = [$skPengajaranCount, $skTaCount, $skSemproCount, $skPengujiTaCount, $skKpmCount, $skPaCount, $skStrukturalCount, $skPanitiaCount];
+
         $rekapPublikasi = [
+            ['tahun' => 2026, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
+            ['tahun' => 2025, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
             ['tahun' => 2024, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
             ['tahun' => 2023, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
             ['tahun' => 2022, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
             ['tahun' => 2021, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
-            ['tahun' => 2020, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
-            ['tahun' => 2019, 'jntt' => 0, 'jnt' => 0, 'jt' => 0],
         ];
 
         return view('layouts.dashboard.index', compact(
+            'isDosen',
+            'skPanitiaCount',
+            'skPaCount',
+            'skKpmCount',
+            'skPengajaranCount',
+            'skTaCount',
+            'skStrukturalCount',
+            'skSemproCount',
+            'skPengujiTaCount',
+            'totalDosen',
             'bidangPendidikan',
             'bidangPenelitian',
             'bidangPengabdian',
             'penunjang',
             'totalDokumenPelaksanaan',
             'dokumenPendukung',
-            'rekapPublikasi'
+            'karyaIlmiahData',
+            'rekapPublikasi',
+            'recentSks',
+            'chartSkLabels',
+            'chartSkData'
         ));
     }
 }

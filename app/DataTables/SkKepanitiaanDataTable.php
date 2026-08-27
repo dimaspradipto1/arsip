@@ -146,7 +146,8 @@ class SkKepanitiaanDataTable extends DataTable
                 ->addClass('text-start'),
             Column::make('dokumen')
                 ->title('Dokumen')
-                ->addClass('text-start'),
+                ->width(350)
+                ->addClass('text-center align-middle'),
         ];
 
         if (Auth::check() && Auth::user()->roles !== 'dosen') {

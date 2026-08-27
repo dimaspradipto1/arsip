@@ -172,7 +172,7 @@ class SkPembimbingKpmDataTable extends DataTable
             ->addClass('text-start');
         $columns[] = Column::make('dokumen')
             ->title('Dokumen')
-            ->width(200)
+            ->width(350)
             ->addClass('text-center align-middle');
 
         if (Auth::check() && Auth::user()->roles !== 'dosen') {

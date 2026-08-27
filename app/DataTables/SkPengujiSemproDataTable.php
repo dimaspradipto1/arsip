@@ -170,7 +170,7 @@ class SkPengujiSemproDataTable extends DataTable
               ->addClass('align-middle text-xs text-center');
         $columns[] = Column::computed('dokumen_link')
               ->title('Dokumen')
-              ->width(200)
+              ->width(350)
               ->addClass('text-center align-middle text-xs');
 
         if (Auth::check() && Auth::user()->roles !== 'dosen') {
