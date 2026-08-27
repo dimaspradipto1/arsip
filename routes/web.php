@@ -12,6 +12,7 @@ use App\Http\Controllers\SemesterAntaraController;
 use App\Http\Controllers\KuliahPengabdianMasyarakatController;
 use App\Http\Controllers\KartuRencanaStudiController;
 use App\Http\Controllers\UjianTengahSemesterController;
+use App\Http\Controllers\UjianAkhirSemesterController;
 use App\Http\Controllers\IdentitasKaryaIlmiahController;
 use App\Http\Controllers\KategorySkController;
 use App\Http\Controllers\SkKepanitiaanController;
@@ -116,7 +117,12 @@ Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::post('/ujiantengahsemester/import', [UjianTengahSemesterController::class, 'import'])->name('ujiantengahsemester.import')->middleware('restrict.dosen');
     Route::resource('ujiantengahsemester', UjianTengahSemesterController::class);
 
-    // 18. Master Data (Tahun Akademik & Kategori SK)
+    // 18. LPJ Ujian Akhir Semester (LPJ Kegiatan Panitia Semester)
+    Route::get('/ujianakhirsemester/template', [UjianAkhirSemesterController::class, 'downloadTemplate'])->name('ujianakhirsemester.template');
+    Route::post('/ujianakhirsemester/import', [UjianAkhirSemesterController::class, 'import'])->name('ujianakhirsemester.import')->middleware('restrict.dosen');
+    Route::resource('ujianakhirsemester', UjianAkhirSemesterController::class);
+
+    // 19. Master Data (Tahun Akademik & Kategori SK)
     Route::resource('tahunakademik', TahunAkademikController::class);
     Route::resource('kategorysk', KategorySkController::class);
 
