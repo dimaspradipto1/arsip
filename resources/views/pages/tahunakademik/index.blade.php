@@ -8,9 +8,13 @@
             <div class="col-12">
                 <div class="card mb-4 shadow-sm border-radius-lg">
                     <div class="card-header p-3 py-3 bg-transparent border-bottom d-flex align-items-center justify-content-between">
-                        <a href="{{ route('tahunakademik.create') }}" class="btn btn-primary text-white text-uppercase mb-0">
-                            <i class="fas fa-plus me-1"></i> Tambah Tahun Akademik
-                        </a>
+                        @if (auth()->check() && auth()->user()->roles !== 'dosen')
+                            <a href="{{ route('tahunakademik.create') }}" class="btn btn-primary text-white text-uppercase mb-0">
+                                <i class="fas fa-plus me-1"></i> Tambah Tahun Akademik
+                            </a>
+                        @else
+                            <span class="badge bg-gradient-info text-white"><i class="fas fa-eye me-1"></i> Mode Read Only (Dosen)</span>
+                        @endif
                     </div>
 
                     <div class="card-body p-3">
