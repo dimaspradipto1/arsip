@@ -7,18 +7,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4 shadow-sm border-radius-lg">
-                    <div class="card-header p-3 py-3 bg-transparent border-bottom d-flex align-items-center gap-2">
-                        @if (auth()->check() && auth()->user()->roles !== 'dosen')
+                    @if (auth()->check() && auth()->user()->roles !== 'dosen')
+                        <div class="card-header p-3 py-3 bg-transparent border-bottom d-flex align-items-center gap-2">
                             <a href="{{ route('user.create') }}" class="btn btn-primary text-white text-uppercase mb-0">
-                                <i class="fas fa-plus me-1"></i> Tambah Pengguna
+                                <i class="fas fa-user-plus me-1"></i> Tambah Pengguna
                             </a>
                             <a href="javascript:;" class="btn btn-success text-white text-uppercase mb-0" data-bs-toggle="modal" data-bs-target="#importModal">
                                 <i class="fas fa-file-excel me-1"></i> Import Excel
                             </a>
-                        @else
-                            <span class="badge bg-gradient-info text-white"><i class="fas fa-eye me-1"></i> Mode Read Only (Dosen)</span>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
 
                     <div class="card-body p-3">
                         {{ $dataTable->table([
