@@ -79,7 +79,11 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        $query = $model->newQuery();
+        if (Auth::check() && Auth::user()->roles !== 'admin') {
+            $query->facultyScope(Auth::user());
+        }
+        return $query;
     }
 
     /**

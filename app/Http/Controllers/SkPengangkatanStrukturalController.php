@@ -29,7 +29,7 @@ class SkPengangkatanStrukturalController extends Controller
     public function create()
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpengangkatanstruktural.create', compact('tahunakademik', 'users'));
     }
 
@@ -65,7 +65,7 @@ class SkPengangkatanStrukturalController extends Controller
     public function edit(SkPengangkatanStruktural $skpengangkatanstruktural)
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpengangkatanstruktural.edit', compact('tahunakademik', 'users', 'skpengangkatanstruktural'));
     }
 

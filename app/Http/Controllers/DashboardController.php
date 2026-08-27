@@ -34,8 +34,19 @@ class DashboardController extends Controller
             $skSemproCount = SkPengujiSempro::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
             $skPengujiTaCount = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
             $totalDosen = 1;
+        } elseif ($user && $user->roles !== 'admin') {
+            // Tata Usaha / Dekan / Kaprodi: Scoped strictly to their own faculty
+            $skPanitiaCount = SkKepanitiaan::count();
+            $skPaCount = SkPembimbingAkademik::whereHas('user', fn($q) => $q->facultyScope($user))->count();
+            $skKpmCount = SkPembimbingKpm::whereHas('users', fn($q) => $q->facultyScope($user))->count();
+            $skPengajaranCount = SkPengajaran::whereHas('user', fn($q) => $q->facultyScope($user))->count();
+            $skTaCount = SkPembimbingTugasAkhir::whereHas('user', fn($q) => $q->facultyScope($user))->count();
+            $skStrukturalCount = SkPengangkatanStruktural::whereHas('user', fn($q) => $q->facultyScope($user))->count();
+            $skSemproCount = SkPengujiSempro::whereHas('users', fn($q) => $q->facultyScope($user))->count();
+            $skPengujiTaCount = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->facultyScope($user))->count();
+            $totalDosen = User::where('roles', 'dosen')->facultyScope($user)->count();
         } else {
-            // Admin, Tata Usaha, Dekan, Kaprodi see institution-wide data
+            // Admin sees global data
             $skPanitiaCount = SkKepanitiaan::count();
             $skPaCount = SkPembimbingAkademik::count();
             $skKpmCount = SkPembimbingKpm::count();
@@ -98,10 +109,14 @@ class DashboardController extends Controller
         $karyaIlmiahRecent = IdentitasKaryaIlmiah::latest()->take(5)->get();
         $kategoriSkList = \App\Models\KategorySk::withCount('skkepanitiaan')->get();
 
-        // Recent SK Activity for Admin / TU
+        // Recent SK Activity for Admin / TU (Scoped to faculty for non-admin)
         $recentSks = collect();
         if (!$isDosen) {
-            $pengajaranLatest = SkPengajaran::with(['user', 'tahunakademik'])->latest()->take(3)->get()->map(function($item) {
+            $pengajaranLatest = SkPengajaran::with(['user', 'tahunakademik'])
+                ->when($user && $user->roles !== 'admin', function($query) use ($user) {
+                    $query->whereHas('user', fn($q) => $q->facultyScope($user));
+                })
+                ->latest()->take(3)->get()->map(function($item) {
                 return [
                     'type' => 'SK Pengajaran',
                     'badge_bg' => 'bg-primary text-white',
@@ -115,7 +130,11 @@ class DashboardController extends Controller
                 ];
             });
 
-            $taLatest = SkPembimbingTugasAkhir::with(['user', 'tahunakademik'])->latest()->take(3)->get()->map(function($item) {
+            $taLatest = SkPembimbingTugasAkhir::with(['user', 'tahunakademik'])
+                ->when($user && $user->roles !== 'admin', function($query) use ($user) {
+                    $query->whereHas('user', fn($q) => $q->facultyScope($user));
+                })
+                ->latest()->take(3)->get()->map(function($item) {
                 return [
                     'type' => 'SK Pembimbing TA',
                     'badge_bg' => 'bg-info text-white',
@@ -129,7 +148,11 @@ class DashboardController extends Controller
                 ];
             });
 
-            $semproLatest = SkPengujiSempro::with(['users', 'tahunakademik'])->latest()->take(3)->get()->map(function($item) {
+            $semproLatest = SkPengujiSempro::with(['users', 'tahunakademik'])
+                ->when($user && $user->roles !== 'admin', function($query) use ($user) {
+                    $query->whereHas('users', fn($q) => $q->facultyScope($user));
+                })
+                ->latest()->take(3)->get()->map(function($item) {
                 return [
                     'type' => 'SK Penguji Sempro',
                     'badge_bg' => 'bg-warning text-white',

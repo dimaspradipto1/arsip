@@ -26,12 +26,12 @@
         <div class="card-body p-4 text-white">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
-              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-white bg-opacity-25 rounded-pill mb-2">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span class="text-xs font-weight-bold text-white text-uppercase tracking-wider">Portal Dosen FST</span>
+              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: rgba(255, 255, 255, 0.2);">
+                <i class="fas fa-chalkboard-teacher text-white"></i>
+                <span class="text-xs font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px;">Portal Dosen FST</span>
               </div>
               <h4 class="text-white font-weight-bolder mb-1">Selamat Datang, {{ Auth::user()->name }}</h4>
-              <p class="text-white text-opacity-80 text-sm mb-0">
+              <p class="text-white text-sm mb-0" style="opacity: 0.88;">
                 Dashboard ini menampilkan rekapitulasi data arsip dan Surat Keputusan (SK) resmi yang diterbitkan untuk Anda.
               </p>
             </div>
@@ -440,12 +440,12 @@
         <div class="card-body p-4 text-white">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
-              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-white bg-opacity-10 rounded-pill mb-2">
+              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: rgba(255, 255, 255, 0.15);">
                 <i class="fas fa-shield-alt text-warning"></i>
-                <span class="text-xs font-weight-bold text-white text-uppercase tracking-wider">Panel Administrasi & Tata Usaha</span>
+                <span class="text-xs font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px;">Panel Administrasi & Tata Usaha</span>
               </div>
               <h4 class="text-white font-weight-bolder mb-1">Selamat Datang, {{ Auth::user()->name }}</h4>
-              <p class="text-white text-opacity-80 text-sm mb-0">
+              <p class="text-white text-sm mb-0" style="opacity: 0.88;">
                 Pusat data arsip digital, pemantauan dokumen resmi, dan rekapitulasi Surat Keputusan Fakultas Sains dan Teknologi.
               </p>
             </div>

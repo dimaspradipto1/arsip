@@ -26,7 +26,7 @@ class SkPembimbingKpmController extends Controller
     public function create()
     {
         $tahunakademik = TahunAkademik::all();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpembimbingkpm.create', compact('tahunakademik', 'users'));
     }
 
@@ -77,7 +77,7 @@ class SkPembimbingKpmController extends Controller
     {
         $skpembimbingkpm->load('users');
         $tahunakademik = TahunAkademik::all();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpembimbingkpm.edit', compact('tahunakademik', 'users', 'skpembimbingkpm'));
     }
 

@@ -29,7 +29,7 @@ class SkPengujiSemproController extends Controller
     public function create()
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpengujisempro.create', compact('tahunakademik', 'users'));
     }
 
@@ -72,7 +72,7 @@ class SkPengujiSemproController extends Controller
     {
         $skpengujisempro->load('users');
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpengujisempro.edit', compact('tahunakademik', 'users', 'skpengujisempro'));
     }
 

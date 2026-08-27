@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'admin',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Teknik Informatika',
             ],
             [
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
                 'email' => 'dosen@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'dosen',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Teknik Informatika',
             ],
             [
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
                 'email' => 'dekan@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'dekan',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Teknik Informatika',
             ],
             [
@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
                 'email' => 'wd1@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'wakilDekan1',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Sistem Informasi',
             ],
             [
@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
                 'email' => 'wd2@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'wakilDekan2',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Teknik Industri',
             ],
             [
@@ -84,7 +84,7 @@ class UserSeeder extends Seeder
                 'email' => 'kaprodi@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'kaprodi',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Teknik Informatika',
             ],
             [
@@ -92,7 +92,7 @@ class UserSeeder extends Seeder
                 'email' => 'sekprodi@uis.ac.id',
                 'password' => Hash::make('password'),
                 'roles' => 'sekprodi',
-                'fakultas' => 'Fakultas Sains dan Teknologi',
+                'fakultas' => 'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
                 'homebase' => 'Teknik Informatika',
             ],
         ];

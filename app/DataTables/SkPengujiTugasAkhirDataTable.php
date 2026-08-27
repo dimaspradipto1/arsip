@@ -90,10 +90,17 @@ class SkPengujiTugasAkhirDataTable extends DataTable
             ->with(['tahunakademik', 'users'])
             ->latest('sk_penguji_tugas_akhirs.created_at');
 
-        if (Auth::check() && Auth::user()->roles === 'dosen') {
-            $query->whereHas('users', function ($q) {
-                $q->where('users.id', Auth::id());
-            });
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->roles === 'dosen') {
+                $query->whereHas('users', function ($q) use ($user) {
+                    $q->where('users.id', $user->id);
+                });
+            } elseif ($user->roles !== 'admin') {
+                $query->whereHas('users', function ($q) use ($user) {
+                    $q->facultyScope($user);
+                });
+            }
         }
 
         return $query;

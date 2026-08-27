@@ -29,7 +29,7 @@ class SkPengajaranController extends Controller
     public function create()
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpengajaran.create', compact('tahunakademik', 'users'));
     }
 
@@ -65,7 +65,7 @@ class SkPengajaranController extends Controller
     public function edit(SkPengajaran $skpengajaran)
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpengajaran.edit', compact('tahunakademik', 'users', 'skpengajaran'));
     }
 

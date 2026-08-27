@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -82,5 +83,35 @@ class User extends Authenticatable
     public function skpengujitugasakhir()
     {
         return $this->belongsToMany(SkPengujiTugasAkhir::class, 'sk_penguji_tugas_akhir_user');
+    }
+
+    /**
+     * Scope query to filter users by the faculty of the given/authenticated user.
+     */
+    public function scopeFacultyScope($query, $user = null)
+    {
+        $user = $user ?: Auth::user();
+        if (!$user || $user->roles === 'admin') {
+            return $query;
+        }
+
+        $faculty = $user->fakultas;
+        if (!$faculty) {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($faculty) {
+            $q->where('users.fakultas', $faculty);
+            if (stripos($faculty, 'Sains') !== false || stripos($faculty, 'FST') !== false) {
+                $q->orWhere('users.fakultas', 'LIKE', '%Sains%')
+                  ->orWhere('users.fakultas', 'LIKE', '%FST%');
+            } elseif (stripos($faculty, 'Kesehatan') !== false || stripos($faculty, 'FIKes') !== false) {
+                $q->orWhere('users.fakultas', 'LIKE', '%Kesehatan%')
+                  ->orWhere('users.fakultas', 'LIKE', '%FIKes%');
+            } elseif (stripos($faculty, 'Ekonomi') !== false || stripos($faculty, 'FEB') !== false) {
+                $q->orWhere('users.fakultas', 'LIKE', '%Ekonomi%')
+                  ->orWhere('users.fakultas', 'LIKE', '%FEB%');
+            }
+        });
     }
 }

@@ -99,10 +99,17 @@ class SkPembimbingKpmDataTable extends DataTable
     {
         $query = $model->newQuery()->select('sk_pembimbing_kpms.*')->with(['tahunakademik', 'users']);
 
-        if (Auth::check() && Auth::user()->roles === 'dosen') {
-            $query->whereHas('users', function ($q) {
-                $q->where('users.id', Auth::id());
-            });
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->roles === 'dosen') {
+                $query->whereHas('users', function ($q) use ($user) {
+                    $q->where('users.id', $user->id);
+                });
+            } elseif ($user->roles !== 'admin') {
+                $query->whereHas('users', function ($q) use ($user) {
+                    $q->facultyScope($user);
+                });
+            }
         }
 
         return $query;

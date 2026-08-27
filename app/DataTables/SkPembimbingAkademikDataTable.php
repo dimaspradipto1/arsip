@@ -89,8 +89,15 @@ class SkPembimbingAkademikDataTable extends DataTable
     {
         $query = $model->newQuery()->select('sk_pembimbing_akademiks.*')->with(['tahunakademik', 'user']);
 
-        if (Auth::check() && Auth::user()->roles === 'dosen') {
-            $query->where('sk_pembimbing_akademiks.user_id', Auth::id());
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->roles === 'dosen') {
+                $query->where('sk_pembimbing_akademiks.user_id', $user->id);
+            } elseif ($user->roles !== 'admin') {
+                $query->whereHas('user', function ($q) use ($user) {
+                    $q->facultyScope($user);
+                });
+            }
         }
 
         return $query;

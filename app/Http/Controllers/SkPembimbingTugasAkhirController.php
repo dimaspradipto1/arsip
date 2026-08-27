@@ -29,7 +29,7 @@ class SkPembimbingTugasAkhirController extends Controller
     public function create()
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpembimbingtugasakhir.create', compact('tahunakademik', 'users'));
     }
 
@@ -65,7 +65,7 @@ class SkPembimbingTugasAkhirController extends Controller
     public function edit(SkPembimbingTugasAkhir $skpembimbingtugasakhir)
     {
         $tahunakademik = TahunAkademik::orderBy('id', 'desc')->get();
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::facultyScope()->orderBy('name', 'asc')->get();
         return view('pages.skpembimbingtugasakhir.edit', compact('tahunakademik', 'users', 'skpembimbingtugasakhir'));
     }
 

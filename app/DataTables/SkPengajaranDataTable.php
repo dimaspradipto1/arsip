@@ -80,8 +80,15 @@ class SkPengajaranDataTable extends DataTable
             ->with(['tahunakademik', 'user'])
             ->latest('sk_pengajarans.created_at');
 
-        if (Auth::check() && Auth::user()->roles === 'dosen') {
-            $query->where('sk_pengajarans.user_id', Auth::id());
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->roles === 'dosen') {
+                $query->where('sk_pengajarans.user_id', $user->id);
+            } elseif ($user->roles !== 'admin') {
+                $query->whereHas('user', function ($q) use ($user) {
+                    $q->facultyScope($user);
+                });
+            }
         }
 
         return $query;
