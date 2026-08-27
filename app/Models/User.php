@@ -90,6 +90,11 @@ class User extends Authenticatable
         return $this->hasMany(Buku::class, 'user_id');
     }
 
+    public function hki()
+    {
+        return $this->hasMany(HKI::class, 'user_id');
+    }
+
     /**
      * Scope query to filter users by the faculty of the given/authenticated user.
      */
