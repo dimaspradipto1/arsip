@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SkPengangkatanStruktural::class, 'user_id');
     }
+
+    public function skpengujisempro()
+    {
+        return $this->belongsToMany(SkPengujiSempro::class, 'sk_penguji_sempro_user');
+    }
 }

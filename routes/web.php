@@ -11,6 +11,7 @@ use App\Http\Controllers\SkPembimbingKpmController;
 use App\Http\Controllers\SkPembimbingTugasAkhirController;
 use App\Http\Controllers\SkPengajaranController;
 use App\Http\Controllers\SkPengangkatanStrukturalController;
+use App\Http\Controllers\SkPengujiSemproController;
 use App\Http\Controllers\TahunAkademikController;
 
 // Route::get('/', function () {
@@ -48,5 +49,9 @@ Route::middleware(['auth','checkrole'])->group(function(){
     Route::get('/skpengangkatanstruktural/template', [SkPengangkatanStrukturalController::class, 'downloadTemplate'])->name('skpengangkatanstruktural.template');
     Route::post('/skpengangkatanstruktural/import', [SkPengangkatanStrukturalController::class, 'import'])->name('skpengangkatanstruktural.import');
     Route::resource('skpengangkatanstruktural', SkPengangkatanStrukturalController::class);
+    Route::get('/skpengujisempro/template', [SkPengujiSemproController::class, 'downloadTemplate'])->name('skpengujisempro.template');
+    Route::post('/skpengujisempro/import', [SkPengujiSemproController::class, 'import'])->name('skpengujisempro.import');
+    Route::resource('skpengujisempro', SkPengujiSemproController::class);
 });
+
 

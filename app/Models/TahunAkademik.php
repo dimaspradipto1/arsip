@@ -37,4 +37,9 @@ class TahunAkademik extends Model
     {
         return $this->hasMany(SkPengangkatanStruktural::class, 'tahunakademik_id');
     }
+
+    public function skpengujisempro()
+    {
+        return $this->hasMany(SkPengujiSempro::class, 'tahunakademik_id');
+    }
 }
