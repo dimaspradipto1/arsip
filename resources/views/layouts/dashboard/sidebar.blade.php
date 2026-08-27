@@ -9,6 +9,27 @@
         font-weight: 600;
         font-size: 0.8125rem;
         padding: 0.65rem 0.85rem !important;
+        white-space: normal !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .sidenav .nav-link .menu-title-wrapper {
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+        margin-right: 6px;
+    }
+
+    .sidenav .nav-link .nav-link-text {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        line-height: 1.35 !important;
+        flex: 1 1 auto;
+        min-width: 0;
     }
 
     /* Matikan panah default template Soft UI agar tidak dobel */
@@ -38,6 +59,7 @@
         width: 32px;
         height: 32px;
         min-width: 32px;
+        flex-shrink: 0;
         border-radius: 8px;
         display: flex;
         align-items: center;
@@ -70,6 +92,7 @@
         font-size: 0.75rem;
         color: #8392ab;
         display: inline-block;
+        flex-shrink: 0;
     }
 
     .nav-link[aria-expanded="true"] .sidebar-dropdown-arrow {
@@ -92,6 +115,10 @@
         display: flex;
         align-items: center;
         border-radius: 6px;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        line-height: 1.35 !important;
     }
 
     .sidebar-submenu .nav-link i {
@@ -101,6 +128,7 @@
         color: #94a3b8 !important;
         font-size: 13px !important;
         transition: all 0.2s ease;
+        flex-shrink: 0;
     }
 
     .sidebar-submenu .nav-link:hover {
@@ -178,7 +206,7 @@
                 <a class="nav-link d-flex align-items-center justify-content-between {{ $isPendidikanActive ? 'bg-light text-dark' : '' }}"
                     data-bs-toggle="collapse" href="#collapsePendidikan" role="button"
                     aria-expanded="{{ $isPendidikanActive ? 'true' : 'false' }}" aria-controls="collapsePendidikan">
-                    <div class="d-flex align-items-center">
+                    <div class="menu-title-wrapper">
                         <div class="menu-icon-box">
                             <i class="fas fa-graduation-cap"></i>
                         </div>
@@ -236,7 +264,7 @@
                 <a class="nav-link d-flex align-items-center justify-content-between {{ $isPenelitianActive ? 'bg-light text-dark' : '' }}"
                     data-bs-toggle="collapse" href="#collapsePenelitian" role="button"
                     aria-expanded="{{ $isPenelitianActive ? 'true' : 'false' }}" aria-controls="collapsePenelitian">
-                    <div class="d-flex align-items-center">
+                    <div class="menu-title-wrapper">
                         <div class="menu-icon-box">
                             <i class="fas fa-microscope"></i>
                         </div>
@@ -273,7 +301,7 @@
                 <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse"
                     href="#collapsePengabdian" role="button" aria-expanded="false"
                     aria-controls="collapsePengabdian">
-                    <div class="d-flex align-items-center">
+                    <div class="menu-title-wrapper">
                         <div class="menu-icon-box">
                             <i class="fas fa-handshake-angle"></i>
                         </div>
@@ -300,7 +328,7 @@
                 <a class="nav-link d-flex align-items-center justify-content-between {{ $isPenunjangActive ? 'bg-light text-dark' : '' }}"
                     data-bs-toggle="collapse" href="#collapsePenunjang" role="button"
                     aria-expanded="{{ $isPenunjangActive ? 'true' : 'false' }}" aria-controls="collapsePenunjang">
-                    <div class="d-flex align-items-center">
+                    <div class="menu-title-wrapper">
                         <div class="menu-icon-box">
                             <i class="fas fa-award"></i>
                         </div>
@@ -336,7 +364,7 @@
                 <li class="nav-item">
                     <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse"
                         href="#collapseLPJ" role="button" aria-expanded="false" aria-controls="collapseLPJ">
-                        <div class="d-flex align-items-center">
+                        <div class="menu-title-wrapper">
                             <div class="menu-icon-box">
                                 <i class="fas fa-folder-closed"></i>
                             </div>
@@ -398,7 +426,7 @@
                     <a class="nav-link d-flex align-items-center justify-content-between {{ $isMasterActive ? 'bg-light text-dark' : '' }}"
                         data-bs-toggle="collapse" href="#collapseMasterData" role="button"
                         aria-expanded="{{ $isMasterActive ? 'true' : 'false' }}" aria-controls="collapseMasterData">
-                        <div class="d-flex align-items-center">
+                        <div class="menu-title-wrapper">
                             <div class="menu-icon-box">
                                 <i class="fas fa-sliders"></i>
                             </div>
