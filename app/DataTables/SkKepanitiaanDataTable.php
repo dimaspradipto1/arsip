@@ -33,30 +33,45 @@ class SkKepanitiaanDataTable extends DataTable
             })
             ->addColumn('dokumen', function ($item) {
                 $googleDriveLink = $item->dokumen;
-                preg_match('/\/d\/(.*?)\//', $googleDriveLink, $matches);
+                if (!$googleDriveLink) return '<span class="text-muted text-xs">-</span>';
 
-                if (isset($matches[1])) {
+                $url = $googleDriveLink;
+                if (preg_match('/(?:drive\.google\.com\/(?:file\/d\/|open\?id=)|docs\.google\.com\/file\/d\/)([a-zA-Z0-9_-]+)/', $googleDriveLink, $matches)) {
                     $fileId = $matches[1];
-                    $driveLink = 'https://drive.google.com/uc?export=view&id=' . $fileId;
-
-                    return '<a href="' . $driveLink . '" class="text-success" target="_blank">Lihat Dokumen</a>';
+                    $url = 'https://drive.google.com/uc?export=view&id=' . $fileId;
                 }
 
-                return 'Dokumen tidak tersedia';
+                return '
+                    <div class="d-flex flex-column align-items-center justify-content-center py-1">
+                        <a href="' . e($url) . '" class="btn-doc-link mb-1" target="_blank">
+                            <i class="fas fa-file-pdf"></i> <span>Lihat Dokumen</span>
+                        </a>
+                        <span class="doc-text-wrap">' . e($googleDriveLink) . '</span>
+                    </div>
+                ';
             })
 
             ->addColumn('action', function ($item) {
                 if (Auth::check() && Auth::user()->roles === 'dosen') {
-                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                    return '-';
                 }
 
+                $editUrl = route('skkepanitiaan.edit', $item->id);
+                $deleteUrl = route('skkepanitiaan.destroy', $item->id);
+                $csrf = csrf_field();
+                $method = method_field('DELETE');
+
                 return '
-                    <div class="d-flex justify-content-center align-items-center" style="gap: 6px;">
-                        <a href="' . route('skkepanitiaan.edit', $item->id) . '" class="btn btn-warning text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Edit"><i class="fas fa-pen-to-square"></i></a>
-                        <form action="' . route('skkepanitiaan.destroy', $item->id) . '" method="POST" style="display: inline-block; margin: 0;">
-                            ' . csrf_field() . '
-                            ' . method_field('DELETE') . '
-                            <button type="submit" class="btn btn-danger mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus"><i class="fas fa-trash"></i></button>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <a href="' . $editUrl . '" class="btn-action-edit" data-bs-toggle="tooltip" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="' . $deleteUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'Apakah Anda yakin ingin menghapus SK Kepanitiaan ini?\')">
+                            ' . $csrf . '
+                            ' . $method . '
+                            <button type="submit" class="btn-action-delete" data-bs-toggle="tooltip" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </form>
                     </div>
                 ';

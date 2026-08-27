@@ -41,21 +41,27 @@ class UserDataTable extends DataTable
             })
             ->addColumn('action', function($user){
                 if (Auth::check() && Auth::user()->roles === 'dosen') {
-                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                    return '-';
                 }
 
+                $pwdUrl = route('user.updatePassword', $user->id);
+                $editUrl = route('user.edit', $user->id);
+                $deleteUrl = route('user.destroy', $user->id);
+                $csrf = csrf_field();
+                $method = method_field('DELETE');
+
                 return '
-                    <div class="d-flex justify-content-center align-items-center" style="gap: 6px;">
-                        <a href="'.route('user.updatePassword', $user->id).'" class="btn btn-dark text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Ubah Password">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <a href="' . $pwdUrl . '" class="btn-action-view bg-dark text-white" data-bs-toggle="tooltip" title="Ubah Password">
                             <i class="fas fa-key"></i>
                         </a>
-                        <a href="'.route('user.edit', $user->id).'" class="btn btn-warning text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Edit">
-                            <i class="fas fa-pen-to-square"></i>
+                        <a href="' . $editUrl . '" class="btn-action-edit" data-bs-toggle="tooltip" title="Edit">
+                            <i class="fas fa-edit"></i>
                         </a>
-                        <form action="'.route('user.destroy', $user->id).'" method="POST" style="display: inline-block; margin: 0;">
-                            '.csrf_field().'
-                            '.method_field('DELETE').'
-                            <button type="submit" class="btn btn-danger mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus">
+                        <form action="' . $deleteUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'Yakin ingin menghapus user ini?\')">
+                            ' . $csrf . '
+                            ' . $method . '
+                            <button type="submit" class="btn-action-delete" data-bs-toggle="tooltip" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>

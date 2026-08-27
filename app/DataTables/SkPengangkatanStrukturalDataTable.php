@@ -8,6 +8,7 @@ use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
+use Illuminate\Support\Facades\Auth;
 
 class SkPengangkatanStrukturalDataTable extends DataTable
 {
@@ -27,12 +28,22 @@ class SkPengangkatanStrukturalDataTable extends DataTable
                 return $item->tahunakademik ? $item->tahunakademik->tahun_akademik : '-';
             })
             ->addColumn('dokumen_link', function ($item) {
-                if (!$item->dokumen) return '-';
-                return '<a href="' . e($item->dokumen) . '" target="_blank" class="badge badge-sm bg-gradient-info text-white text-decoration-none px-2 py-1">
-                    <i class="fas fa-file-pdf me-1"></i> Lihat Dokumen
-                </a>';
+                if (!$item->dokumen) return '<span class="text-muted text-xs">-</span>';
+                $url = $item->dokumen;
+                return '
+                    <div class="d-flex flex-column align-items-center justify-content-center py-1">
+                        <a href="' . e($url) . '" target="_blank" class="btn-doc-link mb-1">
+                            <i class="fas fa-file-pdf"></i> <span>Lihat Dokumen</span>
+                        </a>
+                        <span class="doc-text-wrap">' . e($url) . '</span>
+                    </div>
+                ';
             })
             ->addColumn('action', function ($item) {
+                if (Auth::check() && Auth::user()->roles === 'dosen') {
+                    return '-';
+                }
+
                 $editUrl = route('skpengangkatanstruktural.edit', $item->id);
                 $deleteUrl = route('skpengangkatanstruktural.destroy', $item->id);
                 $csrf = csrf_field();
@@ -40,13 +51,13 @@ class SkPengangkatanStrukturalDataTable extends DataTable
 
                 return '
                     <div class="d-flex align-items-center justify-content-center gap-2">
-                        <a href="' . $editUrl . '" class="btn btn-sm btn-info text-white mb-0 px-2 py-1" data-bs-toggle="tooltip" title="Edit">
+                        <a href="' . $editUrl . '" class="btn-action-edit" data-bs-toggle="tooltip" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <form action="' . $deleteUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'Apakah Anda yakin ingin menghapus data ini?\')">
                             ' . $csrf . '
                             ' . $method . '
-                            <button type="submit" class="btn btn-sm btn-danger text-white mb-0 px-2 py-1" data-bs-toggle="tooltip" title="Hapus">
+                            <button type="submit" class="btn-action-delete" data-bs-toggle="tooltip" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -64,10 +75,16 @@ class SkPengangkatanStrukturalDataTable extends DataTable
      */
     public function query(SkPengangkatanStruktural $model): QueryBuilder
     {
-        return $model->newQuery()
+        $query = $model->newQuery()
             ->select('sk_pengangkatan_strukturals.*')
             ->with(['tahunakademik', 'user'])
             ->latest('sk_pengangkatan_strukturals.created_at');
+
+        if (Auth::check() && Auth::user()->roles === 'dosen') {
+            $query->where('sk_pengangkatan_strukturals.user_id', Auth::id());
+        }
+
+        return $query;
     }
 
     /**
@@ -107,7 +124,7 @@ class SkPengangkatanStrukturalDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::computed('DT_RowIndex')
                   ->title('No')
                   ->width(40)
@@ -117,28 +134,37 @@ class SkPengangkatanStrukturalDataTable extends DataTable
                   ->data('tahun_akademik')
                   ->name('tahunakademik.tahun_akademik')
                   ->addClass('align-middle text-xs'),
-            Column::make('dosen')
+        ];
+
+        if (!Auth::check() || Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::make('dosen')
                   ->title('Nama Dosen')
                   ->data('dosen')
                   ->name('user.name')
-                  ->addClass('align-middle text-xs font-weight-bold'),
-            Column::make('nomor_sk')
-                  ->title('Nomor SK')
-                  ->addClass('align-middle text-xs'),
-            Column::make('masa_jabatan')
-                  ->title('Masa Jabatan')
-                  ->addClass('align-middle text-xs font-weight-bold text-dark'),
-            Column::computed('dokumen_link')
-                  ->title('Dokumen')
-                  ->width(120)
-                  ->addClass('text-center align-middle text-xs'),
-            Column::computed('action')
+                  ->addClass('align-middle text-xs font-weight-bold');
+        }
+
+        $columns[] = Column::make('nomor_sk')
+              ->title('Nomor SK')
+              ->addClass('align-middle text-xs');
+        $columns[] = Column::make('masa_jabatan')
+              ->title('Masa Jabatan')
+              ->addClass('align-middle text-xs font-weight-bold text-dark');
+        $columns[] = Column::computed('dokumen_link')
+              ->title('Dokumen')
+              ->width(200)
+              ->addClass('text-center align-middle text-xs');
+
+        if (Auth::check() && Auth::user()->roles !== 'dosen') {
+            $columns[] = Column::computed('action')
                   ->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
                   ->width(100)
-                  ->addClass('text-center align-middle'),
-        ];
+                  ->addClass('text-center align-middle');
+        }
+
+        return $columns;
     }
 
     /**

@@ -44,7 +44,7 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
             })
             ->addColumn('action', function ($item) {
                 if (Auth::check() && Auth::user()->roles === 'dosen') {
-                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                    return '-';
                 }
 
                 $editUrl = route('identitaskaryailmiah.edit', $item->id);
@@ -54,13 +54,13 @@ class IdentitasKaryaIlmiahDataTable extends DataTable
 
                 return '
                     <div class="d-flex align-items-center justify-content-center gap-2">
-                        <a href="' . $editUrl . '" class="btn btn-sm btn-info text-white mb-0 px-2 py-1" data-bs-toggle="tooltip" title="Edit">
+                        <a href="' . $editUrl . '" class="btn-action-edit" data-bs-toggle="tooltip" title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
                         <form action="' . $deleteUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'Apakah Anda yakin ingin menghapus data ini?\')">
                             ' . $csrf . '
                             ' . $method . '
-                            <button type="submit" class="btn btn-sm btn-danger text-white mb-0 px-2 py-1" data-bs-toggle="tooltip" title="Hapus">
+                            <button type="submit" class="btn-action-delete" data-bs-toggle="tooltip" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>

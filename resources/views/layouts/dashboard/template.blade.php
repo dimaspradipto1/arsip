@@ -206,6 +206,92 @@
       border-radius: 6px !important;
       margin: 0 2px !important;
     }
+    /* Standardized DataTable Action & Document Buttons (Solid Colors) */
+    .btn-action-edit, .btn-action-delete, .btn-action-view {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 34px !important;
+      height: 34px !important;
+      padding: 0 !important;
+      border-radius: 8px !important;
+      font-size: 15px !important;
+      transition: all 0.2s ease-in-out !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+      border: none !important;
+      text-decoration: none !important;
+    }
+    .btn-action-edit {
+      background-color: #fb8c00 !important; /* Solid Warning (Orange/Amber) */
+      color: #ffffff !important;
+    }
+    .btn-action-edit:hover {
+      background-color: #f57c00 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(251, 140, 0, 0.4) !important;
+      color: #ffffff !important;
+    }
+    .btn-action-delete {
+      background-color: #ea0606 !important; /* Solid Danger (Red) */
+      color: #ffffff !important;
+    }
+    .btn-action-delete:hover {
+      background-color: #c60505 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(234, 6, 6, 0.4) !important;
+      color: #ffffff !important;
+    }
+    .btn-action-view {
+      background-color: #344767 !important; /* Solid Dark */
+      color: #ffffff !important;
+    }
+    .btn-action-view:hover {
+      background-color: #212529 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(52, 71, 103, 0.4) !important;
+      color: #ffffff !important;
+    }
+    .btn-doc-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      padding: 6px 14px !important;
+      border-radius: 20px !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      text-decoration: none !important;
+      background-color: #17a2b8 !important; /* Solid Info */
+      color: #ffffff !important;
+      box-shadow: 0 3px 8px rgba(23, 162, 184, 0.25) !important;
+      transition: all 0.2s ease-in-out !important;
+    }
+    .btn-doc-link:hover {
+      background-color: #138496 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(23, 162, 184, 0.4) !important;
+      color: #ffffff !important;
+    }
+    .btn-doc-link i {
+      font-size: 14px !important;
+    }
+    .btn-action-edit i, .btn-action-delete i, .btn-action-view i {
+      font-size: 14px !important;
+    }
+    /* Document Plain Text Wrapper */
+    .doc-text-wrap {
+      white-space: normal !important;
+      word-wrap: break-word !important;
+      word-break: break-all !important;
+      max-width: 250px !important;
+      width: 100% !important;
+      display: block !important;
+      text-align: center !important;
+      user-select: all !important;
+      line-height: 1.4 !important;
+      font-size: 0.75rem !important;
+      color: #344767 !important;
+      margin: 4px auto 0 auto !important;
+    }
     .table-responsive {
       overflow-x: auto !important;
       -webkit-overflow-scrolling: touch;

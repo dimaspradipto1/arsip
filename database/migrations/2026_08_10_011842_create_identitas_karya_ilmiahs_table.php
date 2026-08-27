@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('identitas_karya_ilmiahs', function (Blueprint $table) {
             $table->id();
-            $table->date('tahun')->nullable();
+            $table->string('tahun', 50)->nullable();
             $table->text('nama_jurnal')->nullable();
             $table->string('nomor_issn')->nullable();
             $table->string('volume')->nullable();

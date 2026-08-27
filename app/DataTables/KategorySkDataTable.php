@@ -27,16 +27,25 @@ class KategorySkDataTable extends DataTable
             ->addColumn('DT_RowIndex', '')
             ->addColumn('action', function($item){
                 if (Auth::check() && Auth::user()->roles === 'dosen') {
-                    return '<span class="text-muted text-xs"><i class="fas fa-lock me-1"></i>Read Only</span>';
+                    return '-';
                 }
 
+                $editUrl = route('kategorysk.edit', $item->id);
+                $deleteUrl = route('kategorysk.destroy', $item->id);
+                $csrf = csrf_field();
+                $method = method_field('DELETE');
+
                 return '
-                    <div class="d-flex justify-content-center align-items-center" style="gap: 6px;">
-                        <a href="'.route('kategorysk.edit', $item->id).'" class="btn btn-warning text-white mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" title="Edit"><i class="fas fa-pen-to-square"></i></a>
-                        <form action="'.route('kategorysk.destroy', $item->id).'" method="POST" style="display:inline-block; margin:0;">
-                            '.csrf_field().'
-                            '.method_field('DELETE').'
-                            <button type="submit" class="btn btn-danger mb-0" style="padding: 7px 12px; font-size: 13px; border-radius: 6px;" onclick="return confirm(\'Yakin ingin menghapus data ini?\')" title="Hapus"><i class="fas fa-trash"></i></button>
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <a href="' . $editUrl . '" class="btn-action-edit" data-bs-toggle="tooltip" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="' . $deleteUrl . '" method="POST" class="d-inline" onsubmit="return confirm(\'Yakin ingin menghapus data ini?\')">
+                            ' . $csrf . '
+                            ' . $method . '
+                            <button type="submit" class="btn-action-delete" data-bs-toggle="tooltip" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </form>
                     </div>
                 ';

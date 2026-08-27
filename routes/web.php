@@ -16,99 +16,66 @@ use App\Http\Controllers\SkPengujiSemproController;
 use App\Http\Controllers\SkPengujiTugasAkhirController;
 use App\Http\Controllers\TahunAkademikController;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::controller(LoginController::class)->group(function () {
     Route::get('/', 'index')->name('login');
     Route::post('/loginproses', 'loginproses')->name('loginproses');
     Route::get('/logout', 'logout')->name('logout');
 });
 
-Route::middleware(['auth','checkrole'])->group(function(){
+Route::middleware(['auth', 'checkrole'])->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard');
 
-    // SK Pengangkatan Struktural (Full CRUD for Dosen & other roles)
+    // 1. SK Pengangkatan Struktural (Full CRUD for Dosen & other roles)
     Route::get('/skpengangkatanstruktural/template', [SkPengangkatanStrukturalController::class, 'downloadTemplate'])->name('skpengangkatanstruktural.template');
     Route::post('/skpengangkatanstruktural/import', [SkPengangkatanStrukturalController::class, 'import'])->name('skpengangkatanstruktural.import');
     Route::resource('skpengangkatanstruktural', SkPengangkatanStrukturalController::class);
 
-    // Read routes accessible by all roles (including Dosen)
-    Route::get('/identitaskaryailmiah', [IdentitasKaryaIlmiahController::class, 'index'])->name('identitaskaryailmiah.index');
+    // 2. Identitas Karya Ilmiah
     Route::get('/identitaskaryailmiah/template', [IdentitasKaryaIlmiahController::class, 'downloadTemplate'])->name('identitaskaryailmiah.template');
-    Route::get('/identitaskaryailmiah/{identitaskaryailmiah}', [IdentitasKaryaIlmiahController::class, 'show'])->name('identitaskaryailmiah.show');
+    Route::post('/identitaskaryailmiah/import', [IdentitasKaryaIlmiahController::class, 'import'])->name('identitaskaryailmiah.import')->middleware('restrict.dosen');
+    Route::resource('identitaskaryailmiah', IdentitasKaryaIlmiahController::class);
 
-    Route::get('/skpengajaran', [SkPengajaranController::class, 'index'])->name('skpengajaran.index');
+    // 3. SK Pengajaran
     Route::get('/skpengajaran/template', [SkPengajaranController::class, 'downloadTemplate'])->name('skpengajaran.template');
-    Route::get('/skpengajaran/{skpengajaran}', [SkPengajaranController::class, 'show'])->name('skpengajaran.show');
+    Route::post('/skpengajaran/import', [SkPengajaranController::class, 'import'])->name('skpengajaran.import')->middleware('restrict.dosen');
+    Route::resource('skpengajaran', SkPengajaranController::class);
 
-    Route::get('/skpembimbingakademik', [SkPembimbingAkademikController::class, 'index'])->name('skpembimbingakademik.index');
+    // 4. SK Pembimbing Akademik
     Route::get('/skpembimbingakademik/template', [SkPembimbingAkademikController::class, 'downloadTemplate'])->name('skpembimbingakademik.template');
-    Route::get('/skpembimbingakademik/{skpembimbingakademik}', [SkPembimbingAkademikController::class, 'show'])->name('skpembimbingakademik.show');
+    Route::post('/skpembimbingakademik/import', [SkPembimbingAkademikController::class, 'import'])->name('skpembimbingakademik.import')->middleware('restrict.dosen');
+    Route::resource('skpembimbingakademik', SkPembimbingAkademikController::class);
 
-    Route::get('/skpembimbingkpm', [SkPembimbingKpmController::class, 'index'])->name('skpembimbingkpm.index');
+    // 5. SK Pembimbing KPM
     Route::get('/skpembimbingkpm/template', [SkPembimbingKpmController::class, 'downloadTemplate'])->name('skpembimbingkpm.template');
-    Route::get('/skpembimbingkpm/{skpembimbingkpm}', [SkPembimbingKpmController::class, 'show'])->name('skpembimbingkpm.show');
+    Route::post('/skpembimbingkpm/import', [SkPembimbingKpmController::class, 'import'])->name('skpembimbingkpm.import')->middleware('restrict.dosen');
+    Route::resource('skpembimbingkpm', SkPembimbingKpmController::class);
 
-    Route::get('/skpembimbingtugasakhir', [SkPembimbingTugasAkhirController::class, 'index'])->name('skpembimbingtugasakhir.index');
+    // 6. SK Pembimbing Tugas Akhir
     Route::get('/skpembimbingtugasakhir/template', [SkPembimbingTugasAkhirController::class, 'downloadTemplate'])->name('skpembimbingtugasakhir.template');
-    Route::get('/skpembimbingtugasakhir/{skpembimbingtugasakhir}', [SkPembimbingTugasAkhirController::class, 'show'])->name('skpembimbingtugasakhir.show');
+    Route::post('/skpembimbingtugasakhir/import', [SkPembimbingTugasAkhirController::class, 'import'])->name('skpembimbingtugasakhir.import')->middleware('restrict.dosen');
+    Route::resource('skpembimbingtugasakhir', SkPembimbingTugasAkhirController::class);
 
-    Route::get('/skpengujisempro', [SkPengujiSemproController::class, 'index'])->name('skpengujisempro.index');
+    // 7. SK Penguji Sempro
     Route::get('/skpengujisempro/template', [SkPengujiSemproController::class, 'downloadTemplate'])->name('skpengujisempro.template');
-    Route::get('/skpengujisempro/{skpengujisempro}', [SkPengujiSemproController::class, 'show'])->name('skpengujisempro.show');
+    Route::post('/skpengujisempro/import', [SkPengujiSemproController::class, 'import'])->name('skpengujisempro.import')->middleware('restrict.dosen');
+    Route::resource('skpengujisempro', SkPengujiSemproController::class);
 
-    Route::get('/skpengujitugasakhir', [SkPengujiTugasAkhirController::class, 'index'])->name('skpengujitugasakhir.index');
+    // 8. SK Penguji Tugas Akhir
     Route::get('/skpengujitugasakhir/template', [SkPengujiTugasAkhirController::class, 'downloadTemplate'])->name('skpengujitugasakhir.template');
-    Route::get('/skpengujitugasakhir/{skpengujitugasakhir}', [SkPengujiTugasAkhirController::class, 'show'])->name('skpengujitugasakhir.show');
+    Route::post('/skpengujitugasakhir/import', [SkPengujiTugasAkhirController::class, 'import'])->name('skpengujitugasakhir.import')->middleware('restrict.dosen');
+    Route::resource('skpengujitugasakhir', SkPengujiTugasAkhirController::class);
 
-    Route::get('/skkepanitiaan', [SkKepanitiaanController::class, 'index'])->name('skkepanitiaan.index');
-    Route::get('/skkepanitiaan/{skkepanitiaan}', [SkKepanitiaanController::class, 'show'])->name('skkepanitiaan.show');
+    // 9. SK Kepanitiaan
+    Route::resource('skkepanitiaan', SkKepanitiaanController::class);
 
-    Route::get('/tahunakademik', [TahunAkademikController::class, 'index'])->name('tahunakademik.index');
-    Route::get('/tahunakademik/{tahunakademik}', [TahunAkademikController::class, 'show'])->name('tahunakademik.show');
+    // 10. Master Data (Tahun Akademik & Kategori SK)
+    Route::resource('tahunakademik', TahunAkademikController::class);
+    Route::resource('kategorysk', KategorySkController::class);
 
-    Route::get('/kategorysk', [KategorySkController::class, 'index'])->name('kategorysk.index');
-    Route::get('/kategorysk/{kategorysk}', [KategorySkController::class, 'show'])->name('kategorysk.show');
-
-    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    // 11. User Management
     Route::get('/user/template', [UserController::class, 'downloadTemplate'])->name('user.template');
-    Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
-
-    // Write routes (Restricted from Dosen)
-    Route::middleware('restrict.dosen')->group(function(){
-        Route::post('/identitaskaryailmiah/import', [IdentitasKaryaIlmiahController::class, 'import'])->name('identitaskaryailmiah.import');
-        Route::resource('identitaskaryailmiah', IdentitasKaryaIlmiahController::class)->except(['index', 'show']);
-
-        Route::post('/skpengajaran/import', [SkPengajaranController::class, 'import'])->name('skpengajaran.import');
-        Route::resource('skpengajaran', SkPengajaranController::class)->except(['index', 'show']);
-
-        Route::post('/skpembimbingakademik/import', [SkPembimbingAkademikController::class, 'import'])->name('skpembimbingakademik.import');
-        Route::resource('skpembimbingakademik', SkPembimbingAkademikController::class)->except(['index', 'show']);
-
-        Route::post('/skpembimbingkpm/import', [SkPembimbingKpmController::class, 'import'])->name('skpembimbingkpm.import');
-        Route::resource('skpembimbingkpm', SkPembimbingKpmController::class)->except(['index', 'show']);
-
-        Route::post('/skpembimbingtugasakhir/import', [SkPembimbingTugasAkhirController::class, 'import'])->name('skpembimbingtugasakhir.import');
-        Route::resource('skpembimbingtugasakhir', SkPembimbingTugasAkhirController::class)->except(['index', 'show']);
-
-        Route::post('/skpengujisempro/import', [SkPengujiSemproController::class, 'import'])->name('skpengujisempro.import');
-        Route::resource('skpengujisempro', SkPengujiSemproController::class)->except(['index', 'show']);
-
-        Route::post('/skpengujitugasakhir/import', [SkPengujiTugasAkhirController::class, 'import'])->name('skpengujitugasakhir.import');
-        Route::resource('skpengujitugasakhir', SkPengujiTugasAkhirController::class)->except(['index', 'show']);
-
-        Route::resource('skkepanitiaan', SkKepanitiaanController::class)->except(['index', 'show']);
-        Route::resource('tahunakademik', TahunAkademikController::class)->except(['index', 'show']);
-        Route::resource('kategorysk', KategorySkController::class)->except(['index', 'show']);
-
-        Route::post('/user/import', [UserController::class, 'import'])->name('user.import');
-        Route::get('/user/{id}/update-password', [UserController::class, 'showUpdatePasswordForm'])->name('user.showUpdatePasswordForm');
-        Route::post('/user/{id}/update-password', [UserController::class, 'updatePassword'])->name('user.updatePassword');
-        Route::resource('user', UserController::class)->except(['index', 'show']);
-    });
+    Route::post('/user/import', [UserController::class, 'import'])->name('user.import')->middleware('restrict.dosen');
+    Route::get('/user/{id}/update-password', [UserController::class, 'showUpdatePasswordForm'])->name('user.showUpdatePasswordForm');
+    Route::post('/user/{id}/update-password', [UserController::class, 'updatePassword'])->name('user.updatePassword');
+    Route::resource('user', UserController::class);
 });
-
-
-
