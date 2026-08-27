@@ -356,9 +356,12 @@
 
             @if (auth()->check() && auth()->user()->roles !== 'dosen')
                 <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
+                @php
+                    $isLpjActive = request()->routeIs('bebankerjadosen*');
+                @endphp
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center justify-content-between" data-bs-toggle="collapse"
-                        href="#collapseLPJ" role="button" aria-expanded="false" aria-controls="collapseLPJ">
+                    <a class="nav-link d-flex align-items-center justify-content-between {{ $isLpjActive ? 'bg-light text-dark' : '' }}" data-bs-toggle="collapse"
+                        href="#collapseLPJ" role="button" aria-expanded="{{ $isLpjActive ? 'true' : 'false' }}" aria-controls="collapseLPJ">
                         <div class="menu-title-wrapper">
                             <div class="menu-icon-box">
                                 <i class="fas fa-folder-closed"></i>
@@ -367,10 +370,11 @@
                         </div>
                         <i class="fas fa-chevron-down sidebar-dropdown-arrow ms-auto"></i>
                     </a>
-                    <div class="collapse" id="collapseLPJ">
+                    <div class="collapse {{ $isLpjActive ? 'show' : '' }}" id="collapseLPJ">
                         <ul class="sidebar-submenu">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link {{ request()->routeIs('bebankerjadosen*') ? 'active' : '' }}"
+                                    href="{{ route('bebankerjadosen.index') }}">
                                     <i class="fas fa-briefcase"></i> Beban Kerja Dosen
                                 </a>
                             </li>
