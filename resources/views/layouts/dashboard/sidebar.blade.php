@@ -354,7 +354,7 @@
                 </div>
             </li>
 
-            @if (auth()->check() && auth()->user()->roles !== 'dosen')
+            @if (auth()->check() && !auth()->user()->isOnlyDosen())
                 <!-- 7. LPJ Kegiatan Panitia Semester (Dropdown) -->
                 @php
                     $isLpjActive = request()->routeIs('bebankerjadosen*', 'semesterantara*', 'kuliahpengabdianmasyarakat*', 'karturencanaStudi*', 'ujiantengahsemester*', 'ujianakhirsemester*', 'yudisium*', 'wisuda*');
@@ -480,11 +480,17 @@
                             style="font-size: 15px !important; color: #046B26 !important;"></i>
                     </div>
                     <div class="docs-info">
-                        <h6 class="text-white up mb-0 text-sm font-weight-bolder">{{ Auth::user()->name }}</h6>
-                        <span class="badge bg-gradient-success text-white mb-2"
-                            style="font-size: 10px; padding: 2px 8px; text-transform: uppercase;">
-                            {{ Auth::user()->roles }}
-                        </span>
+                        <h6 class="text-white up mb-1 text-sm font-weight-bolder">{{ Auth::user()->name }}</h6>
+                        <div class="d-flex flex-wrap gap-1 mb-2">
+                            @php
+                                $rolesList = is_array(Auth::user()->roles) ? Auth::user()->roles : (array) Auth::user()->roles;
+                            @endphp
+                            @foreach($rolesList as $r)
+                                <span class="badge bg-gradient-success text-white" style="font-size: 9px; padding: 2px 6px; text-transform: uppercase;">
+                                    {{ $r }}
+                                </span>
+                            @endforeach
+                        </div>
                         <p class="text-xxs text-white-50 mb-2 text-truncate">{{ Auth::user()->email }}</p>
                         <a href="{{ route('logout') }}" class="btn btn-sm w-100 text-white font-weight-bold"
                             style="background: #046B26; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-radius: 6px;">

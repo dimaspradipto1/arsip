@@ -66,19 +66,51 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-12 col-md-6">
-                                    <label for="roles" class="form-label font-weight-bold text-xs text-dark">Role / Hak Akses</label>
-                                    <select name="roles" id="roles" class="form-control select2" data-placeholder="-- Pilih Role --" required>
-                                        <option value="admin" {{ old('roles', $user->roles) == 'admin' ? 'selected' : '' }}>Admin</option>
-                                        <option value="tatausaha" {{ old('roles', $user->roles) == 'tatausaha' ? 'selected' : '' }}>Tata Usaha</option>
-                                        <option value="dosen" {{ old('roles', $user->roles) == 'dosen' ? 'selected' : '' }}>Dosen</option>
-                                        <option value="dekan" {{ old('roles', $user->roles) == 'dekan' ? 'selected' : '' }}>Dekan</option>
-                                        <option value="wakilDekan1" {{ old('roles', $user->roles) == 'wakilDekan1' ? 'selected' : '' }}>Wakil Dekan 1</option>
-                                        <option value="wakilDekan2" {{ old('roles', $user->roles) == 'wakilDekan2' ? 'selected' : '' }}>Wakil Dekan 2</option>
-                                        <option value="kaprodi" {{ old('roles', $user->roles) == 'kaprodi' ? 'selected' : '' }}>Kaprodi</option>
-                                        <option value="sekprodi" {{ old('roles', $user->roles) == 'sekprodi' ? 'selected' : '' }}>Sekprodi</option>
-                                    </select>
+                                <div class="col-12">
+                                    <label class="form-label font-weight-bold text-xs text-dark mb-2">
+                                        Role / Hak Akses <span class="text-danger">*</span>
+                                        <small class="text-muted font-weight-normal">(Pilih satu atau lebih role yang dimiliki pengguna)</small>
+                                    </label>
+                                    @php
+                                        $availableRoles = [
+                                            'admin'       => ['label' => 'Admin', 'badge' => 'bg-danger'],
+                                            'tatausaha'   => ['label' => 'Tata Usaha', 'badge' => 'bg-primary'],
+                                            'dosen'       => ['label' => 'Dosen', 'badge' => 'bg-info'],
+                                            'dekan'       => ['label' => 'Dekan', 'badge' => 'bg-success'],
+                                            'wakilDekan1' => ['label' => 'Wakil Dekan 1', 'badge' => 'bg-warning text-dark'],
+                                            'wakilDekan2' => ['label' => 'Wakil Dekan 2', 'badge' => 'bg-warning text-dark'],
+                                            'kaprodi'     => ['label' => 'Kaprodi', 'badge' => 'bg-dark'],
+                                            'sekprodi'    => ['label' => 'Sekprodi', 'badge' => 'bg-secondary'],
+                                        ];
+                                        $userRoles = $user->roles;
+                                        if (!is_array($userRoles)) {
+                                            $userRoles = (array) $userRoles;
+                                        }
+                                        $selectedRoles = old('roles', $userRoles);
+                                        if (!is_array($selectedRoles)) {
+                                            $selectedRoles = [$selectedRoles];
+                                        }
+                                    @endphp
+
+                                    <div class="p-3 border rounded-3 bg-light" style="background-color: #f8fafc !important;">
+                                        <div class="row g-2">
+                                            @foreach($availableRoles as $roleKey => $roleItem)
+                                                <div class="col-6 col-md-4 col-lg-3">
+                                                    <label for="edit_role_{{ $roleKey }}" class="form-check d-flex align-items-center gap-2 p-2 px-3 border rounded-3 bg-white mb-0 shadow-none cursor-pointer hover-shadow-sm" style="cursor: pointer; transition: all 0.2s ease;">
+                                                        <input class="form-check-input ms-0 mt-0" type="checkbox" name="roles[]" value="{{ $roleKey }}" id="edit_role_{{ $roleKey }}" {{ in_array($roleKey, $selectedRoles) ? 'checked' : '' }} style="cursor: pointer;">
+                                                        <span class="text-xs font-weight-bold text-dark ms-1">
+                                                            <span class="badge {{ $roleItem['badge'] }} px-2 py-1">{{ $roleItem['label'] }}</span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
                                     @error('roles')
+                                        <div class="text-danger text-xs mt-1">{{ $message }}</div>
+                                    @enderror
+                                    @error('roles.*')
                                         <div class="text-danger text-xs mt-1">{{ $message }}</div>
                                     @enderror
                                 </div>

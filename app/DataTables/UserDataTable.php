@@ -26,20 +26,33 @@ class UserDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('role_status', function ($user) {
                 $badges = [
-                    'admin'       => '<span class="badge bg-danger">Admin</span>',
-                    'tatausaha'   => '<span class="badge bg-primary">Tata Usaha</span>',
-                    'dosen'       => '<span class="badge bg-info">Dosen</span>',
-                    'dekan'       => '<span class="badge bg-success">Dekan</span>',
-                    'wakilDekan1' => '<span class="badge bg-warning text-dark">Wakil Dekan 1</span>',
-                    'wakilDekan2' => '<span class="badge bg-warning text-dark">Wakil Dekan 2</span>',
-                    'kaprodi'     => '<span class="badge bg-dark">Kaprodi</span>',
-                    'sekprodi'    => '<span class="badge bg-secondary">Sekprodi</span>',
+                    'admin'       => '<span class="badge bg-danger mb-1">Admin</span>',
+                    'tatausaha'   => '<span class="badge bg-primary mb-1">Tata Usaha</span>',
+                    'dosen'       => '<span class="badge bg-info mb-1">Dosen</span>',
+                    'dekan'       => '<span class="badge bg-success mb-1">Dekan</span>',
+                    'wakilDekan1' => '<span class="badge bg-warning text-dark mb-1">Wakil Dekan 1</span>',
+                    'wakilDekan2' => '<span class="badge bg-warning text-dark mb-1">Wakil Dekan 2</span>',
+                    'kaprodi'     => '<span class="badge bg-dark mb-1">Kaprodi</span>',
+                    'sekprodi'    => '<span class="badge bg-secondary mb-1">Sekprodi</span>',
                 ];
 
-                return $badges[$user->roles] ?? '<span class="badge bg-light text-dark">' . e($user->roles) . '</span>';
+                $userRoles = $user->roles;
+                if (!is_array($userRoles)) {
+                    $userRoles = (array) $userRoles;
+                }
+
+                $output = '<div class="d-flex flex-wrap justify-content-center gap-1">';
+                foreach ($userRoles as $r) {
+                    $r = trim($r);
+                    if (!$r) continue;
+                    $output .= $badges[$r] ?? ('<span class="badge bg-light text-dark mb-1">' . e($r) . '</span>');
+                }
+                $output .= '</div>';
+
+                return $output;
             })
             ->addColumn('action', function($user){
-                if (Auth::check() && Auth::user()->roles === 'dosen') {
+                if (Auth::check() && Auth::user()->isOnlyDosen()) {
                     return '-';
                 }
 
@@ -79,7 +92,7 @@ class UserDataTable extends DataTable
     public function query(User $model): QueryBuilder
     {
         $query = $model->newQuery();
-        if (Auth::check() && Auth::user()->roles !== 'admin') {
+        if (Auth::check() && !Auth::user()->hasRole('admin')) {
             $query->facultyScope(Auth::user());
         }
         return $query;
@@ -144,12 +157,12 @@ class UserDataTable extends DataTable
                 ->title('Homebase')
                 ->addClass('align-middle text-xs'),
             Column::computed('role_status')
-                ->title('Status')
-                ->width(120)
+                ->title('Status Role')
+                ->width(150)
                 ->addClass('text-center align-middle text-xs'),
         ];
 
-        if (!Auth::check() || Auth::user()->roles !== 'dosen') {
+        if (!Auth::check() || !Auth::user()->isOnlyDosen()) {
             $columns[] = Column::computed('action')
                 ->title('Aksi')
                 ->exportable(false)

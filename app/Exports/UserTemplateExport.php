@@ -33,6 +33,14 @@ class UserTemplateExport implements FromArray, WithHeadings, WithStyles
                 'S1-TEKNIK INFORMATIKA',
             ],
             [
+                'Dosen & Kaprodi Contoh',
+                'kaprodi.contoh@uis.ac.id',
+                'password',
+                'dosen, kaprodi',
+                'FAKULTAS SAINS DAN TEKNOLOGI (FST)',
+                'S1-TEKNIK INFORMATIKA',
+            ],
+            [
                 'Staff TU FST',
                 'staff.tu@uis.ac.id',
                 'password',

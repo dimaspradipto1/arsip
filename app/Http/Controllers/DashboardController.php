@@ -20,22 +20,66 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $isDosen = $user && $user->roles === 'dosen';
         $userId = $user ? $user->id : null;
 
-        if ($isDosen) {
-            // Dosen only sees their own data
+        $isPureDosen = $user && $user->isOnlyDosen();
+        $isDosen = $isPureDosen;
+        $hasDosenRole = $user && $user->hasRole('dosen');
+        $isDekan = $user && $user->hasRole('dekan');
+        $isWd1 = $user && $user->hasRole('wakilDekan1');
+        $isWd2 = $user && $user->hasRole('wakilDekan2');
+        $isKaprodi = $user && $user->hasRole('kaprodi');
+        $isSekprodi = $user && $user->hasRole('sekprodi');
+        $isTataUsaha = $user && $user->hasRole('tatausaha');
+        $isAdmin = $user && $user->hasRole('admin');
+        $isLeadership = ($isDekan || $isWd1 || $isWd2 || $isKaprodi || $isSekprodi || $isTataUsaha || $isAdmin);
+
+        // ==========================================
+        // 1. DATA PRIBADI DOSEN (Personal Data)
+        // ==========================================
+        $personalSkPengajaran = SkPengajaran::where('user_id', $userId)->count();
+        $personalSkTa = SkPembimbingTugasAkhir::where('user_id', $userId)->count();
+        $personalSkSempro = SkPengujiSempro::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+        $personalSkPengujiTa = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+        $personalSkPa = SkPembimbingAkademik::where('user_id', $userId)->count();
+        $personalSkKpm = SkPembimbingKpm::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+        $personalSkStruktural = SkPengangkatanStruktural::where('user_id', $userId)->count();
+        $personalBuku = \App\Models\Buku::where('user_id', $userId)->count();
+        $personalHki = \App\Models\HKI::where('user_id', $userId)->count();
+        $personalLaporan = \App\Models\LaporanPenelitian::where('user_id', $userId)->count();
+
+        // ==========================================
+        // 2. DATA INSTITUSI / WEWENANG (Executive / Scoped Data)
+        // ==========================================
+        if ($isPureDosen) {
             $skPanitiaCount = 0;
-            $skPaCount = SkPembimbingAkademik::where('user_id', $userId)->count();
-            $skKpmCount = SkPembimbingKpm::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
-            $skPengajaranCount = SkPengajaran::where('user_id', $userId)->count();
-            $skTaCount = SkPembimbingTugasAkhir::where('user_id', $userId)->count();
-            $skStrukturalCount = SkPengangkatanStruktural::where('user_id', $userId)->count();
-            $skSemproCount = SkPengujiSempro::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
-            $skPengujiTaCount = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->where('users.id', $userId))->count();
+            $skPaCount = $personalSkPa;
+            $skKpmCount = $personalSkKpm;
+            $skPengajaranCount = $personalSkPengajaran;
+            $skTaCount = $personalSkTa;
+            $skStrukturalCount = $personalSkStruktural;
+            $skSemproCount = $personalSkSempro;
+            $skPengujiTaCount = $personalSkPengujiTa;
             $totalDosen = 1;
-        } elseif ($user && $user->roles !== 'admin') {
-            // Tata Usaha / Dekan / Kaprodi: Scoped strictly to their own faculty
+            $prodiBreakdown = collect();
+        } elseif ($isKaprodi || $isSekprodi && !$isDekan && !$isWd1 && !$isWd2 && !$isAdmin && !$isTataUsaha) {
+            // Kaprodi / Sekprodi: Scoped specifically to their Program Studi (homebase)
+            $skPanitiaCount = SkKepanitiaan::count();
+            $skPaCount = SkPembimbingAkademik::whereHas('user', fn($q) => $q->prodiScope($user))->count();
+            $skKpmCount = SkPembimbingKpm::whereHas('users', fn($q) => $q->prodiScope($user))->count();
+            $skPengajaranCount = SkPengajaran::whereHas('user', fn($q) => $q->prodiScope($user))->count();
+            $skTaCount = SkPembimbingTugasAkhir::whereHas('user', fn($q) => $q->prodiScope($user))->count();
+            $skStrukturalCount = SkPengangkatanStruktural::whereHas('user', fn($q) => $q->prodiScope($user))->count();
+            $skSemproCount = SkPengujiSempro::whereHas('users', fn($q) => $q->prodiScope($user))->count();
+            $skPengujiTaCount = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->prodiScope($user))->count();
+            $totalDosen = User::whereRole('dosen')->prodiScope($user)->count();
+
+            $prodiBreakdown = User::whereRole('dosen')->prodiScope($user)
+                ->select('homebase', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->groupBy('homebase')
+                ->get();
+        } elseif (!$isAdmin) {
+            // Dekan / Wakil Dekan 1 / Wakil Dekan 2 / TU: Scoped strictly to Faculty
             $skPanitiaCount = SkKepanitiaan::count();
             $skPaCount = SkPembimbingAkademik::whereHas('user', fn($q) => $q->facultyScope($user))->count();
             $skKpmCount = SkPembimbingKpm::whereHas('users', fn($q) => $q->facultyScope($user))->count();
@@ -44,9 +88,15 @@ class DashboardController extends Controller
             $skStrukturalCount = SkPengangkatanStruktural::whereHas('user', fn($q) => $q->facultyScope($user))->count();
             $skSemproCount = SkPengujiSempro::whereHas('users', fn($q) => $q->facultyScope($user))->count();
             $skPengujiTaCount = SkPengujiTugasAkhir::whereHas('users', fn($q) => $q->facultyScope($user))->count();
-            $totalDosen = User::where('roles', 'dosen')->facultyScope($user)->count();
+            $totalDosen = User::whereRole('dosen')->facultyScope($user)->count();
+
+            $prodiBreakdown = User::whereRole('dosen')->facultyScope($user)
+                ->select('homebase', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->groupBy('homebase')
+                ->orderByDesc('total')
+                ->get();
         } else {
-            // Admin sees global data
+            // Admin sees global university data
             $skPanitiaCount = SkKepanitiaan::count();
             $skPaCount = SkPembimbingAkademik::count();
             $skKpmCount = SkPembimbingKpm::count();
@@ -55,7 +105,13 @@ class DashboardController extends Controller
             $skStrukturalCount = SkPengangkatanStruktural::count();
             $skSemproCount = SkPengujiSempro::count();
             $skPengujiTaCount = SkPengujiTugasAkhir::count();
-            $totalDosen = User::where('roles', 'dosen')->count();
+            $totalDosen = User::whereRole('dosen')->count();
+
+            $prodiBreakdown = User::whereRole('dosen')
+                ->select('homebase', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->groupBy('homebase')
+                ->orderByDesc('total')
+                ->get();
         }
 
         $bidang = [
@@ -109,12 +165,12 @@ class DashboardController extends Controller
         $karyaIlmiahRecent = IdentitasKaryaIlmiah::latest()->take(5)->get();
         $kategoriSkList = \App\Models\KategorySk::withCount('skkepanitiaan')->get();
 
-        // Recent SK Activity for Admin / TU (Scoped to faculty for non-admin)
+        // Recent SK Activity for Admin / Dekanat / Kaprodi / TU
         $recentSks = collect();
-        if (!$isDosen) {
+        if (!$isPureDosen) {
             $pengajaranLatest = SkPengajaran::with(['user', 'tahunakademik'])
-                ->when($user && $user->roles !== 'admin', function($query) use ($user) {
-                    $query->whereHas('user', fn($q) => $q->facultyScope($user));
+                ->when($user && !$user->hasRole('admin'), function($query) use ($user) {
+                    $query->whereHas('user', fn($q) => $q->accessScope($user));
                 })
                 ->latest()->take(3)->get()->map(function($item) {
                 return [
@@ -131,8 +187,8 @@ class DashboardController extends Controller
             });
 
             $taLatest = SkPembimbingTugasAkhir::with(['user', 'tahunakademik'])
-                ->when($user && $user->roles !== 'admin', function($query) use ($user) {
-                    $query->whereHas('user', fn($q) => $q->facultyScope($user));
+                ->when($user && !$user->hasRole('admin'), function($query) use ($user) {
+                    $query->whereHas('user', fn($q) => $q->accessScope($user));
                 })
                 ->latest()->take(3)->get()->map(function($item) {
                 return [
@@ -149,8 +205,8 @@ class DashboardController extends Controller
             });
 
             $semproLatest = SkPengujiSempro::with(['users', 'tahunakademik'])
-                ->when($user && $user->roles !== 'admin', function($query) use ($user) {
-                    $query->whereHas('users', fn($q) => $q->facultyScope($user));
+                ->when($user && !$user->hasRole('admin'), function($query) use ($user) {
+                    $query->whereHas('users', fn($q) => $q->accessScope($user));
                 })
                 ->latest()->take(3)->get()->map(function($item) {
                 return [
@@ -169,7 +225,7 @@ class DashboardController extends Controller
             $recentSks = $pengajaranLatest->concat($taLatest)->concat($semproLatest)->sortByDesc('created_at')->take(6)->values();
         }
 
-        // Chart Data for Admin/TU
+        // Chart Data for Admin/TU/Dekanat/Kaprodi
         $chartSkLabels = ['Pengajaran', 'Pembimbing TA', 'Penguji Sempro', 'Penguji TA', 'Bimbingan KPM', 'Bimbingan PA', 'Struktural', 'Kepanitiaan'];
         $chartSkData = [$skPengajaranCount, $skTaCount, $skSemproCount, $skPengujiTaCount, $skKpmCount, $skPaCount, $skStrukturalCount, $skPanitiaCount];
 
@@ -183,7 +239,27 @@ class DashboardController extends Controller
         ];
 
         return view('layouts.dashboard.index', compact(
+            'isPureDosen',
             'isDosen',
+            'isDekan',
+            'isWd1',
+            'isWd2',
+            'isKaprodi',
+            'isSekprodi',
+            'isTataUsaha',
+            'isAdmin',
+            'isLeadership',
+            'hasDosenRole',
+            'personalSkPengajaran',
+            'personalSkTa',
+            'personalSkSempro',
+            'personalSkPengujiTa',
+            'personalSkPa',
+            'personalSkKpm',
+            'personalSkStruktural',
+            'personalBuku',
+            'personalHki',
+            'personalLaporan',
             'skPanitiaCount',
             'skPaCount',
             'skKpmCount',
@@ -193,6 +269,7 @@ class DashboardController extends Controller
             'skSemproCount',
             'skPengujiTaCount',
             'totalDosen',
+            'prodiBreakdown',
             'bidangPendidikan',
             'bidangPenelitian',
             'bidangPengabdian',

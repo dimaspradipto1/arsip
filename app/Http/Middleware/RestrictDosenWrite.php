@@ -16,7 +16,7 @@ class RestrictDosenWrite
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->roles === 'dosen') {
+        if (Auth::check() && Auth::user()->isOnlyDosen()) {
             abort(403, 'Akses Ditolak: Akun dengan role Dosen hanya memiliki izin Read-Only untuk modul ini.');
         }
 

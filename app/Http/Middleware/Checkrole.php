@@ -20,6 +20,8 @@ class Checkrole
             return redirect()->route('login');
         }
 
+        $user = Auth::user();
+
         $allowedRoles = [
             'admin',
             'tatausaha',
@@ -33,7 +35,7 @@ class Checkrole
 
         $rolesToCheck = !empty($roles) ? $roles : $allowedRoles;
 
-        if (in_array(Auth::user()->roles, $rolesToCheck)) {
+        if ($user->hasRole('admin') || $user->hasRole($rolesToCheck)) {
             return $next($request);
         }
 

@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Imports\UserImport;
 use Illuminate\Http\Request;
 use App\DataTables\UserDataTable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -17,7 +19,22 @@ class UserController extends Controller
      */
     public function index(UserDataTable $dataTable)
     {
-        return $dataTable->render('pages.user.index');
+        $currentUser = Auth::user();
+
+        $dosenQuery = User::whereRole('dosen');
+        if ($currentUser && !$currentUser->hasRole('admin')) {
+            $dosenQuery->facultyScope($currentUser);
+        }
+
+        $totalDosen = (clone $dosenQuery)->count();
+
+        $dosenPerProdi = (clone $dosenQuery)
+            ->select('homebase', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+            ->groupBy('homebase')
+            ->orderByDesc('total')
+            ->get();
+
+        return $dataTable->render('pages.user.index', compact('totalDosen', 'dosenPerProdi'));
     }
 
     /**
@@ -37,7 +54,8 @@ class UserController extends Controller
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
-            'roles'    => ['required', 'string', 'in:admin,tatausaha,dosen,dekan,wakilDekan1,wakilDekan2,kaprodi,sekprodi'],
+            'roles'    => ['required', 'array', 'min:1'],
+            'roles.*'  => ['string', 'in:admin,tatausaha,dosen,dekan,wakilDekan1,wakilDekan2,kaprodi,sekprodi'],
             'fakultas' => ['nullable', 'string', 'max:255'],
             'homebase' => ['nullable', 'string', 'max:255'],
         ]);
@@ -83,7 +101,8 @@ class UserController extends Controller
         $validated = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
             'email'    => ['required', 'email', 'max:255', 'unique:users,email,' . $id],
-            'roles'    => ['required', 'string', 'in:admin,tatausaha,dosen,dekan,wakilDekan1,wakilDekan2,kaprodi,sekprodi'],
+            'roles'    => ['required', 'array', 'min:1'],
+            'roles.*'  => ['string', 'in:admin,tatausaha,dosen,dekan,wakilDekan1,wakilDekan2,kaprodi,sekprodi'],
             'fakultas' => ['nullable', 'string', 'max:255'],
             'homebase' => ['nullable', 'string', 'max:255'],
             'password' => ['nullable', 'string', 'min:6'],

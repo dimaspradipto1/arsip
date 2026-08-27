@@ -42,6 +42,29 @@
       overflow-x: hidden !important;
       min-height: 100vh;
     }
+    /* Fix SoftUI .icon-shape vertical centering bug */
+    .icon-shape {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0 !important;
+      text-align: center !important;
+    }
+    .icon-shape i,
+    .icon-shape .fas,
+    .icon-shape .far,
+    .icon-shape .fab,
+    .icon-shape .fa,
+    .icon-shape .ni {
+      position: static !important;
+      top: 0 !important;
+      margin: auto !important;
+      line-height: 1 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transform: none !important;
+    }
     /* Sembunyikan semua horizontal scrollbar track (PerfectScrollbar & browser) */
     .ps__rail-x,
     .main-content .ps__rail-x,

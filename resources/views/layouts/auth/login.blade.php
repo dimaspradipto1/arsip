@@ -727,11 +727,7 @@
                         </button>
                     </form>
 
-                    <div class="security-note">
-                        <i class="fa-solid fa-lock"></i>
-                        <span>Koneksi aman terenkripsi SSL UIS.</span>
-                    </div>
-                </div>
+                </div>  
             </div>
         </div>
     </div>

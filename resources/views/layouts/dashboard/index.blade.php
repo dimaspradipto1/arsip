@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.template')
 
-@section('title', $isDosen ? 'Dashboard Dosen' : 'Dashboard Utama')
+@section('title', $isPureDosen ? 'Dashboard Dosen' : 'Dashboard Utama')
 
 @php
     $sections = [
@@ -9,14 +9,58 @@
         ['id' => 'table-bidang-pengabdian', 'title' => 'Bidang Pengabdian', 'items' => $bidangPengabdian],
         ['id' => 'table-penunjang', 'title' => 'Penunjang', 'items' => $penunjang],
     ];
+
+    // Determine Role Theme & Labels
+    $currentUser = Auth::user();
+    if ($isAdmin) {
+        $roleTitle = 'Super Admin E-Arsip';
+        $roleIcon = 'fa-shield-halved';
+        $roleBg = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+        $scopeBadge = 'Sistem Universitas Ibnu Sina';
+    } elseif ($isDekan) {
+        $roleTitle = 'Dekan ' . ($currentUser->fakultas ?? 'Fakultas');
+        $roleIcon = 'fa-crown';
+        $roleBg = 'linear-gradient(135deg, #064e3b 0%, #047857 50%, #059669 100%)';
+        $scopeBadge = $currentUser->fakultas ?? 'Fakultas Sains & Teknologi';
+    } elseif ($isWd1) {
+        $roleTitle = 'Wakil Dekan 1 (Bidang Akademik)';
+        $roleIcon = 'fa-book-open-reader';
+        $roleBg = 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)';
+        $scopeBadge = $currentUser->fakultas ?? 'Fakultas';
+    } elseif ($isWd2) {
+        $roleTitle = 'Wakil Dekan 2 (Bidang Umum & Kepegawaian)';
+        $roleIcon = 'fa-briefcase';
+        $roleBg = 'linear-gradient(135deg, #312e81 0%, #4f46e5 100%)';
+        $scopeBadge = $currentUser->fakultas ?? 'Fakultas';
+    } elseif ($isKaprodi) {
+        $roleTitle = 'Ketua Program Studi ' . ($currentUser->homebase ?? '');
+        $roleIcon = 'fa-graduation-cap';
+        $roleBg = 'linear-gradient(135deg, #134e4a 0%, #0f766e 100%)';
+        $scopeBadge = $currentUser->homebase ?? 'Program Studi';
+    } elseif ($isSekprodi) {
+        $roleTitle = 'Sekretaris Program Studi ' . ($currentUser->homebase ?? '');
+        $roleIcon = 'fa-file-pen';
+        $roleBg = 'linear-gradient(135deg, #334155 0%, #475569 100%)';
+        $scopeBadge = $currentUser->homebase ?? 'Program Studi';
+    } elseif ($isTataUsaha) {
+        $roleTitle = 'Tata Usaha ' . ($currentUser->fakultas ?? 'Fakultas');
+        $roleIcon = 'fa-folder-open';
+        $roleBg = 'linear-gradient(135deg, #046B26 0%, #0db846 100%)';
+        $scopeBadge = $currentUser->fakultas ?? 'Fakultas';
+    } else {
+        $roleTitle = 'Portal Dosen';
+        $roleIcon = 'fa-chalkboard-teacher';
+        $roleBg = 'linear-gradient(135deg, #046B26 0%, #0db846 100%)';
+        $scopeBadge = $currentUser->homebase ?? 'Dosen';
+    }
 @endphp
 
 @section('content')
 <div class="container-fluid py-3">
 
-@if($isDosen)
+@if($isPureDosen)
   {{-- ========================================================================= --}}
-  {{-- TAMPILAN KHUSUS DASHBOARD DOSEN --}}
+  {{-- TAMPILAN KHUSUS DOSEN MURNI --}}
   {{-- ========================================================================= --}}
 
   <!-- Welcome Banner Dosen -->
@@ -28,7 +72,7 @@
             <div>
               <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: rgba(255, 255, 255, 0.2);">
                 <i class="fas fa-chalkboard-teacher text-white"></i>
-                <span class="text-xs font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px;">Portal Dosen FST</span>
+                <span class="text-xs font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px;">Portal Dosen</span>
               </div>
               <h4 class="text-white font-weight-bolder mb-1">Selamat Datang, {{ Auth::user()->name }}</h4>
               <p class="text-white text-sm mb-0" style="opacity: 0.88;">
@@ -49,412 +93,54 @@
     </div>
   </div>
 
-  <!-- Statistik SK Pribadi Dosen -->
-  <div class="row g-3 mb-4">
-    <!-- SK Pengajaran -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">SK Pengajaran</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skPengajaranCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-primary text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-chalkboard-teacher fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpengajaran.index') }}" class="text-xs text-primary font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SK Pembimbing Tugas Akhir -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Pembimbing TA</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skTaCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-info text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-user-graduate fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpembimbingtugasakhir.index') }}" class="text-xs text-info font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SK Penguji Sempro -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Penguji Sempro</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skSemproCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-warning text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-clipboard-check fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpengujisempro.index') }}" class="text-xs text-warning font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SK Penguji Tugas Akhir -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Penguji Sidang TA</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skPengujiTaCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-danger text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-medal fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpengujitugasakhir.index') }}" class="text-xs text-danger font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SK Pembimbing KPM -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Pembimbing KPM</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skKpmCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-success text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-users fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpembimbingkpm.index') }}" class="text-xs text-success font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SK Pembimbing Akademik (PA) -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Pembimbing Akademik</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skPaCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-dark text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-user-check fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpembimbingakademik.index') }}" class="text-xs text-dark font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SK Jabatan Struktural -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Jabatan Struktural</p>
-              <h4 class="font-weight-bolder mb-0 text-dark">{{ $skStrukturalCount }}</h4>
-            </div>
-            <div class="icon icon-shape bg-secondary text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-building-columns fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top">
-            <a href="{{ route('skpengangkatanstruktural.index') }}" class="text-xs text-secondary font-weight-bold text-decoration-none d-flex align-items-center justify-content-between">
-              <span>Buka Data SK</span>
-              <i class="fas fa-arrow-right"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Dokumen SK -->
-    <div class="col-xl-3 col-sm-6">
-      <div class="card border-0 shadow-sm h-100 hover-card bg-light">
-        <div class="card-body p-3">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <p class="text-xs text-uppercase font-weight-bold text-secondary mb-1">Total SK Anda</p>
-              <h4 class="font-weight-bolder mb-0 text-success">{{ $totalDokumenPelaksanaan }}</h4>
-            </div>
-            <div class="icon icon-shape bg-success text-white rounded-circle shadow text-center d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
-              <i class="fas fa-folder-open fs-6"></i>
-            </div>
-          </div>
-          <div class="mt-2 pt-2 border-top text-xs text-muted">
-            Rekapitulasi seluruh SK resmi Anda
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section 1: Data Penelitian / Identitas Karya Ilmiah (Tabel) -->
-  <div class="row mb-4">
-    <div class="col-12">
-      <h6 class="mb-3 font-weight-bold text-dark"><i class="fas fa-book-bookmark me-2 text-success"></i>Data Penelitian / Identitas Karya Ilmiah</h6>
-      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
-        <div class="card-body pt-3">
-          <div class="table-responsive">
-            <table id="table-identitas-karya-ilmiah-dosen" class="table table-bordered excel-table doc-table align-items-center mb-0" style="width:100%">
-              <thead>
-                <tr>
-                  <th class="text-center" style="width:50px">No</th>
-                  <th class="text-center" style="width:70px">Tahun</th>
-                  <th>Judul Karya Ilmiah</th>
-                  <th>Nama Jurnal</th>
-                  <th>Nomor ISSN</th>
-                  <th>Volume, Nomor, Tahun</th>
-                  <th>DOI Artikel</th>
-                  <th>Alamat Web</th>
-                  <th class="text-center">Indexing</th>
-                  <th class="text-center">Kategori Publikasi</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if($karyaIlmiahData->count() > 0)
-                  @foreach($karyaIlmiahData as $idx => $item)
-                    <tr>
-                      <td class="text-center font-weight-bold">{{ $idx + 1 }}</td>
-                      <td class="text-center">{{ $item->tahun }}</td>
-                      <td class="font-weight-bold text-dark">{{ $item->judul_karya_ilmiah }}</td>
-                      <td>{{ $item->nama_jurnal }}</td>
-                      <td>{{ $item->nomor_issn }}</td>
-                      <td>{{ $item->volume_nomor_tahun }}</td>
-                      <td>{{ $item->doi_artikel }}</td>
-                      <td>{{ $item->alamat_web }}</td>
-                      <td class="text-center">{{ $item->indexing }}</td>
-                      <td class="text-center">{{ $item->kategori_publikasi }}</td>
-                    </tr>
-                  @endforeach
-                @else
-                  @for ($i = 1; $i <= 10; $i++)
-                    <tr>
-                      <td class="text-center">{{ $i }}</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  @endfor
-                @endif
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Section 2: Rekapitulasi Data Publikasi Ilmiah (Tabel) -->
-      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
-        <div class="card-header bg-white pb-0 border-bottom">
-          <h6 class="mb-2 font-weight-bold text-dark">Rekapitulasi Data Publikasi Ilmiah</h6>
-        </div>
-        <div class="card-body pt-3">
-          <div class="table-responsive">
-            <table class="table table-bordered excel-table align-items-center mb-0">
-              <thead>
-                <tr>
-                  <th class="text-center">Tahun</th>
-                  <th class="text-center">JNTT</th>
-                  <th class="text-center">JNT</th>
-                  <th class="text-center">JT</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($rekapPublikasi as $row)
-                  <tr>
-                    <td class="text-center">{{ $row['tahun'] }}</td>
-                    <td class="text-center">{{ $row['jntt'] }}</td>
-                    <td class="text-center">{{ $row['jnt'] }}</td>
-                    <td class="text-center">{{ $row['jt'] }}</td>
-                  </tr>
-                @endforeach
-                <tr class="fw-bold bg-light">
-                  <td class="text-center">JUMLAH</td>
-                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jntt') }}</td>
-                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jnt') }}</td>
-                  <td class="text-center">{{ collect($rekapPublikasi)->sum('jt') }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Rekapitulasi Dokumen Tridharma Dosen -->
-  <div class="row">
-    <div class="col-12">
-      <h6 class="mb-3 font-weight-bold text-dark"><i class="fas fa-list-check me-2 text-success"></i>Rekapitulasi Dokumen Pelaksanaan Pendidikan (Tridharma Pribadi)</h6>
-
-      @foreach ($sections as $section)
-        <div class="card mb-4 border-0 shadow-sm">
-          <div class="card-header bg-white pb-0 border-bottom">
-            <h6 class="mb-2 font-weight-bold text-dark">{{ $section['title'] }}</h6>
-          </div>
-          <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-hover align-items-center mb-0" style="width:100%">
-                <thead class="bg-light">
-                  <tr>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:60px">No</th>
-                    <th class="text-secondary text-xxs font-weight-bolder opacity-7">Nama Dokumen / Kategori SK</th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:140px">Jumlah Data Anda</th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:140px">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($section['items'] as $i => $item)
-                    <tr>
-                      <td class="text-center text-xs font-weight-bold">{{ $i + 1 }}</td>
-                      <td class="text-xs font-weight-bold text-dark">{{ $item['nama'] }}</td>
-                      <td class="text-center">
-                        @if($item['count'] > 0)
-                          <span class="badge bg-success text-white px-2 py-1 text-xs font-weight-bold">{{ $item['count'] }} Data</span>
-                        @else
-                          <span class="text-muted text-xs">0 Data</span>
-                        @endif
-                      </td>
-                      <td class="text-center">
-                        @if(!empty($item['route']))
-                          <a href="{{ $item['route'] }}" class="btn btn-xs btn-outline-success mb-0 px-3 py-1">
-                            <i class="fas fa-eye me-1"></i> Buka Menu
-                          </a>
-                        @else
-                          <span class="text-muted text-xxs">-</span>
-                        @endif
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      @endforeach
-
-      <!-- Section 3: Rekapitulasi Kategori SK Kepanitiaan (Tabel) -->
-      <div class="card mb-4 border-0 shadow-sm" style="border-radius: 12px;">
-        <div class="card-header bg-white pb-0 border-bottom d-flex align-items-center justify-content-between">
-          <h6 class="mb-2 font-weight-bold text-dark"><i class="fas fa-tags me-2 text-danger"></i>Rekapitulasi Kategori SK Kepanitiaan</h6>
-          <a href="{{ route('skkepanitiaan.index') }}" class="btn btn-xs btn-outline-danger mb-2">
-            <i class="fas fa-eye me-1"></i> Buka SK Kepanitiaan
-          </a>
-        </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-hover align-items-center mb-0">
-              <thead class="bg-light">
-                <tr>
-                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:60px">No</th>
-                  <th class="text-secondary text-xxs font-weight-bolder opacity-7">Nama Kategori SK Kepanitiaan</th>
-                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:160px">Jumlah Dokumen</th>
-                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7" style="width:140px">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($kategoriSkList as $idx => $kat)
-                  <tr>
-                    <td class="text-center text-xs font-weight-bold">{{ $idx + 1 }}</td>
-                    <td class="text-xs font-weight-bold text-dark">{{ $kat->kategory_sk }}</td>
-                    <td class="text-center">
-                      <span class="badge {{ $kat->skkepanitiaan_count > 0 ? 'bg-primary' : 'bg-light text-secondary' }} text-xs font-weight-bold px-2 py-1">
-                        {{ $kat->skkepanitiaan_count }} Dokumen
-                      </span>
-                    </td>
-                    <td class="text-center">
-                      <a href="{{ route('skkepanitiaan.index') }}" class="btn btn-xs btn-outline-danger mb-0 px-3 py-1">
-                        <i class="fas fa-folder-open me-1"></i> Lihat SK
-                      </a>
-                    </td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  @include('layouts.dashboard.partials.dosen_personal_stats', [
+      'skPengajaranCount' => $personalSkPengajaran,
+      'skTaCount' => $personalSkTa,
+      'skSemproCount' => $personalSkSempro,
+      'skPengujiTaCount' => $personalSkPengujiTa,
+      'skKpmCount' => $personalSkKpm,
+      'skPaCount' => $personalSkPa,
+      'skStrukturalCount' => $personalSkStruktural,
+      'bukuCount' => $personalBuku,
+      'hkiCount' => $personalHki,
+      'laporanCount' => $personalLaporan,
+  ])
 
 @else
   {{-- ========================================================================= --}}
-  {{-- TAMPILAN DASHBOARD ADMIN / TATA USAHA / DEKAN / KAPRODI --}}
+  {{-- TAMPILAN DASHBOARD STRUKTURAL (DEKAN / WD 1 / WD 2 / KAPRODI / SEKPRODI / TU / ADMIN) --}}
   {{-- ========================================================================= --}}
 
-  <!-- Welcome Banner Admin/TU -->
+  <!-- Dynamic Executive Banner -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="card border-0 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 16px;">
+      <div class="card border-0 shadow-sm overflow-hidden" style="background: {{ $roleBg }}; border-radius: 16px;">
         <div class="card-body p-4 text-white">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
             <div>
-              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: rgba(255, 255, 255, 0.15);">
-                <i class="fas fa-shield-alt text-warning"></i>
-                <span class="text-xs font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px;">Panel Administrasi & Tata Usaha</span>
+              <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: rgba(255, 255, 255, 0.18);">
+                <i class="fas {{ $roleIcon }} text-warning"></i>
+                <span class="text-xs font-weight-bold text-white text-uppercase" style="letter-spacing: 0.5px;">{{ $roleTitle }}</span>
               </div>
               <h4 class="text-white font-weight-bolder mb-1">Selamat Datang, {{ Auth::user()->name }}</h4>
-              <p class="text-white text-sm mb-0" style="opacity: 0.88;">
-                Pusat data arsip digital, pemantauan dokumen resmi, dan rekapitulasi Surat Keputusan Fakultas Sains dan Teknologi.
+              <p class="text-white text-sm mb-0" style="opacity: 0.90;">
+                @if($isDekan || $isWd1 || $isWd2)
+                  Pusat kendali dan monitoring data arsip resmi serta rekapitulasi Surat Keputusan seluruh Program Studi di {{ Auth::user()->fakultas ?? 'Fakultas' }}.
+                @elseif($isKaprodi || $isSekprodi)
+                  Pusat kendali dan monitoring data arsip resmi serta rekapitulasi Surat Keputusan dosen Program Studi {{ Auth::user()->homebase ?? 'Homebase' }}.
+                @elseif($isTataUsaha)
+                  Pusat administrasi tata usaha, penerbitan arsip, dan monitoring kelengkapan dokumen resmi fakultas.
+                @else
+                  Pusat kendali arsip digital, pemantauan dokumen resmi, dan rekapitulasi data akademik universitas.
+                @endif
               </p>
             </div>
             <div class="d-flex flex-wrap gap-2 align-items-center">
-              <span class="badge bg-primary text-white px-3 py-2 text-xs font-weight-bold rounded-3">
-                <i class="fas fa-users me-1"></i> {{ $totalDosen }} Dosen Terdaftar
+              <span class="badge bg-white text-dark px-3 py-2 text-xs font-weight-bold rounded-3">
+                <i class="fas fa-building me-1 text-success"></i> {{ $scopeBadge }}
               </span>
-              <span class="badge bg-success text-white px-3 py-2 text-xs font-weight-bold rounded-3">
-                <i class="fas fa-file-signature me-1"></i> {{ $totalDokumenPelaksanaan }} Total Arsip SK
+              <span class="badge bg-warning text-dark px-3 py-2 text-xs font-weight-bold rounded-3">
+                <i class="fas fa-users me-1"></i> {{ $totalDosen }} Dosen Terdata
               </span>
             </div>
           </div>
@@ -463,44 +149,129 @@
     </div>
   </div>
 
-  <!-- Aksi Cepat / Shortcut Tata Usaha & Admin -->
+  <!-- Dual-View Mode Switcher Tabs (Executive vs Personal Dosen) -->
   <div class="row mb-4">
     <div class="col-12">
-      <div class="card border-0 shadow-sm p-3" style="border-radius: 14px;">
-        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
-          <div class="d-flex align-items-center gap-2">
-            <div class="icon icon-shape bg-warning text-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-              <i class="fas fa-bolt text-xs"></i>
-            </div>
-            <div>
-              <h6 class="mb-0 text-sm font-weight-bold text-dark">Aksi Cepat / Tambah Data Baru</h6>
-              <span class="text-xxs text-secondary">Shortcut langsung untuk input arsip dan SK baru</span>
-            </div>
-          </div>
-          <div class="d-flex flex-wrap gap-2">
-            <a href="{{ route('skpengajaran.create') }}" class="btn btn-xs btn-primary mb-0 d-inline-flex align-items-center gap-1">
-              <i class="fas fa-plus"></i> SK Pengajaran
-            </a>
-            <a href="{{ route('skpembimbingtugasakhir.create') }}" class="btn btn-xs btn-info text-white mb-0 d-inline-flex align-items-center gap-1">
-              <i class="fas fa-plus"></i> SK Pembimbing TA
-            </a>
-            <a href="{{ route('skpengujisempro.create') }}" class="btn btn-xs btn-warning text-white mb-0 d-inline-flex align-items-center gap-1">
-              <i class="fas fa-plus"></i> SK Penguji Sempro
-            </a>
-            <a href="{{ route('skkepanitiaan.create') }}" class="btn btn-xs btn-danger mb-0 d-inline-flex align-items-center gap-1">
-              <i class="fas fa-plus"></i> SK Kepanitiaan
-            </a>
-            @if(Auth::user()->roles === 'admin')
-              <a href="{{ route('user.create') }}" class="btn btn-xs btn-dark mb-0 d-inline-flex align-items-center gap-1">
-                <i class="fas fa-user-plus"></i> Tambah User
-              </a>
-            @endif
-          </div>
-        </div>
+      <div class="card border-0 shadow-sm p-2 bg-white" style="border-radius: 14px;">
+        <ul class="nav nav-pills nav-fill p-1 gap-2" id="dashboardRoleTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active font-weight-bold d-flex align-items-center justify-content-center gap-2 py-2 text-sm rounded-3" id="tab-executive" data-bs-toggle="pill" data-bs-target="#content-executive" type="button" role="tab" aria-controls="content-executive" aria-selected="true">
+              <i class="fas fa-chart-line text-success"></i>
+              @if($isDekan || $isWd1 || $isWd2)
+                <span>Ringkasan Wewenang Fakultas</span>
+              @elseif($isKaprodi || $isSekprodi)
+                <span>Ringkasan Wewenang Prodi ({{ Auth::user()->homebase ?? 'Prodi' }})</span>
+              @else
+                <span>Ringkasan Wewenang & Institusi</span>
+              @endif
+              <span class="badge bg-success-light text-success ms-1 px-2 py-0.5 rounded-pill" style="background-color: #E8F5E9;">{{ $totalDokumenPelaksanaan }} Dokumen</span>
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link font-weight-bold d-flex align-items-center justify-content-center gap-2 py-2 text-sm rounded-3" id="tab-personal" data-bs-toggle="pill" data-bs-target="#content-personal" type="button" role="tab" aria-controls="content-personal" aria-selected="false">
+              <i class="fas fa-chalkboard-teacher text-primary"></i>
+              <span>Kinerja & Arsip Pribadi Dosen</span>
+              <span class="badge bg-primary text-white ms-1 px-2 py-0.5 rounded-pill">{{ $personalSkPengajaran + $personalSkTa + $personalSkSempro + $personalSkPengujiTa }} SK</span>
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 
+  <div class="tab-content" id="dashboardRoleTabContent">
+    <!-- TAB 1: EXECUTIVE / INSTITUTIONAL OVERVIEW -->
+    <div class="tab-pane fade show active" id="content-executive" role="tabpanel" aria-labelledby="tab-executive">
+
+      <!-- Distribution Per Prodi Highlight (for Dekanat & Leadership) -->
+      @if(isset($prodiBreakdown) && $prodiBreakdown->count() > 0 && ($isDekan || $isWd1 || $isWd2 || $isTataUsaha || $isAdmin))
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card border-0 shadow-sm border-radius-lg">
+              <div class="card-header pb-0 p-3 bg-transparent d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="icon icon-shape bg-gradient-primary text-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <i class="fas fa-sitemap text-xs"></i>
+                  </div>
+                  <div>
+                    <h6 class="font-weight-bolder mb-0 text-dark">Distribusi Dosen per Program Studi</h6>
+                    <p class="text-xs text-muted mb-0">Cakupan wewenang: {{ $scopeBadge }}</p>
+                  </div>
+                </div>
+                <a href="{{ route('user.index') }}" class="btn btn-xs btn-outline-success mb-0">
+                  <i class="fas fa-arrow-right me-1"></i> Kelola Dosen
+                </a>
+              </div>
+              <div class="card-body p-3">
+                <div class="row g-2 g-md-3">
+                  @foreach($prodiBreakdown as $prodi)
+                    @php
+                      $prodiName = $prodi->homebase ?: 'Tanpa Homebase';
+                      $percent = ($totalDosen && $totalDosen > 0) ? round(($prodi->total / $totalDosen) * 100) : 0;
+                    @endphp
+                    <div class="col-xl-3 col-md-4 col-sm-6">
+                      <div class="p-3 border rounded-3 bg-white h-100">
+                        <div class="d-flex align-items-start justify-content-between mb-2">
+                          <div>
+                            <span class="text-xs font-weight-bold text-dark d-block text-truncate" style="max-width: 160px;" title="{{ $prodiName }}">{{ $prodiName }}</span>
+                            <span class="text-xxs text-muted">{{ $percent }}% dari total fakultas</span>
+                          </div>
+                          <span class="badge bg-success rounded-pill font-weight-bolder text-xs px-2 py-1">
+                            {{ $prodi->total }} Dosen
+                          </span>
+                        </div>
+                        <div class="progress" style="height: 4px; border-radius: 4px; background-color: #f1f5f9;">
+                          <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: {{ $percent }}%;" aria-valuenow="{{ $percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
+
+      <!-- Aksi Cepat / Shortcut Tata Usaha & Admin -->
+      @if(!Auth::user()->isOnlyDosen())
+        <div class="row mb-4">
+          <div class="col-12">
+            <div class="card border-0 shadow-sm p-3" style="border-radius: 14px;">
+              <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="icon icon-shape bg-warning text-white rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <i class="fas fa-bolt text-xs"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0 text-sm font-weight-bold text-dark">Aksi Cepat / Tambah Data Baru</h6>
+                    <span class="text-xxs text-secondary">Shortcut langsung untuk input arsip dan SK baru</span>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <a href="{{ route('skpengajaran.create') }}" class="btn btn-xs btn-primary mb-0 d-inline-flex align-items-center gap-1">
+                    <i class="fas fa-plus"></i> SK Pengajaran
+                  </a>
+                  <a href="{{ route('skpembimbingtugasakhir.create') }}" class="btn btn-xs btn-info text-white mb-0 d-inline-flex align-items-center gap-1">
+                    <i class="fas fa-plus"></i> SK Pembimbing TA
+                  </a>
+                  <a href="{{ route('skpengujisempro.create') }}" class="btn btn-xs btn-warning text-white mb-0 d-inline-flex align-items-center gap-1">
+                    <i class="fas fa-plus"></i> SK Penguji Sempro
+                  </a>
+                  <a href="{{ route('skkepanitiaan.create') }}" class="btn btn-xs btn-danger mb-0 d-inline-flex align-items-center gap-1">
+                    <i class="fas fa-plus"></i> SK Kepanitiaan
+                  </a>
+                  @if(Auth::user()->hasRole('admin'))
+                    <a href="{{ route('user.create') }}" class="btn btn-xs btn-dark mb-0 d-inline-flex align-items-center gap-1">
+                      <i class="fas fa-user-plus"></i> Tambah User
+                    </a>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
   <!-- Statistik Global Admin (Stat Cards) -->
   <div class="row g-3 mb-4">
     <div class="col-xl-3 col-sm-6">
@@ -914,8 +685,33 @@
         </div>
       @endforeach
 
-    </div>
-  </div>
+    </div> <!-- /#content-executive -->
+
+    <!-- TAB 2: PERSONAL DOSEN ARCHIVE & PERFORMANCE -->
+    <div class="tab-pane fade" id="content-personal" role="tabpanel" aria-labelledby="tab-personal">
+      <div class="alert alert-info text-white border-0 shadow-sm d-flex align-items-center gap-2 mb-4" role="alert" style="border-radius: 12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+        <i class="fas fa-user-tie fs-5"></i>
+        <div>
+          <span class="font-weight-bold">Mode Kinerja Pribadi Dosen Aktif:</span>
+          <span class="text-xs ms-1">Bagian ini khusus merangkum Surat Keputusan (SK), pengajaran, bimbingan, dan publikasi milik <strong>{{ Auth::user()->name }}</strong> secara pribadi.</span>
+        </div>
+      </div>
+
+      @include('layouts.dashboard.partials.dosen_personal_stats', [
+          'skPengajaranCount' => $personalSkPengajaran,
+          'skTaCount' => $personalSkTa,
+          'skSemproCount' => $personalSkSempro,
+          'skPengujiTaCount' => $personalSkPengujiTa,
+          'skKpmCount' => $personalSkKpm,
+          'skPaCount' => $personalSkPa,
+          'skStrukturalCount' => $personalSkStruktural,
+          'bukuCount' => $personalBuku,
+          'hkiCount' => $personalHki,
+          'laporanCount' => $personalLaporan,
+      ])
+    </div> <!-- /#content-personal -->
+
+  </div> <!-- /#dashboardRoleTabContent -->
 @endif
 
   <!-- Footer -->
@@ -942,6 +738,18 @@
   .hover-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+  }
+  .icon-shape {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+  .icon-shape i, .icon-shape .fas, .icon-shape .far, .icon-shape .fa {
+    position: static !important;
+    top: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
   }
   .excel-table th {
     background-color: #f8f9fa;

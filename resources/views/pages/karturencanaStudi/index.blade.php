@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4 shadow-sm border-radius-lg">
-                    @if (auth()->check() && auth()->user()->roles !== 'dosen')
+                    @if (auth()->check() && !auth()->user()->isOnlyDosen())
                         <div class="card-header p-3 py-3 bg-transparent border-bottom d-flex align-items-center gap-2">
                             <a href="{{ route('karturencanaStudi.create') }}" class="btn btn-primary text-white text-uppercase mb-0">
                                 <i class="fas fa-plus me-1"></i> Tambah Kartu Rencana Studi
